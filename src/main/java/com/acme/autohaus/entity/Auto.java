@@ -36,7 +36,7 @@ public class Auto {
 
     @Override
     public final boolean equals(final Object other) {
-        return other instanceof Auto auto && Objects.equals(fahrzeugId, auto.fahrzeugId);
+        return other instanceof Auto auto && Objects.equals(fahrzeugId, auto.getFahrzeugId());
     }
 
     @Override
