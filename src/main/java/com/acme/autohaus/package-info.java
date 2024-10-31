@@ -15,5 +15,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- /// Microservice _autohaus_.
+/// Microservice _autohaus_.
 package com.acme.autohaus;

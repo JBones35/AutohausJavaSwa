@@ -2,7 +2,6 @@ package com.acme.autohaus.repository.builder;
 
 import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Kunde;
-
 import java.time.LocalDate;
 
 /**
@@ -32,7 +31,7 @@ public class KundeBuilder {
      * @param name Der Name des Kunden.
      * @return Der aktuelle KundeBuilder.
      */
-    public KundeBuilder setName(String name) {
+    public KundeBuilder setName(final String name) {
         this.name = name;
         return this;
     }
@@ -43,7 +42,7 @@ public class KundeBuilder {
      * @param alter Das Alter des Kunden.
      * @return Der aktuelle KundeBuilder.
      */
-    public KundeBuilder setAlter(int alter) {
+    public KundeBuilder setAlter(final int alter) {
         this.alter = alter;
         return this;
     }
@@ -54,7 +53,7 @@ public class KundeBuilder {
      * @param geburtsdatum Das Geburtsdatum des Kunden.
      * @return Der aktuelle KundeBuilder.
      */
-    public KundeBuilder setGeburtsdatum(LocalDate geburtsdatum) {
+    public KundeBuilder setGeburtsdatum(final LocalDate geburtsdatum) {
         this.geburtsdatum = geburtsdatum;
         return this;
     }
@@ -65,7 +64,7 @@ public class KundeBuilder {
      * @param kundennummer Die Kundennummer des Kunden.
      * @return Der aktuelle KundeBuilder.
      */
-    public KundeBuilder setKundennummer(String kundennummer) {
+    public KundeBuilder setKundennummer(final String kundennummer) {
         this.kundennummer = kundennummer;
         return this;
     }
@@ -76,7 +75,7 @@ public class KundeBuilder {
      * @param adresse Die Adresse des Kunden als Adresse-Objekt.
      * @return Der aktuelle KundeBuilder.
      */
-    public KundeBuilder setAdresse(Adresse adresse) {
+    public KundeBuilder setAdresse(final Adresse adresse) {
         this.adresse = adresse;
         return this;
     }
@@ -87,7 +86,7 @@ public class KundeBuilder {
      * @param telefonnummer Die Telefonnummer des Kunden.
      * @return Der aktuelle KundeBuilder.
      */
-    public KundeBuilder setTelefonnummer(String telefonnummer) {
+    public KundeBuilder setTelefonnummer(final String telefonnummer) {
         this.telefonnummer = telefonnummer;
         return this;
     }
@@ -98,7 +97,7 @@ public class KundeBuilder {
      * @param email Die E-Mail-Adresse des Kunden.
      * @return Der aktuelle KundeBuilder.
      */
-    public KundeBuilder setEmail(String email) {
+    public KundeBuilder setEmail(final String email) {
         this.email = email;
         return this;
     }

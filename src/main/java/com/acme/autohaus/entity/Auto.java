@@ -11,8 +11,7 @@ public class Auto {
     private String marke;
     private String modell;
     private int baujahr;
-    private String farbe;
-    private int kilometerstand;
+    private String besitzer;
     private double preis;
 
     /**
@@ -22,18 +21,16 @@ public class Auto {
      * @param marke         Die Marke des Autos (darf nicht null sein).
      * @param modell        Das Modell des Autos (darf nicht null sein).
      * @param baujahr       Das Baujahr des Autos (sollte positiv sein).
-     * @param farbe         Die Farbe des Autos (darf nicht null sein).
-     * @param kilometerstand Der Kilometerstand des Autos (sollte nicht negativ sein).
+     * @param besitzer Der Besitzer des Autos (sollte nicht negativ sein).
      * @param preis         Der Preis des Autos (sollte nicht negativ sein).
      */
     public Auto(final String fahrzeugId, final String marke, final String modell,
-                final int baujahr, final String farbe, final int kilometerstand, final double preis) {
+                final int baujahr, final String besitzer, final double preis) {
         this.fahrzeugId = fahrzeugId;
         this.marke = marke;
         this.modell = modell;
         this.baujahr = baujahr;
-        this.farbe = farbe;
-        this.kilometerstand = kilometerstand;
+        this.besitzer = besitzer;
         this.preis = preis;
     }
 
@@ -120,39 +117,21 @@ public class Auto {
     }
 
     /**
-     * Gibt die Farbe des Autos zurück.
+     * Gibt den Besitzer des Autos zurück.
      *
-     * @return Die Farbe des Autos.
+     * @return Der Besitzer des Autos.
      */
-    public String getFarbe() {
-        return farbe;
+    public String getBesitzer() {
+        return besitzer;
     }
 
     /**
-     * Setzt die Farbe des Autos.
+     * Setzt den Besitzer des Autos.
      *
-     * @param farbe Die Farbe des Autos (darf nicht null sein).
+     * @param besitzer Der Kilometerstand des Autos (sollte nicht negativ sein).
      */
-    public void setFarbe(final String farbe) {
-        this.farbe = farbe;
-    }
-
-    /**
-     * Gibt den Kilometerstand des Autos zurück.
-     *
-     * @return Der Kilometerstand des Autos.
-     */
-    public int getKilometerstand() {
-        return kilometerstand;
-    }
-
-    /**
-     * Setzt den Kilometerstand des Autos.
-     *
-     * @param kilometerstand Der Kilometerstand des Autos (sollte nicht negativ sein).
-     */
-    public void setKilometerstand(final int kilometerstand) {
-        this.kilometerstand = kilometerstand;
+    public void setBesitzer(final String besitzer) {
+        this.besitzer = besitzer;
     }
 
     /**
@@ -180,9 +159,8 @@ public class Auto {
             ", marke='" + marke + '\'' +
             ", modell='" + modell + '\'' +
             ", baujahr=" + baujahr +
-            ", farbe='" + farbe + '\'' +
-            ", kilometerstand=" + kilometerstand +
+            ", besitzer=" + besitzer +
             ", preis=" + preis +
-            '}'; // Ausgabeformat: "Fahrzeug-ID: ID, Marke: Marke, Modell: Modell, Baujahr: Jahr, Farbe: Farbe, Kilometerstand: km, Preis: Betrag"
+            '}';
     }
 }

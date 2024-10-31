@@ -16,41 +16,41 @@ public class AutohausBuilder {
     private List<Mitarbeiter> mitarbeiter;
     private List<Kunde> kunden;
 
-    public static AutohausBuilder getBuilder(){
+    public static AutohausBuilder getBuilder() {
         return new AutohausBuilder();
     }
 
-    public AutohausBuilder setName(String name) {
+    public AutohausBuilder setName(final String name) {
         this.name = name;
         return this;
     }
 
-    public AutohausBuilder setStandort(String standort) {
+    public AutohausBuilder setStandort(final String standort) {
         this.standort = standort;
         return this;
     }
 
-    public AutohausBuilder setTelefonnummer(String telefonnummer) {
+    public AutohausBuilder setTelefonnummer(final String telefonnummer) {
         this.telefonnummer = telefonnummer;
         return this;
     }
 
-    public AutohausBuilder setUUID(UUID uuid) {
-        this.uuid = uuid;
+    public AutohausBuilder setUUID(final UUID id) {
+        this.uuid = id;
         return this;
     }
 
-    public AutohausBuilder setAutos(List<Auto> autos) {
+    public AutohausBuilder setAutos(final List<Auto> autos) {
         this.autos = autos;
         return this;
     }
 
-    public AutohausBuilder setMitarbeiter(List<Mitarbeiter> mitarbeiter) {
+    public AutohausBuilder setMitarbeiter(final List<Mitarbeiter> mitarbeiter) {
         this.mitarbeiter = mitarbeiter;
         return this;
     }
 
-    public AutohausBuilder setKunden(List<Kunde> kunden) {
+    public AutohausBuilder setKunden(final List<Kunde> kunden) {
         this.kunden = kunden;
         return this;
     }

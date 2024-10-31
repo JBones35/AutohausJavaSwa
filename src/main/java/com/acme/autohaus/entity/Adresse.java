@@ -105,6 +105,6 @@ public class Adresse {
             ", hausnummer='" + hausnummer + '\'' +
             ", plz='" + plz + '\'' +
             ", stadt='" + stadt + '\'' +
-            '}'; // Ausgabeformat: "Straße Hausnummer, PLZ Stadt"
+            '}';
     }
 }

@@ -2,7 +2,6 @@ package com.acme.autohaus.repository.builder;
 
 import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Mitarbeiter;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -15,10 +14,7 @@ public class MitarbeiterBuilder {
     private LocalDate geburtsdatum;
     private String mitarbeiterId;
     private String position;
-    private String abteilung;
     private BigDecimal gehalt;
-    private String email;
-    private String telefonnummer;
     private Adresse adresse;
 
     /**
@@ -36,7 +32,7 @@ public class MitarbeiterBuilder {
      * @param name Der Name des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setName(String name) {
+    public MitarbeiterBuilder setName(final String name) {
         this.name = name;
         return this;
     }
@@ -47,7 +43,7 @@ public class MitarbeiterBuilder {
      * @param alter Das Alter des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setAlter(int alter) {
+    public MitarbeiterBuilder setAlter(final int alter) {
         this.alter = alter;
         return this;
     }
@@ -58,7 +54,7 @@ public class MitarbeiterBuilder {
      * @param geburtsdatum Das Geburtsdatum des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setGeburtsdatum(LocalDate geburtsdatum) {
+    public MitarbeiterBuilder setGeburtsdatum(final LocalDate geburtsdatum) {
         this.geburtsdatum = geburtsdatum;
         return this;
     }
@@ -69,7 +65,7 @@ public class MitarbeiterBuilder {
      * @param mitarbeiterId Die Mitarbeiter-ID des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setMitarbeiterId(String mitarbeiterId) {
+    public MitarbeiterBuilder setMitarbeiterId(final String mitarbeiterId) {
         this.mitarbeiterId = mitarbeiterId;
         return this;
     }
@@ -80,19 +76,8 @@ public class MitarbeiterBuilder {
      * @param position Die Position des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setPosition(String position) {
+    public MitarbeiterBuilder setPosition(final String position) {
         this.position = position;
-        return this;
-    }
-
-    /**
-     * Setzt die Abteilung des Mitarbeiters.
-     *
-     * @param abteilung Die Abteilung des Mitarbeiters.
-     * @return Der aktuelle MitarbeiterBuilder.
-     */
-    public MitarbeiterBuilder setAbteilung(String abteilung) {
-        this.abteilung = abteilung;
         return this;
     }
 
@@ -102,30 +87,8 @@ public class MitarbeiterBuilder {
      * @param gehalt Das Gehalt des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setGehalt(BigDecimal gehalt) {
+    public MitarbeiterBuilder setGehalt(final BigDecimal gehalt) {
         this.gehalt = gehalt;
-        return this;
-    }
-
-    /**
-     * Setzt die E-Mail-Adresse des Mitarbeiters.
-     *
-     * @param email Die E-Mail-Adresse des Mitarbeiters.
-     * @return Der aktuelle MitarbeiterBuilder.
-     */
-    public MitarbeiterBuilder setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    /**
-     * Setzt die Telefonnummer des Mitarbeiters.
-     *
-     * @param telefonnummer Die Telefonnummer des Mitarbeiters.
-     * @return Der aktuelle MitarbeiterBuilder.
-     */
-    public MitarbeiterBuilder setTelefonnummer(String telefonnummer) {
-        this.telefonnummer = telefonnummer;
         return this;
     }
 
@@ -135,7 +98,7 @@ public class MitarbeiterBuilder {
      * @param adresse Die Adresse des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setAdresse(Adresse adresse){
+    public MitarbeiterBuilder setAdresse(final Adresse adresse) {
         this.adresse = adresse;
         return this;
     }
@@ -146,6 +109,6 @@ public class MitarbeiterBuilder {
      * @return Eine neue Mitarbeiter-Instanz.
      */
     public Mitarbeiter build() {
-        return new Mitarbeiter(name, alter, geburtsdatum, mitarbeiterId, position, abteilung, gehalt, email, telefonnummer,adresse);
+        return new Mitarbeiter(name, alter, geburtsdatum, mitarbeiterId, position, gehalt, adresse);
     }
 }

@@ -1,15 +1,13 @@
 package com.acme.autohaus.repository;
 
 import com.acme.autohaus.entity.Autohaus;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import static com.acme.autohaus.repository.MockDB.AUTOHAUSER;
 
 /**
@@ -23,23 +21,6 @@ public class AutohausRepository {
      * Erstellt eine Instanz der AutohausRepository-Klasse.
      */
     public AutohausRepository() {
-    }
-
-    /**
-     * Gibt eine Liste von Autohaus-Objekten zurück, die einem bestimmten Standort entsprechen.
-     *
-     * @param location der Standort, nach dem gesucht wird
-     * @return eine Liste der gefundenen Autohaus-Objekte
-     */
-    public @NonNull List<Autohaus> getByLocation(final String location) {
-        LOGGER.debug("Suche nach Autohausern an Standort: {}", location);
-
-        List<Autohaus> autohauser = AUTOHAUSER.stream()
-            .filter(autohaus -> Objects.equals(autohaus.getStandort(), location))
-            .toList();
-
-        LOGGER.debug("Gefundene Autohauser für Standort {}: {}", location, autohauser);
-        return autohauser;
     }
 
     /**
@@ -60,11 +41,28 @@ public class AutohausRepository {
     public @NonNull Optional<Autohaus> getByID(@NonNull final String id) {
         LOGGER.debug("Suche nach Autohaus mit id: {}", id);
 
-        Optional<Autohaus> autohaus = AUTOHAUSER.stream()
+        final Optional<Autohaus> autohaus = AUTOHAUSER.stream()
             .filter(a -> Objects.equals(id, a.getUUID().toString()))
             .findFirst();
 
         LOGGER.debug("Ergebnis der Suche nach id {}: {}", id, autohaus);
         return autohaus;
+    }
+
+    /**
+     * Gibt eine Liste von Autohaus-Objekten zurück, die einem bestimmten Standort entsprechen.
+     *
+     * @param location der Standort, nach dem gesucht wird
+     * @return eine Liste der gefundenen Autohaus-Objekte
+     */
+    public @NonNull List<Autohaus> getByLocation(final String location) {
+        LOGGER.debug("Suche nach Autohausern an Standort: {}", location);
+
+        final List<Autohaus> autohauser = AUTOHAUSER.stream()
+            .filter(autohaus -> Objects.equals(autohaus.getStandort(), location))
+            .toList();
+
+        LOGGER.debug("Gefundene Autohauser für Standort {}: {}", location, autohauser);
+        return autohauser;
     }
 }
