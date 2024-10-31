@@ -2,12 +2,11 @@ package com.acme.autohaus.service;
 
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.repository.AutohausRepository;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Service-Klasse für Leseoperationen auf Autohaus-Daten.
@@ -22,29 +21,11 @@ public class AutohausReadService {
      *
      * @param autohausRepository das Repository für Autohaus-Operationen
      */
-    public AutohausReadService(AutohausRepository autohausRepository) {
+    public AutohausReadService(final AutohausRepository autohausRepository) {
         this.autohausRepository = autohausRepository;
     }
 
-    /**
-     * Sucht nach Autohaus-Objekten an einem bestimmten Standort.
-     *
-     * @param location der Standort, an dem gesucht wird
-     * @return eine Liste der gefundenen Autohaus-Objekte
-     * @throws IllegalArgumentException wenn kein Autohaus an diesem Standort gefunden wird
-     */
-    public @NonNull List<Autohaus> getByLocation(String location) {
-        LOGGER.debug("Starte Standortsuche: {}", location);
 
-        List<Autohaus> autohauser = autohausRepository.getByLocation(location);
-        if (autohauser.isEmpty()) {
-            LOGGER.warn("Keine Autohauser am Standort {} gefunden.", location);
-            throw new IllegalArgumentException("Kein Autohaus für den angegebenen Standort gefunden.");
-        }
-
-        LOGGER.debug("Standortsuche beendet: {}", location);
-        return autohauser;
-    }
 
     /**
      * Gibt alle Autohaus-Objekte in der Datenbank zurück.
@@ -55,7 +36,7 @@ public class AutohausReadService {
     public @NonNull List<Autohaus> getAll() {
         LOGGER.debug("Starte Abruf aller Autohauser");
 
-        List<Autohaus> autohauser = autohausRepository.getAll();
+        final List<Autohaus> autohauser = autohausRepository.getAll();
         if (autohauser.isEmpty()) {
             throw new IllegalArgumentException("Keine Autohäuser in der Datenbank gefunden.");
         }
@@ -70,13 +51,31 @@ public class AutohausReadService {
      * @return das gefundene Autohaus
      * @throws IllegalArgumentException wenn kein Autohaus mit dieser id gefunden wird
      */
-    public @NonNull Autohaus getByID(String id) {
+    public @NonNull Autohaus getByID(final String id) {
         LOGGER.debug("Starte Suche nach Autohaus mit id: {}", id);
 
-        Autohaus autohaus = autohausRepository.getByID(id)
+        final Autohaus autohaus = autohausRepository.getByID(id)
             .orElseThrow(() -> new IllegalArgumentException("Kein Autohaus für die angegebene id gefunden."));
 
         LOGGER.debug("Suche nach Autohaus mit id beendet");
         return autohaus;
+    }  /**
+     * Sucht nach Autohaus-Objekten an einem bestimmten Standort.
+     *
+     * @param location der Standort, an dem gesucht wird
+     * @return eine Liste der gefundenen Autohaus-Objekte
+     * @throws IllegalArgumentException wenn kein Autohaus an diesem Standort gefunden wird
+     */
+    public @NonNull List<Autohaus> getByLocation(final String location) {
+        LOGGER.debug("Starte Standortsuche: {}", location);
+
+        final List<Autohaus> autohauser = autohausRepository.getByLocation(location);
+        if (autohauser.isEmpty()) {
+            LOGGER.warn("Keine Autohauser am Standort {} gefunden.", location);
+            throw new IllegalArgumentException("Kein Autohaus für den angegebenen Standort gefunden.");
+        }
+
+        LOGGER.debug("Standortsuche beendet: {}", location);
+        return autohauser;
     }
 }

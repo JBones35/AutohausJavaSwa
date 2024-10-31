@@ -34,10 +34,10 @@ public class Autohaus {
         this.name = name;
         this.standort = standort;
         this.telefonnummer = telefonnummer;
-        this.uuid = uuid != null ? uuid : UUID.randomUUID(); // UUID generieren, falls null
-        this.autos = autos != null ? autos : new ArrayList<>(); // Leere Liste, falls null
-        this.mitarbeiter = mitarbeiter != null ? mitarbeiter : new ArrayList<>(); // Leere Liste, falls null
-        this.kunden = kunden != null ? kunden : new ArrayList<>(); // Leere Liste, falls null
+        this.uuid = uuid != null ? uuid : UUID.randomUUID();
+        this.autos = autos != null ? autos : new ArrayList<>();
+        this.mitarbeiter = mitarbeiter != null ? mitarbeiter : new ArrayList<>();
+        this.kunden = kunden != null ? kunden : new ArrayList<>();
     }
 
     @Override
@@ -116,10 +116,10 @@ public class Autohaus {
     /**
      * Setzt die UUID des Autohauses.
      *
-     * @param uuid Die UUID des Autohauses.
+     * @param id Die UUID des Autohauses.
      */
-    public void setUUID(final UUID uuid) {
-        this.uuid = uuid;
+    public void setUUID(final UUID id) {
+        this.uuid = id;
     }
 
     /**

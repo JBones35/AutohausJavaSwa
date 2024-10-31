@@ -25,7 +25,7 @@ public class AdresseBuilder {
      * @param strasse Die Straße.
      * @return Der aktuelle AdresseBuilder.
      */
-    public AdresseBuilder setStrasse(String strasse) {
+    public AdresseBuilder setStrasse(final String strasse) {
         this.strasse = strasse;
         return this;
     }
@@ -36,7 +36,7 @@ public class AdresseBuilder {
      * @param hausnummer Die Hausnummer.
      * @return Der aktuelle AdresseBuilder.
      */
-    public AdresseBuilder setHausnummer(String hausnummer) {
+    public AdresseBuilder setHausnummer(final String hausnummer) {
         this.hausnummer = hausnummer;
         return this;
     }
@@ -47,7 +47,7 @@ public class AdresseBuilder {
      * @param plz Die Postleitzahl.
      * @return Der aktuelle AdresseBuilder.
      */
-    public AdresseBuilder setPlz(String plz) {
+    public AdresseBuilder setPlz(final String plz) {
         this.plz = plz;
         return this;
     }
@@ -58,7 +58,7 @@ public class AdresseBuilder {
      * @param stadt Die Stadt.
      * @return Der aktuelle AdresseBuilder.
      */
-    public AdresseBuilder setStadt(String stadt) {
+    public AdresseBuilder setStadt(final String stadt) {
         this.stadt = stadt;
         return this;
     }

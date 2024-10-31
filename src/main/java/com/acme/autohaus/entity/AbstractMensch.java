@@ -1,13 +1,12 @@
 package com.acme.autohaus.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * Die abstrakte Klasse Mensch stellt die grundlegenden Eigenschaften eines Menschen dar,
  * die in einem Autohaus-Kontext benötigt werden, wie Name, Alter und Geburtsdatum.
  */
-public abstract class Mensch {
+public abstract class AbstractMensch {
     private String name;
     private int alter;
     private LocalDate geburtsdatum;
@@ -19,7 +18,7 @@ public abstract class Mensch {
      * @param alter         Das Alter der Person.
      * @param geburtsdatum  Das Geburtsdatum der Person.
      */
-    public Mensch(final String name,final int alter,final LocalDate geburtsdatum) {
+    public AbstractMensch(final String name, final int alter, final LocalDate geburtsdatum) {
         this.name = name;
         this.alter = alter;
         this.geburtsdatum = geburtsdatum;

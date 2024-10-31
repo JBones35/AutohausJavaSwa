@@ -7,14 +7,15 @@ import java.util.Objects;
  * Die Klasse Kunde repräsentiert einen Kunden im Autohaus und erweitert die abstrakte Klasse Mensch.
  * Sie enthält spezifische Eigenschaften wie Kundennummer, Adresse und Telefonnummer.
  */
-public class Kunde extends Mensch {
+public class Kunde extends AbstractMensch {
     private String kundennummer;
     private Adresse adresse;
     private String telefonnummer;
     private String email;
 
     /**
-     * Konstruktor zur Initialisierung eines Kunden mit den Eigenschaften aus Mensch und den spezifischen Kundenattributen.
+     * Konstruktor zur Initialisierung eines Kunden
+     * mit den Eigenschaften aus Mensch und den spezifischen Kundenattributen.
      *
      * @param name          Der Name des Kunden.
      * @param alter         Das Alter des Kunden.
