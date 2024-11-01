@@ -1,3 +1,20 @@
+/*
+ * This file is part of [Projektname].
+ *
+ * [Projektname] is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * [Projektname] is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with [Projektname].  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.acme.autohaus.service;
 
 import com.acme.autohaus.entity.Autohaus;
@@ -38,7 +55,7 @@ public class AutohausReadService {
 
         final List<Autohaus> autohauser = autohausRepository.getAll();
         if (autohauser.isEmpty()) {
-            throw new IllegalArgumentException("Keine Autohäuser in der Datenbank gefunden.");
+            throw new NotFoundException("Keine Autohäuser in der Datenbank gefunden.");
         }
 
         return autohauser;
@@ -55,7 +72,7 @@ public class AutohausReadService {
         LOGGER.debug("Starte Suche nach Autohaus mit id: {}", id);
 
         final Autohaus autohaus = autohausRepository.getByID(id)
-            .orElseThrow(() -> new IllegalArgumentException("Kein Autohaus für die angegebene id gefunden."));
+            .orElseThrow(() -> new NotFoundException("Kein Autohaus für die angegebene id gefunden."));
 
         LOGGER.debug("Suche nach Autohaus mit id beendet");
         return autohaus;
@@ -72,7 +89,7 @@ public class AutohausReadService {
         final List<Autohaus> autohauser = autohausRepository.getByLocation(location);
         if (autohauser.isEmpty()) {
             LOGGER.warn("Keine Autohauser am Standort {} gefunden.", location);
-            throw new IllegalArgumentException("Kein Autohaus für den angegebenen Standort gefunden.");
+            throw new NoLocationFoundException(location);
         }
 
         LOGGER.debug("Standortsuche beendet: {}", location);
