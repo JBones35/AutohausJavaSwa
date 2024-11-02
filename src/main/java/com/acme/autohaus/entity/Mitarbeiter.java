@@ -24,7 +24,9 @@ import java.util.Objects;
  * Die Klasse Mitarbeiter repräsentiert einen Mitarbeiter im Autohaus und erweitert die abstrakte Klasse Mensch.
  * Sie enthält spezifische Eigenschaften eines Mitarbeiters wie Mitarbeiter-ID, Position, Gehalt und Adresse.
  */
-public class Mitarbeiter extends AbstractMensch {
+public class Mitarbeiter {
+    private String name;
+    private LocalDate geburtsdatum;
     private String mitarbeiterId;
     private String position;
     private BigDecimal gehalt;
@@ -34,17 +36,17 @@ public class Mitarbeiter extends AbstractMensch {
      * Konstruktor zur Initialisierung eines Mitarbeiters.
      *
      * @param name          Der Name des Mitarbeiters.
-     * @param alter         Das Alter des Mitarbeiters.
      * @param geburtsdatum  Das Geburtsdatum des Mitarbeiters.
      * @param mitarbeiterId Die eindeutige Mitarbeiter-ID.
      * @param position      Die Position des Mitarbeiters im Autohaus.
      * @param gehalt        Das Gehalt des Mitarbeiters.
      * @param adresse       Die Adresse des Mitarbeiters.
      */
-    public Mitarbeiter(final String name, final int alter, final LocalDate geburtsdatum,
+    public Mitarbeiter(final String name, final LocalDate geburtsdatum,
                        final String mitarbeiterId, final String position, final BigDecimal gehalt,
                        final Adresse adresse) {
-        super(name, alter, geburtsdatum);
+        this.name = name;
+        this.geburtsdatum = geburtsdatum;
         this.mitarbeiterId = mitarbeiterId;
         this.position = position;
         this.gehalt = gehalt;
@@ -71,6 +73,22 @@ public class Mitarbeiter extends AbstractMensch {
     @Override
     public int hashCode() {
         return Objects.hashCode(mitarbeiterId);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public LocalDate getGeburtsdatum() {
+        return geburtsdatum;
+    }
+
+    public void setGeburtsdatum(final LocalDate geburtsdatum) {
+        this.geburtsdatum = geburtsdatum;
     }
 
     /**
@@ -157,9 +175,8 @@ public class Mitarbeiter extends AbstractMensch {
             ", position='" + position + '\'' +
             ", gehalt=" + gehalt +
             ", adresse=" + adresse +
-            ", name='" + getName() + '\'' +
-            ", alter=" + getAlter() +
-            ", geburtsdatum=" + getGeburtsdatum() +
+            ", name='" + name + '\'' +
+            ", geburtsdatum=" + geburtsdatum +
             '}';
     }
 }

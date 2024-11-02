@@ -18,7 +18,6 @@ package com.acme.autohaus.repository.builder;
 
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Autohaus;
-import com.acme.autohaus.entity.Kunde;
 import com.acme.autohaus.entity.Mitarbeiter;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +29,6 @@ public class AutohausBuilder {
     private UUID uuid;
     private List<Auto> autos;
     private List<Mitarbeiter> mitarbeiter;
-    private List<Kunde> kunden;
 
     public static AutohausBuilder getBuilder() {
         return new AutohausBuilder();
@@ -66,12 +64,7 @@ public class AutohausBuilder {
         return this;
     }
 
-    public AutohausBuilder setKunden(final List<Kunde> kunden) {
-        this.kunden = kunden;
-        return this;
-    }
-
     public Autohaus build() {
-        return new Autohaus(name, standort, telefonnummer, uuid, autos, mitarbeiter, kunden);
+        return new Autohaus(name, standort, telefonnummer, uuid, autos, mitarbeiter);
     }
 }

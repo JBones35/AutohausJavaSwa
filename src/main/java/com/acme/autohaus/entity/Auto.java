@@ -16,33 +16,35 @@
  */
 package com.acme.autohaus.entity;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Die Klasse Auto repräsentiert ein Fahrzeug im Autohaus und enthält typische Eigenschaften wie
  * die Fahrzeug-ID, Marke, Modell, Baujahr, Farbe, Kilometerstand und den Preis.
  */
 public class Auto {
-    private String fahrzeugId;
+    private UUID uuid;
     private String marke;
     private String modell;
     private int baujahr;
     private String besitzer;
-    private double preis;
+    private BigDecimal preis;
 
     /**
      * Konstruktor zur Initialisierung eines Autos mit spezifischen Eigenschaften.
      *
-     * @param fahrzeugId    Die eindeutige Fahrzeug-ID (darf nicht null sein).
+     * @param uuid    Die eindeutige Fahrzeug-ID (darf nicht null sein).
      * @param marke         Die Marke des Autos (darf nicht null sein).
      * @param modell        Das Modell des Autos (darf nicht null sein).
      * @param baujahr       Das Baujahr des Autos (sollte positiv sein).
      * @param besitzer Der Besitzer des Autos (sollte nicht negativ sein).
      * @param preis         Der Preis des Autos (sollte nicht negativ sein).
      */
-    public Auto(final String fahrzeugId, final String marke, final String modell,
-                final int baujahr, final String besitzer, final double preis) {
-        this.fahrzeugId = fahrzeugId;
+    public Auto(final UUID uuid, final String marke, final String modell,
+                final int baujahr, final String besitzer, final BigDecimal preis) {
+        this.uuid = uuid;
         this.marke = marke;
         this.modell = modell;
         this.baujahr = baujahr;
@@ -52,12 +54,12 @@ public class Auto {
 
     @Override
     public final boolean equals(final Object other) {
-        return other instanceof Auto auto && Objects.equals(fahrzeugId, auto.getFahrzeugId());
+        return other instanceof Auto auto && Objects.equals(uuid, auto.getUUId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(fahrzeugId);
+        return Objects.hashCode(uuid);
     }
 
     /**
@@ -65,17 +67,17 @@ public class Auto {
      *
      * @return Die Fahrzeug-ID.
      */
-    public String getFahrzeugId() {
-        return fahrzeugId;
+    public UUID getUUId() {
+        return uuid;
     }
 
     /**
      * Setzt die Fahrzeug-ID.
      *
-     * @param fahrzeugId Die Fahrzeug-ID (darf nicht null sein).
+     * @param uuid Die Fahrzeug-ID (darf nicht null sein).
      */
-    public void setFahrzeugId(final String fahrzeugId) {
-        this.fahrzeugId = fahrzeugId;
+    public void setUUId(final UUID uuid) {
+        this.uuid = uuid;
     }
 
     /**
@@ -155,7 +157,7 @@ public class Auto {
      *
      * @return Der Preis des Autos (sollte nicht negativ sein).
      */
-    public double getPreis() {
+    public BigDecimal getPreis() {
         return preis;
     }
 
@@ -164,14 +166,14 @@ public class Auto {
      *
      * @param preis Der Preis des Autos (sollte nicht negativ sein).
      */
-    public void setPreis(final double preis) {
+    public void setPreis(final BigDecimal preis) {
         this.preis = preis;
     }
 
     @Override
     public String toString() {
         return "Auto{" +
-            "fahrzeugId='" + fahrzeugId + '\'' +
+            "fahrzeugId='" + uuid + '\'' +
             ", marke='" + marke + '\'' +
             ", modell='" + modell + '\'' +
             ", baujahr=" + baujahr +

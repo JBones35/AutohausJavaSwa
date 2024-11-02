@@ -32,7 +32,6 @@ public class Autohaus {
     private UUID uuid;
     private final List<Auto> autos;
     private final List<Mitarbeiter> mitarbeiter;
-    private final List<Kunde> kunden;
 
     /**
      * Konstruktor zur Initialisierung eines Autohauses mit spezifischen Eigenschaften und leeren Listen.
@@ -43,17 +42,15 @@ public class Autohaus {
      * @param uuid          Die UUID des Autohauses (kann null sein, eine neue UUID wird generiert).
      * @param autos         Die Liste der Autos (kann null sein, in diesem Fall wird eine leere Liste erstellt).
      * @param mitarbeiter   Die Liste der Mitarbeiter (kann null sein, in diesem Fall wird eine leere Liste erstellt).
-     * @param kunden        Die Liste der Kunden (kann null sein, in diesem Fall wird eine leere Liste erstellt).
      */
     public Autohaus(final String name, final String standort, final String telefonnummer, final UUID uuid,
-                    final List<Auto> autos, final List<Mitarbeiter> mitarbeiter, final List<Kunde> kunden) {
+                    final List<Auto> autos, final List<Mitarbeiter> mitarbeiter) {
         this.name = name;
         this.standort = standort;
         this.telefonnummer = telefonnummer;
         this.uuid = uuid != null ? uuid : UUID.randomUUID();
         this.autos = autos != null ? autos : new ArrayList<>();
         this.mitarbeiter = mitarbeiter != null ? mitarbeiter : new ArrayList<>();
-        this.kunden = kunden != null ? kunden : new ArrayList<>();
     }
 
     @Override
@@ -156,15 +153,6 @@ public class Autohaus {
         return mitarbeiter;
     }
 
-    /**
-     * Gibt die Liste der Kunden im Autohaus zurück.
-     *
-     * @return Die Liste der Kunden. Die Liste ist nicht veränderbar durch den Aufruf dieser Methode.
-     */
-    public List<Kunde> getKunden() {
-        return kunden;
-    }
-
     @Override
     public String toString() {
         return "Autohaus{" +
@@ -174,7 +162,6 @@ public class Autohaus {
             ", UUID='" + uuid + '\'' +
             ", autos=" + autos +
             ", mitarbeiter=" + mitarbeiter +
-            ", kunden=" + kunden +
             '}';
     }
 }

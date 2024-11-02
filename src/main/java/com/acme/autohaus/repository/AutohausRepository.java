@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
-import static com.acme.autohaus.repository.MockDB.AUTOHAUSER;
+import static com.acme.autohaus.repository.MockDB.AUTOHAEUSER;
 
 /**
  * Repository-Klasse für den Zugriff auf und die Verwaltung von Autohaus-Daten.
@@ -47,7 +47,7 @@ public class AutohausRepository {
      * @return eine Liste aller Autohauser
      */
     public @NonNull List<Autohaus> getAll() {
-        return AUTOHAUSER;
+        return AUTOHAEUSER;
     }
 
     /**
@@ -59,7 +59,7 @@ public class AutohausRepository {
     public @NonNull Optional<Autohaus> getByID(@NonNull final String id) {
         LOGGER.debug("Suche nach Autohaus mit id: {}", id);
 
-        final Optional<Autohaus> autohaus = AUTOHAUSER.stream()
+        final Optional<Autohaus> autohaus = AUTOHAEUSER.stream()
             .filter(a -> Objects.equals(id, a.getUUID().toString()))
             .findFirst();
 
@@ -76,7 +76,7 @@ public class AutohausRepository {
     public @NonNull List<Autohaus> getByLocation(final String location) {
         LOGGER.debug("Suche nach Autohausern an Standort: {}", location);
 
-        final List<Autohaus> autohauser = AUTOHAUSER.stream()
+        final List<Autohaus> autohauser = AUTOHAEUSER.stream()
             .filter(autohaus -> Objects.equals(autohaus.getStandort(), location))
             .toList();
 

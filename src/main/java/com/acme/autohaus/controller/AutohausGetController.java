@@ -18,9 +18,7 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.service.AutohausReadService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import org.slf4j.Logger;
@@ -37,9 +35,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RestController
 @RequestMapping(AutohausGetController.API_PATH)
-@OpenAPIDefinition(info = @Info(title = "Autohaus API", version = "v1"))
 public class AutohausGetController {
-
     public static final String API_PATH = "/autohaus";
     public static final String STANDORT_PATH = "/standort";
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausGetController.class);
