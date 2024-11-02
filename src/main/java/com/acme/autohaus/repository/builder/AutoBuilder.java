@@ -18,16 +18,19 @@ package com.acme.autohaus.repository.builder;
 
 import com.acme.autohaus.entity.Auto;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 /**
  * Der AutoBuilder ermöglicht die schrittweise Erstellung eines Autos.
  */
 public class AutoBuilder {
-    private String fahrzeugId;
+    private UUID id;
     private String marke;
     private String modell;
     private int baujahr;
     private String besitzer;
-    private double preis;
+    private BigDecimal preis;
 
     /**
      * Erstellt einen neuen AutoBuilder.
@@ -41,11 +44,11 @@ public class AutoBuilder {
     /**
      * Setzt die Fahrzeug-ID.
      *
-     * @param fahrzeugId Die Fahrzeug-ID.
+     * @param id Die Fahrzeug-ID.
      * @return Der aktuelle AutoBuilder.
      */
-    public AutoBuilder setFahrzeugId(final String fahrzeugId) {
-        this.fahrzeugId = fahrzeugId;
+    public AutoBuilder setId(final UUID id) {
+        this.id = id;
         return this;
     }
 
@@ -88,7 +91,7 @@ public class AutoBuilder {
      * @param preis Die Farbe des Autos.
      * @return Der aktuelle AutoBuilder.
      */
-    public AutoBuilder setPreis(final double preis) {
+    public AutoBuilder setPreis(final BigDecimal preis) {
         this.preis = preis;
         return this;
     }
@@ -110,6 +113,6 @@ public class AutoBuilder {
      * @return Eine neue Auto-Instanz.
      */
     public Auto build() {
-        return new Auto(fahrzeugId, marke, modell, baujahr, besitzer, preis);
+        return new Auto(id, marke, modell, baujahr, besitzer, preis);
     }
 }

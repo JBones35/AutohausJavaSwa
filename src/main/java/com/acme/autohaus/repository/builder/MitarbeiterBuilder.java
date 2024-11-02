@@ -26,7 +26,6 @@ import java.time.LocalDate;
  */
 public class MitarbeiterBuilder {
     private String name;
-    private int alter;
     private LocalDate geburtsdatum;
     private String mitarbeiterId;
     private String position;
@@ -50,17 +49,6 @@ public class MitarbeiterBuilder {
      */
     public MitarbeiterBuilder setName(final String name) {
         this.name = name;
-        return this;
-    }
-
-    /**
-     * Setzt das Alter des Mitarbeiters.
-     *
-     * @param alter Das Alter des Mitarbeiters.
-     * @return Der aktuelle MitarbeiterBuilder.
-     */
-    public MitarbeiterBuilder setAlter(final int alter) {
-        this.alter = alter;
         return this;
     }
 
@@ -125,6 +113,6 @@ public class MitarbeiterBuilder {
      * @return Eine neue Mitarbeiter-Instanz.
      */
     public Mitarbeiter build() {
-        return new Mitarbeiter(name, alter, geburtsdatum, mitarbeiterId, position, gehalt, adresse);
+        return new Mitarbeiter(name, geburtsdatum, mitarbeiterId, position, gehalt, adresse);
     }
 }
