@@ -8,7 +8,7 @@ pluginManagement {
         maven("https://repo.spring.io/milestone")
 
         // Snapshot von Spring Boot, ...
-        // maven("https://repo.spring.io/snapshot") { mavenContent { snapshotsOnly() } }
+        maven("https://repo.spring.io/snapshot") { mavenContent { snapshotsOnly() } }
         // maven("https://repo.spring.io/plugins-release")
     }
 }

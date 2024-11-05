@@ -17,7 +17,6 @@
 package com.acme.autohaus.repository.builder;
 
 import com.acme.autohaus.entity.Auto;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 

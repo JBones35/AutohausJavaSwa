@@ -24,7 +24,7 @@ public final class NotFoundException extends RuntimeException {
 
     /// Standardkonstruktor für den [AutohausReadService], wenn alle autohausn gesucht werden, aber keine existieren.
     NotFoundException() {
-        super("Kein autohaus gefunden.");
+        super("Kein Autohaeuser gefunden in der Datenbank");
         id = null;
     }
 
@@ -32,7 +32,7 @@ public final class NotFoundException extends RuntimeException {
     ///
     /// @param id Die fehlerhafte ID
     NotFoundException(final String id) {
-        super("Kein autohaus mit der ID " + id + " gefunden.");
+        super("Kein Autohaus mit der ID " + id + " gefunden.");
         this.id = id;
     }
 

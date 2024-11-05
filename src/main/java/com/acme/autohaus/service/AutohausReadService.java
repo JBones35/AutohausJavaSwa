@@ -42,8 +42,6 @@ public class AutohausReadService {
         this.autohausRepository = autohausRepository;
     }
 
-
-
     /**
      * Gibt alle Autohaus-Objekte in der Datenbank zurück.
      *
@@ -76,23 +74,5 @@ public class AutohausReadService {
 
         LOGGER.debug("Suche nach Autohaus mit id beendet");
         return autohaus;
-    }  /**
-     * Sucht nach Autohaus-Objekten an einem bestimmten Standort.
-     *
-     * @param location der Standort, an dem gesucht wird
-     * @return eine Liste der gefundenen Autohaus-Objekte
-     * @throws IllegalArgumentException wenn kein Autohaus an diesem Standort gefunden wird
-     */
-    public @NonNull List<Autohaus> getByLocation(final String location) {
-        LOGGER.debug("Starte Standortsuche: {}", location);
-
-        final List<Autohaus> autohauser = autohausRepository.getByLocation(location);
-        if (autohauser.isEmpty()) {
-            LOGGER.warn("Keine Autohauser am Standort {} gefunden.", location);
-            throw new NoLocationFoundException(location);
-        }
-
-        LOGGER.debug("Standortsuche beendet: {}", location);
-        return autohauser;
     }
 }

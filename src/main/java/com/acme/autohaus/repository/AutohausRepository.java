@@ -66,21 +66,4 @@ public class AutohausRepository {
         LOGGER.debug("Ergebnis der Suche nach id {}: {}", id, autohaus);
         return autohaus;
     }
-
-    /**
-     * Gibt eine Liste von Autohaus-Objekten zurück, die einem bestimmten Standort entsprechen.
-     *
-     * @param location der Standort, nach dem gesucht wird
-     * @return eine Liste der gefundenen Autohaus-Objekte
-     */
-    public @NonNull List<Autohaus> getByLocation(final String location) {
-        LOGGER.debug("Suche nach Autohausern an Standort: {}", location);
-
-        final List<Autohaus> autohauser = AUTOHAEUSER.stream()
-            .filter(autohaus -> Objects.equals(autohaus.getStandort(), location))
-            .toList();
-
-        LOGGER.debug("Gefundene Autohauser für Standort {}: {}", location, autohauser);
-        return autohauser;
-    }
 }

@@ -91,7 +91,7 @@
 //
 //  14) Initialisierung des Gradle Wrappers in der richtigen Version
 //      dazu ist ggf. eine Internetverbindung erforderlich
-//        gradle wrapper --gradle-version=8.11-rc-1 --distribution-type=bin
+//        gradle wrapper --gradle-version=8.11-rc-2 --distribution-type=bin
 
 // https://github.com/gradle/kotlin-dsl/tree/master/samples
 // https://docs.gradle.org/current/userguide/kotlin_dsl.html
@@ -259,7 +259,8 @@ repositories {
     maven("https://repo.spring.io/milestone")
 
     // Snapshots von Spring Framework, Spring Boot, Spring Data, Spring Security, Spring for GraphQL, ...
-    //maven("https://repo.spring.io/snapshot") { mavenContent { snapshotsOnly() } }
+    // TODO https://github.com/spring-projects/spring-boot/issues/42952
+    maven("https://repo.spring.io/snapshot") { mavenContent { snapshotsOnly() } }
 
     // Snapshots von Hibernate
     //maven("https://oss.sonatype.org/content/repositories/snapshots") { mavenContent { snapshotsOnly() } }
@@ -320,7 +321,7 @@ dependencies {
     //    implementation(platform(libs.prometheus.metrics.bom))
     //    implementation(platform(libs.micrometer.bom))
     //}
-    //implementation(platform(libs.jackson.bom))
+    implementation(platform(libs.jackson.bom))
     //implementation(platform(libs.netty.bom))
     //implementation(platform(libs.reactor.bom))
     //implementation(platform(libs.spring.framework.bom))
@@ -392,14 +393,6 @@ dependencies {
         println("Mail                   d e a k t i v i e r t")
     }
 
-    // https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.docker-compose
-    if (project.properties["dockerCompose"] != "false" && project.properties["dockerCompose"] != "FALSE") {
-        println("Docker Compose         a k t i v i e r t")
-        developmentOnly("org.springframework.boot:spring-boot-docker-compose:${libs.versions.spring.boot.get()}")
-    } else {
-        println("Docker Compose         d e a k t i v i e r t")
-    }
-
     if (useSecurity) {
         println("Security               a k t i v i e r t")
         implementation("org.springframework.boot:spring-boot-starter-security")
@@ -436,7 +429,7 @@ dependencies {
         println("GraphQL                a k t i v i e r t")
         // HttpGraphQlClient benoetigt WebClient mit Project Reactor
         implementation("org.springframework.boot:spring-boot-starter-webflux")
-        //implementation("org.springframework.boot:spring-boot-starter-graphql")
+        implementation("org.springframework.boot:spring-boot-starter-graphql")
     } else {
         println("GraphQL                d e a k t i v i e r t")
     }
@@ -465,6 +458,7 @@ dependencies {
     testImplementation(libs.modernizer)
 
     if (useKotlin) {
+        @Suppress("UnstableApiUsage")
         ktlintCfg(libs.ktlint.cli) {
             attributes {
                 attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
@@ -655,6 +649,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
         builder = paketoBuilder
     }
 
+    // verboseLogging = true
     // cleanCache = true
 
     @Suppress("ktlint:standard:no-blank-line-in-list")
@@ -700,7 +695,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
     // https://paketo.io/docs/howto/java/#use-an-alternative-jvm
     when (alternativeBuildpack) {
         "azul-zulu" -> {
-            // Azul Zulu: JRE 8, 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21, 23
+            // Azul Zulu: JRE 8, 11, 17, 21 (default, siehe buildpack.toml: BP_JVM_VERSION), 23
             // https://github.com/paketo-buildpacks/azul-zulu/releases
             buildpacks =
                 listOf(
@@ -714,7 +709,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
             println("")
         }
         "adoptium" -> {
-            // Eclipse Temurin: JRE 8, 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21, 23
+            // Eclipse Temurin: JRE 8, 11, 17, 21 (default, siehe buildpack.toml: BP_JVM_VERSION), 23
             // https://github.com/paketo-buildpacks/adoptium/releases
             buildpacks =
                 listOf(
@@ -727,7 +722,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
             println("")
         }
         "sap-machine" -> {
-            // SapMachine: JRE 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21, 23
+            // SapMachine: JRE 11, 17, 21 (default, siehe buildpack.toml: BP_JVM_VERSION), 23
             // https://github.com/paketo-buildpacks/sap-machine/releases
             buildpacks =
                 listOf(
@@ -740,7 +735,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
             println("")
         }
         else -> {
-            // Bellsoft Liberica: JRE 8, 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21, 23
+            // Bellsoft Liberica: JRE 8, 11, 17, 21 (default, siehe buildpack.toml: BP_JVM_VERSION), 23
             // https://github.com/paketo-buildpacks/bellsoft-liberica/releases
             imageName = "${imageName.get()}-bellsoft"
             println("")
@@ -795,6 +790,10 @@ tasks.named("bootRun", org.springframework.boot.gradle.tasks.run.BootRun::class.
             dbUrl
                 ?: error("spring.datasource.url nicht gesetzt in gradle.properties"),
         )
+        val namingStrategy = project.properties["spring.jpa.hibernate.naming.physical-strategy"]
+        if (namingStrategy != null) {
+            systemProperty("spring.jpa.hibernate.naming.physical-strategy", namingStrategy)
+        }
 
         systemProperty(
             "spring.flyway.clean-disabled",

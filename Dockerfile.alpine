@@ -1,0 +1,123 @@
+# syntax=docker/dockerfile:1.10.0
+
+# Copyright (C) 2024 - present Juergen Zimmermann, Hochschule Karlsruhe
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# Aufruf:   docker build --tag juergenzimmermann/autohaus:2024.10.1-eclipse-alpine -f Dockerfile.alpine .
+#           Get-Content Dockerfile.eclipse-ubi | docker run --rm --interactive hadolint/hadolint:2.12.1-beta-debian
+
+# https://docs.docker.com/engine/reference/builder/#syntax
+# https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/reference.md
+# https://hub.docker.com/r/docker/dockerfile
+# https://docs.docker.com/build/building/multi-stage
+# https://containers.gitbook.io/build-containers-the-hard-way
+
+ARG JAVA_VERSION=23.0.1_11
+
+# ---------------------------------------------------------------------------------------
+# S t a g e :   b u i l d e r
+#
+#   JAR bauen mit eigenem Code und Dependencies, z.B. Spring, Jackson
+# ---------------------------------------------------------------------------------------
+FROM eclipse-temurin:${JAVA_VERSION}-jdk-alpine AS builder
+
+# "working directory" fuer die Docker-Kommandos RUN, ENTRYPOINT, CMD, COPY und ADD
+WORKDIR /source
+
+# ADD hat mehr Funktionalitaet als COPY, z.B. auch Download von externen Dateien
+
+# Gradle:
+COPY build.gradle.kts gradle.properties gradlew settings.gradle.kts ./
+COPY gradle ./gradle
+
+# Maven:
+#COPY pom.xml mvnw ./
+#COPY .mvn ./.mvn
+#COPY config/maven.properties ./config/
+
+COPY src ./src
+
+# JAR-Datei mit den Schichten ("layers") erstellen und aufbereiten bzw. entpacken
+# "here document" wie in einem Shellscipt
+RUN <<EOF
+# https://medium.com/vantageai/how-to-make-your-python-docker-images-secure-fast-small-b3a6870373a0
+set -eux
+
+# Gradle:
+./gradlew --no-configuration-cache --no-daemon --no-watch-fs bootJar
+java -Djarmode=tools -jar ./build/libs/autohaus-2024.10.1.jar extract
+
+# Maven:
+#./mvnw package spring-boot:repackage -Dmaven.test.skip=true -Dspring-boot.build-image.skip=true -P !persistence -P !mail -P !security -P !observability -P !graphql
+#java -Djarmode=tools -jar ./target/autohaus-2024.10.1.jar extract
+EOF
+
+# ---------------------------------------------------------------------------------------
+# S t a g e   f i n a l
+#
+#   JRE statt JDK
+#   Dependencies, z.B. Spring, Jackson
+#   Loader fuer Spring Boot
+#   Eigener uebersetzter Code
+# ---------------------------------------------------------------------------------------
+FROM eclipse-temurin:${JAVA_VERSION}-jre-alpine AS final
+
+# Anzeige bei "docker inspect ..."
+# https://specs.opencontainers.org/image-spec/annotations
+# https://spdx.org/licenses
+# https://snyk.io/de/blog/how-and-when-to-use-docker-labels-oci-container-annotations
+# MAINTAINER ist deprecated https://docs.docker.com/engine/reference/builder/#maintainer-deprecated
+LABEL org.opencontainers.image.title="autohaus" \
+      org.opencontainers.image.description="Microservice autohaus v0 mit Basis-Image Eclipse Temurin und Alpine" \
+      org.opencontainers.image.version="2024.10.1-eclipse-alpine" \
+      org.opencontainers.image.licenses="GPL-3.0-or-later" \
+      org.opencontainers.image.vendor="Juergen Zimmermann" \
+      org.opencontainers.image.authors="Juergen.Zimmermann@h-ka.de" \
+      org.opencontainers.image.base.name="eclipse-temurin:LATEST_VERSION-jre-alpine"
+
+# gleiches Basis-Verzeichnis wie bei "Cloud Native Buildpacks": Mounting von application.yml, private-key.pem, certificate.crt
+WORKDIR /workspace
+
+# "here document" wie in einem Shellscipt
+RUN <<EOF
+set -eux
+# apk = Alpine Package Keeper
+# https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper
+# https://docs.alpinelinux.org/user-handbook/0.1a/Working/apk.html
+apk update
+apk upgrade
+apk cache clean
+rm -rf /tmp/*
+# https://wiki.alpinelinux.org/wiki/Setting_up_a_new_user
+# https://busybox.net/downloads/BusyBox.html#addgroup
+addgroup -g 1000 app
+# https://wiki.alpinelinux.org/wiki/Setting_up_a_new_user
+# https://busybox.net/downloads/BusyBox.html#adduser
+adduser -u 1000 -G app -H -D app
+chown -R app:app /workspace
+EOF
+
+# ADD hat mehr Funktionalitaet als COPY, z.B. auch Download von externen Dateien
+# ggf. auch /source/snapshot-dependencies/
+COPY --from=builder --chown=app:app /source/autohaus-2024.10.1/lib/ ./lib/
+COPY --from=builder --chown=app:app /source/autohaus-2024.10.1/autohaus-2024.10.1.jar .
+
+USER app
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD wget -qO- --no-check-certificate https://localhost:8080/actuator/health/ | grep UP || exit 1
+
+# Bei CMD statt ENTRYPOINT kann das Kommando bei "docker run ..." ueberschrieben werden
+ENTRYPOINT ["java", "--enable-preview", "-classpath", "autohaus-2024.10.1.jar:lib/*", "com.acme.autohaus.Application"]
