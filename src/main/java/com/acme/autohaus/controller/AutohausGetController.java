@@ -8,24 +8,25 @@
  *
  * [autohaus] is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with [autohaus].  If not, see <http://www.gnu.org/licenses/>.
+ * along with [autohaus]. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.service.AutohausReadService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -37,7 +38,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(AutohausGetController.API_PATH)
 public class AutohausGetController {
     public static final String API_PATH = "/autohaus";
-    public static final String STANDORT_PATH = "/standort";
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausGetController.class);
     private final AutohausReadService autohausReadService;
 
@@ -51,16 +51,18 @@ public class AutohausGetController {
     }
 
     /**
-     * Endpunkt zum Abrufen aller Autohäuser.
+     * Suche mit diversen Suchkriterien als Query-Parameter.
      *
-     * @return Eine Liste von Autohaus-Objekten.
+     * @param suchkriterien Query-Parameter als Map.
+     * @return Gefundene Autohäuser als [List].
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<Autohaus> getAll() {
-        LOGGER.info("Suche nach allen Autohäusern in der Datenbank gestartet");
-
-        final List<Autohaus> autohauser = autohausReadService.getAll();
-        LOGGER.info("Suche nach allen Autohäusern in der Datenbank abgeschlossen");
+    public List<Autohaus> getAll(
+        @RequestParam @NonNull final MultiValueMap<String, String> suchkriterien
+    ) {
+        LOGGER.debug("get:Suchkriterien= {}", suchkriterien);
+        final List<Autohaus> autohauser = autohausReadService.get(suchkriterien);
+        LOGGER.debug("get:Autohaeuser= {}", autohauser);
         return autohauser;
     }
 
@@ -73,7 +75,6 @@ public class AutohausGetController {
     @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
     public Autohaus getByID(@PathVariable final String id) {
         LOGGER.info("Suche nach Autohaus mit id: {}", id);
-
         final Autohaus autohaus = autohausReadService.getByID(id);
         LOGGER.info("Suche nach Autohaus mit id {} abgeschlossen", id);
         return autohaus;

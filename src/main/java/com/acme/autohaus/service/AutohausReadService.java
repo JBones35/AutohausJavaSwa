@@ -8,11 +8,11 @@
  *
  * [Projektname] is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with [Projektname].  If not, see <http://www.gnu.org/licenses/>.
+ * along with [Projektname]. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.acme.autohaus.service;
@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 /**
  * Service-Klasse für Leseoperationen auf Autohaus-Daten.
@@ -45,32 +46,67 @@ public class AutohausReadService {
     /**
      * Gibt alle Autohaus-Objekte in der Datenbank zurück.
      *
-     * @return eine Liste aller vorhandenen Autohauser
-     * @throws IllegalArgumentException wenn keine Autohauser in der Datenbank vorhanden sind
+     * @param suchkriterien Query-Parameter als Map.
+     * @return eine Liste aller vorhandenen Autohäuser
+     * @throws NotFoundException wenn keine Autohäuser in der Datenbank vorhanden sind
      */
-    public @NonNull List<Autohaus> getAll() {
-        LOGGER.debug("Starte Abruf aller Autohauser");
+    @SuppressWarnings({"ReturnCount", "NestedIfDepth", "checkstyle:CyclomaticComplexity"})
+    public @NonNull List<Autohaus> get(@NonNull final MultiValueMap<String, String> suchkriterien) {
+        LOGGER.debug("suche: suchkriterien = {}", suchkriterien);
 
-        final List<Autohaus> autohauser = autohausRepository.getAll();
-        if (autohauser.isEmpty()) {
+        if (suchkriterien.isEmpty()) {
+            return autohausRepository.getAll();
+        }
+
+        if (suchkriterien.size() == 1) {
+            final var name = suchkriterien.get("name");
+            if (name != null && name.size() == 1) {
+                final var autohaeuser = autohausRepository.getByName(name.getFirst());
+                if (autohaeuser.isEmpty()) {
+                    throw new NotFoundException(suchkriterien);
+                }
+                LOGGER.debug("suche (name): {}", name);
+                return autohaeuser;
+            }
+
+            final var standort = suchkriterien.get("standort");
+            if (standort != null && standort.size() == 1) {
+                final var autohaeuser = autohausRepository.getByStandort(standort.getFirst());
+                if (autohaeuser.isEmpty()) {
+                    throw new NotFoundException(suchkriterien);
+                }
+                LOGGER.debug("suche (standort): {}", standort);
+                return autohaeuser;
+            }
+
+            final var autohaeuser = autohausRepository.get(suchkriterien);
+            if (autohaeuser.isEmpty()) {
+                throw new NotFoundException(suchkriterien);
+            }
+            LOGGER.debug("suche: {}", autohaeuser);
+            return autohaeuser;
+        }
+
+        final List<Autohaus> autohaeuser = autohausRepository.get(suchkriterien);
+        if (autohaeuser.isEmpty()) {
             throw new NotFoundException("Keine Autohäuser in der Datenbank gefunden.");
         }
 
-        return autohauser;
+        return autohaeuser;
     }
 
     /**
-     * Sucht ein Autohaus anhand seiner id.
+     * Sucht ein Autohaus anhand seiner ID.
      *
-     * @param id die id des Autohauses
+     * @param id die ID des Autohauses
      * @return das gefundene Autohaus
-     * @throws IllegalArgumentException wenn kein Autohaus mit dieser id gefunden wird
+     * @throws NotFoundException wenn kein Autohaus mit dieser ID gefunden wird
      */
     public @NonNull Autohaus getByID(final String id) {
         LOGGER.debug("Starte Suche nach Autohaus mit id: {}", id);
 
         final Autohaus autohaus = autohausRepository.getByID(id)
-            .orElseThrow(() -> new NotFoundException("Kein Autohaus für die angegebene id gefunden."));
+            .orElseThrow(() -> new NotFoundException("Kein Autohaus für die angegebene ID gefunden."));
 
         LOGGER.debug("Suche nach Autohaus mit id beendet");
         return autohaus;

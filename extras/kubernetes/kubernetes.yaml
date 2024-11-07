@@ -299,7 +299,7 @@ spec:
             failureThreshold: 1
           volumeMounts:
             - mountPath: /tmp
-              name: log-autohaus-v1
+              name: log-autohaus
             - mountPath: /workspace/BOOT-INF/classes/private-key.pem
               name: private-key-autohaus
               readOnly: true
@@ -309,20 +309,20 @@ spec:
       serviceAccountName: autohaus
       automountServiceAccountToken: false
       volumes:
-        - name: log-autohaus-v1
+        - name: log-autohaus
           # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
           hostPath:
-            path: /run/desktop/mnt/host/c/Zimmermann/volumes/autohaus-v1
+            path: /run/desktop/mnt/host/c/Zimmermann/volumes/kunde-v1
             type: Directory
           # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
           #emptyDir: {}
         - name: private-key-autohaus
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/j/IdeaProjects/autohaus-v0/autohaus/src/main/resources/private-key.pem
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/private-key.pem
             type: File
         - name: certificate-autohaus
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/j/IdeaProjects/autohaus-v0/autohaus/src/main/resources/certificate.crt
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/certificate.crt
             type: File
 
 ---

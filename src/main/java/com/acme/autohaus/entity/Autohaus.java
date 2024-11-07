@@ -55,7 +55,7 @@ public class Autohaus {
 
     @Override
     public final boolean equals(final Object other) {
-        return other instanceof Autohaus autohaus && Objects.equals(uuid, autohaus.getUUID());
+        return other instanceof Autohaus autohaus && Objects.equals(uuid, autohaus.getUUId());
     }
 
     @Override
@@ -122,7 +122,7 @@ public class Autohaus {
      *
      * @return Die UUID des Autohauses.
      */
-    public UUID getUUID() {
+    public UUID getUUId() {
         return uuid;
     }
 
@@ -131,7 +131,7 @@ public class Autohaus {
      *
      * @param id Die UUID des Autohauses.
      */
-    public void setUUID(final UUID id) {
+    public void setUUId(final UUID id) {
         this.uuid = id;
     }
 

@@ -32,7 +32,9 @@ if ($versionMinimum -gt $versionCurrent) {
     throw "PowerShell $versionMinimum statt $versionCurrent erforderlich"
 }
 
-# Titel setzen
+# Titel set
+#
+# zen
 $host.ui.RawUI.WindowTitle = "$service port forward"
 
 $namespace = 'acme'

@@ -64,7 +64,7 @@ services:
         #target: /workspace/certificate.crt
         read_only: true
       - type: bind
-        source: C:\Zimmermann\volumes\autohaus-v1
+        source: C:\Zimmermann\volumes\kunde-v1
         target: /tmp
     # https://docs.docker.com/compose/environment-variables/set-environment-variables
     env_file: .env

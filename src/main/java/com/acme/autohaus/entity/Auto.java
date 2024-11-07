@@ -77,7 +77,7 @@ public class Auto {
      * @param uuid Die Fahrzeug-ID (darf nicht null sein).
      */
     @SuppressWarnings("checkstyle:hiddenfield")
-    public void setUUID(final UUID uuid) {
+    public void setUUId(final UUID uuid) {
         this.uuid = uuid;
     }
 
