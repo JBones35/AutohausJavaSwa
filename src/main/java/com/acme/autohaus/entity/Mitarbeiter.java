@@ -19,6 +19,7 @@ package com.acme.autohaus.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Die Klasse Mitarbeiter repräsentiert einen Mitarbeiter im Autohaus und erweitert die abstrakte Klasse Mensch.
@@ -27,7 +28,7 @@ import java.util.Objects;
 public class Mitarbeiter {
     private String name;
     private LocalDate geburtsdatum;
-    private String mitarbeiterId;
+    private UUID mitarbeiterId;
     private String position;
     private BigDecimal gehalt;
     private Adresse adresse;
@@ -43,7 +44,7 @@ public class Mitarbeiter {
      * @param adresse       Die Adresse des Mitarbeiters.
      */
     public Mitarbeiter(final String name, final LocalDate geburtsdatum,
-                       final String mitarbeiterId, final String position, final BigDecimal gehalt,
+                       final UUID mitarbeiterId, final String position, final BigDecimal gehalt,
                        final Adresse adresse) {
         this.name = name;
         this.geburtsdatum = geburtsdatum;
@@ -96,7 +97,7 @@ public class Mitarbeiter {
      *
      * @return Die Mitarbeiter-ID.
      */
-    public String getMitarbeiterId() {
+    public UUID getMitarbeiterId() {
         return mitarbeiterId;
     }
 
@@ -105,7 +106,7 @@ public class Mitarbeiter {
      *
      * @param mitarbeiterId Die neue Mitarbeiter-ID.
      */
-    public void setMitarbeiterId(final String mitarbeiterId) {
+    public void setMitarbeiterId(final UUID mitarbeiterId) {
         this.mitarbeiterId = mitarbeiterId;
     }
 

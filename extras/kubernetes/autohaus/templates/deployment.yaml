@@ -19,7 +19,7 @@ apiVersion: apps/v1
 # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#deployment-v1-apps
 kind: Deployment
 metadata:
-  name: {{ include "autohaus.fullname" . }}
+  name: {{ include "krankenhaus.fullname" . }}
   namespace: {{ .Values.namespace }}
   # Kennzeichen bzw. Markierung
   # https://kubernetes.io/docs/concepts/overview/working-with-objects/labels
@@ -28,15 +28,15 @@ metadata:
   labels:
     # https://helm.sh/docs/chart_template_guide/function_list
     # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
-    {{- include "autohaus.labels" . | nindent 4 }}
+    {{- include "krankenhaus.labels" . | nindent 4 }}
 spec:
   # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector
   selector:
     # Labels, mit denen z.B. ein Service einen Pod (zu diesem Deployment) identifizieren kann
-    # z.B. fuer:   kubectl delete deployment --selector app=autohaus,version=2.0.0 --namespace acme
+    # z.B. fuer:   kubectl delete deployment --selector app=krankenhaus,version=2.0.0 --namespace acme
     # i.a. gleicher Wert wie in template.metadata.labels
     matchLabels:
-      {{- include "autohaus.selectorLabels" . | nindent 6 }}
+      {{- include "krankenhaus.selectorLabels" . | nindent 6 }}
   # Anzahl laufender Pods fuer das Template zu diesem Deployment (s.u.) -> ReplicaSet
   replicas: {{ .Values.replicaCount }}
   #strategy:
@@ -49,7 +49,7 @@ spec:
   #    # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#max-unavailable
   #    # unavailable during the update process
   #    maxUnavailable: {{ .Values.rollingUpdate.maxUnavailable }}
-  # max. Wartezeit in Seautohausn, bis "failed progressing" eintritt
+  # max. Wartezeit in Sekrankenhausn, bis "failed progressing" eintritt
   # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
   progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
   # https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates
@@ -58,7 +58,7 @@ spec:
     metadata:
       # Labels fuer einen Pod (NICHT fuer dieses Deployment), der durch dieses Deployment installiert wurde
       labels:
-        {{- include "autohaus.labels" . | nindent 8 }}
+        {{- include "krankenhaus.labels" . | nindent 8 }}
     # Spezifikation fuer jeden Pod
     spec:
       containers:
@@ -72,7 +72,7 @@ spec:
           envFrom:
             # https://kubernetes.io/docs/concepts/configuration/configmap
             - configMapRef:
-                name: {{ include "autohaus.fullname" . }}
+                name: {{ include "krankenhaus.fullname" . }}
           ports:
             - containerPort: {{ .Values.deployment.containerPort }}
               name: http
@@ -129,7 +129,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: http
-            # Anzahl Seautohausn, bis die Probe fuer Liveness abgesetzt wird
+            # Anzahl Sekrankenhausn, bis die Probe fuer Liveness abgesetzt wird
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelay }}
             # default: 1 Sek.
             timeoutSeconds: {{ .Values.livenessProbe.timeout }}
@@ -143,7 +143,7 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: http
-            # Anzahl Seautohausn, bis die Probe fuer Readiness abgesetzt wird
+            # Anzahl Sekrankenhausn, bis die Probe fuer Readiness abgesetzt wird
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelay }}
             # default: 1 Sek.
             timeoutSeconds: {{ .Values.readinessProbe.timeout }}
@@ -153,29 +153,29 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           volumeMounts:
             - mountPath: /tmp
-              name: log-{{ include "autohaus.name" . }}{{ .Values.versionSuffix }}
+              name: log-{{ include "krankenhaus.name" . }}{{ .Values.versionSuffix }}
             - mountPath: /workspace/BOOT-INF/classes/private-key.pem
-              name: private-key-{{ include "autohaus.name" . }}
+              name: private-key-{{ include "krankenhaus.name" . }}
               readOnly: true
             - mountPath: /workspace/BOOT-INF/classes/certificate.crt
-              name: certificate-{{ include "autohaus.name" . }}
+              name: certificate-{{ include "krankenhaus.name" . }}
               readOnly: true
       priorityClassName: medium-priority
       volumes:
-        - name: log-{{ include "autohaus.name" . }}{{ .Values.versionSuffix }}
+        - name: log-{{ include "krankenhaus.name" . }}{{ .Values.versionSuffix }}
           # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
           hostPath:
             path: /run/desktop/mnt/host/c/Zimmermann/volumes/kunde-v1
             type: Directory
           # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
           #emptyDir: {}
-        - name: private-key-{{ include "autohaus.name" . }}
+        - name: private-key-{{ include "krankenhaus.name" . }}
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/autohaus/autohaus/src/main/resources/private-key.pem
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/krankenhaus/krankenhaus/src/main/resources/private-key.pem
             type: File
-        - name: certificate-{{ include "autohaus.name" . }}
+        - name: certificate-{{ include "krankenhaus.name" . }}
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/autohaus/autohaus/src/main/resources/certificate.crt
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/krankenhaus/krankenhaus/src/main/resources/certificate.crt
             type: File
       # https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints
       # https://polaris.docs.fairwinds.com/checks/reliability
@@ -183,5 +183,5 @@ spec:
         - maxSkew: 1
           topologyKey: "topology.kubernetes.io/zone"
           whenUnsatisfiable: ScheduleAnyway
-      serviceAccountName: {{ include "autohaus.fullname" . }}
+      serviceAccountName: {{ include "krankenhaus.fullname" . }}
       automountServiceAccountToken: false

@@ -62,7 +62,8 @@ public final class MockDB {
             .setStandort("Mühlacker")
             .setUUID(UUID.randomUUID())
             .setTelefonnummer("015202744231")
-            .setMitarbeiter(createMitarbeiterList("1", "Abdullah", "Office",  "Mühlacker", "35", "75417"))
+            .setEmail("optik@gmx.de")
+            .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(), "Abdullah", "Office",  "Mühlacker", "35", "75417"))
             .setAutos(createAutoList(UUID.randomUUID(), "Audi", "1.9", 2012, "Jonas", new BigDecimal(3435)))
             .build();
     }
@@ -73,7 +74,8 @@ public final class MockDB {
             .setStandort("Stuttgart")
             .setUUID(UUID.randomUUID())
             .setTelefonnummer("0711 123456")
-            .setMitarbeiter(createMitarbeiterList("2", "Laura", "Verkauf",
+            .setEmail("premium@gmx.de")
+            .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(), "Laura", "Verkauf",
                  "Stuttgart", "37", "234252"))
             .setAutos(createAutoList(UUID.randomUUID(), "BMW", "M3", 2005, "Jonas", new BigDecimal(435345)))
             .build();
@@ -85,7 +87,8 @@ public final class MockDB {
             .setStandort("Karlsruhe")
             .setUUID(UUID.randomUUID())
             .setTelefonnummer("0721 987654")
-            .setMitarbeiter(createMitarbeiterList("3", "Felix", "Werkstatt",  "Karlsruhe", "37", "76133"))
+            .setEmail("classic@motors.de")
+            .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(), "Felix", "Werkstatt",  "Karlsruhe", "37", "76133"))
             .setAutos(createAutoList(UUID.randomUUID(), "Mercedes", "C-Klasse", 2019, "Mika", new BigDecimal(54543)))
             .build();
     }
@@ -96,7 +99,8 @@ public final class MockDB {
             .setStandort("Heidelberg")
             .setUUID(UUID.randomUUID())
             .setTelefonnummer("06221 987654")
-            .setMitarbeiter(createMitarbeiterList("4", "Klara", "Kundenservice",  "Heidelberg", "10", "69117"))
+            .setEmail("urban@gmx.de")
+            .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(), "Klara", "Kundenservice",  "Heidelberg", "10", "69117"))
             .setAutos(createAutoList(UUID.randomUUID(), "Volkswagen", "Golf", 2003, "Goat", new BigDecimal(3445)))
             .build();
     }
@@ -107,7 +111,8 @@ public final class MockDB {
             .setStandort("Freiburg")
             .setUUID(UUID.randomUUID())
             .setTelefonnummer("0761 543210")
-            .setMitarbeiter(createMitarbeiterList("5", "Thomas", "Verkauf",  "Freiburg", "22", "79098"))
+            .setEmail("luxury@motors.de")
+            .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(), "Thomas", "Verkauf",  "Freiburg", "22", "79098"))
             .setAutos(createAutoList(UUID.randomUUID(), "Porsche", "911", 2005, "Joans", new BigDecimal(34535)))
             .build();
     }
@@ -118,13 +123,14 @@ public final class MockDB {
             .setStandort("Karlsruhe")
             .setUUID(UUID.randomUUID())
             .setTelefonnummer("0721 987123")
-            .setMitarbeiter(createMitarbeiterList("6",  "Julia",
+            .setEmail("eco@cars.des")
+            .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(),  "Julia",
                 "Marketing-Managerin", "Karlsruhe",  "28", "76133"))
             .setAutos(createAutoList(UUID.randomUUID(),  "Tesla",  "Model 3",  2023, "Kenan", new BigDecimal(4335)))
             .build();
     }
 
-    private static List<Mitarbeiter> createMitarbeiterList(final String id, final String name,
+    private static List<Mitarbeiter> createMitarbeiterList(final UUID id, final String name,
                                                            final String position, final String city,
                                                            final String houseNumber, final String postalCode) {
         return Stream.of(

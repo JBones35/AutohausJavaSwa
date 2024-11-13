@@ -21,6 +21,9 @@ import com.acme.autohaus.entity.Autohaus;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.MultiValueMap;
 import static com.acme.autohaus.repository.MockDB.AUTOHAEUSER;
 import static java.util.Collections.emptyList;
+import static java.util.UUID.randomUUID;
 
 /**
  * Repository-Klasse für den Zugriff auf und die Verwaltung von Autohaus-Daten.
@@ -123,5 +127,53 @@ public class AutohausRepository {
             .findFirst();
         LOGGER.debug("Ergebnis der Suche nach id {}: {}", id, autohaus);
         return autohaus;
+    }
+
+    /**
+     * Überprüft, ob die angegebene E-Mail-Adresse bereits existiert.
+     *
+     * @param email die zu überprüfende E-Mail-Adresse.
+     * @return true, wenn die E-Mail-Adresse existiert, andernfalls false.
+     */
+    public boolean isEmailExisting(final String email) {
+        LOGGER.debug("isEmailExisting: email={}", email);
+        final var count = AUTOHAEUSER.stream()
+            .filter(autohaus -> autohaus.getEmail().contentEquals(email))
+            .count();
+        LOGGER.debug("isEmailExisting: count={}", count);
+        return count > 0L;
+    }
+
+    /**
+     * Erstellt ein neues Autohaus-Objekt und fügt es der Datenbank hinzu.
+     *
+     * @param autohaus das zu erstellende Autohaus-Objekt.
+     * @return das erstellte Autohaus-Objekt mit UUID.
+     */
+    public @NonNull Autohaus create(final @NonNull Autohaus autohaus) {
+        LOGGER.debug("create: {}", autohaus);
+        autohaus.setUUId(randomUUID());
+        AUTOHAEUSER.add(autohaus);
+        LOGGER.debug("create: {}", autohaus);
+        return autohaus;
+    }
+
+    /**
+     * Aktualisiert ein vorhandenes Autohaus-Objekt in der Datenbank.
+     *
+     * @param autohaus das zu aktualisierende Autohaus-Objekt.
+     */
+    public void update(final @NonNull Autohaus autohaus) {
+        LOGGER.debug("update: {}", autohaus);
+        final OptionalInt index = IntStream
+            .range(0, AUTOHAEUSER.size())
+            .filter(i -> Objects.equals(AUTOHAEUSER.get(i).getUUId(), autohaus.getUUId()))
+            .findFirst();
+        LOGGER.trace("update: index={}", index);
+        if (index.isEmpty()) {
+            return;
+        }
+        AUTOHAEUSER.set(index.getAsInt(), autohaus);
+        LOGGER.debug("update: {}", autohaus);
     }
 }

@@ -29,6 +29,7 @@ public class Autohaus {
     private String name;
     private String standort;
     private String telefonnummer;
+    private String email;
     private UUID uuid;
     private final List<Auto> autos;
     private final List<Mitarbeiter> mitarbeiter;
@@ -44,11 +45,12 @@ public class Autohaus {
      * @param mitarbeiter   Die Liste der Mitarbeiter (kann null sein, in diesem Fall wird eine leere Liste erstellt).
      */
     public Autohaus(final String name, final String standort, final String telefonnummer, final UUID uuid,
-                    final List<Auto> autos, final List<Mitarbeiter> mitarbeiter) {
+                    final String email, final List<Auto> autos, final List<Mitarbeiter> mitarbeiter) {
         this.name = name;
         this.standort = standort;
         this.telefonnummer = telefonnummer;
         this.uuid = uuid != null ? uuid : UUID.randomUUID();
+        this.email = email;
         this.autos = autos != null ? autos : new ArrayList<>();
         this.mitarbeiter = mitarbeiter != null ? mitarbeiter : new ArrayList<>();
     }
@@ -135,6 +137,14 @@ public class Autohaus {
         this.uuid = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
     /**
      * Gibt die Liste der Autos im Autohaus zurück.
      *
@@ -160,6 +170,7 @@ public class Autohaus {
             ", standort='" + standort + '\'' +
             ", telefonnummer='" + telefonnummer + '\'' +
             ", UUID='" + uuid + '\'' +
+            ", email='" + email + '\'' +
             ", autos=" + autos +
             ", mitarbeiter=" + mitarbeiter +
             '}';

@@ -23,11 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -37,6 +35,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(AutohausGetController.API_PATH)
 public class AutohausGetController {
+    public static final String ID_PATTERN = "[\\da-f]{8}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{12}";
     public static final String API_PATH = "/autohaus";
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausGetController.class);
     private final AutohausReadService autohausReadService;
@@ -57,7 +56,7 @@ public class AutohausGetController {
      * @return Gefundene Autohäuser als [List].
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<Autohaus> getAll(
+    public List<Autohaus> get(
         @RequestParam @NonNull final MultiValueMap<String, String> suchkriterien
     ) {
         LOGGER.debug("get:Suchkriterien= {}", suchkriterien);
@@ -73,6 +72,7 @@ public class AutohausGetController {
      * @return Das Autohaus-Objekt mit der angegebenen ID.
      */
     @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(NO_CONTENT)
     public Autohaus getByID(@PathVariable final String id) {
         LOGGER.info("Suche nach Autohaus mit id: {}", id);
         final Autohaus autohaus = autohausReadService.getByID(id);

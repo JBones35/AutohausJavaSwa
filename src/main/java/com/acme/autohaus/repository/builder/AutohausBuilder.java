@@ -26,6 +26,8 @@ public class AutohausBuilder {
     private String name;
     private String standort;
     private String telefonnummer;
+    private String email;
+
     private UUID uuid;
     private List<Auto> autos;
     private List<Mitarbeiter> mitarbeiter;
@@ -54,6 +56,11 @@ public class AutohausBuilder {
         return this;
     }
 
+    public AutohausBuilder setEmail(final String email) {
+        this.email = email;
+        return this;
+    }
+
     public AutohausBuilder setAutos(final List<Auto> autos) {
         this.autos = autos;
         return this;
@@ -65,6 +72,6 @@ public class AutohausBuilder {
     }
 
     public Autohaus build() {
-        return new Autohaus(name, standort, telefonnummer, uuid, autos, mitarbeiter);
+        return new Autohaus(name, standort, telefonnummer, uuid, email, autos, mitarbeiter);
     }
 }
