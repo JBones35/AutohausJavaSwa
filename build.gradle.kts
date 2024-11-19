@@ -91,7 +91,7 @@
 //
 //  14) Initialisierung des Gradle Wrappers in der richtigen Version
 //      dazu ist ggf. eine Internetverbindung erforderlich
-//        gradle wrapper --gradle-version=8.11-rc-2 --distribution-type=bin
+//        gradle wrapper --gradle-version=8.11 --distribution-type=bin
 
 // https://github.com/gradle/kotlin-dsl/tree/master/samples
 // https://docs.gradle.org/current/userguide/kotlin_dsl.html
@@ -124,6 +124,7 @@ val usePersistence = project.properties["persistence"] != "false" && project.pro
 val useMail = project.properties["mail"] != "false" && project.properties["mail"] != "FALSE"
 val useSecurity = project.properties["security"] != "false" && project.properties["observability"] != "FALSE"
 val useObservability = project.properties["observability"] != "false" && project.properties["observability"] != "FALSE"
+val useHateoas = project.properties["hateoas"] != "false" && project.properties["hateoas"] != "FALSE"
 val useGraphQL = project.properties["graphql"] != "false" && project.properties["graphql"] != "FALSE"
 val useKotlin = project.properties["kotlin"] != "false" && project.properties["kotlin"] != "FALSE"
 
@@ -314,24 +315,25 @@ val detektCfg: Configuration by configurations.creating
 dependencies {
     implementation(platform(libs.slf4j.bom))
     implementation(platform(libs.log4j.bom))
-    //if (useObservability) {
-    //    implementation(platform(libs.zipkin.reporter.bom))
-    //    implementation(platform(libs.opentelemetry.bom))
-    //    implementation(platform(libs.micrometer.tracing.bom))
-    //    implementation(platform(libs.prometheus.metrics.bom))
-    //    implementation(platform(libs.micrometer.bom))
-    //}
+    if (useObservability) {
+        //implementation(platform(libs.zipkin.reporter.bom))
+        implementation(platform(libs.opentelemetry.bom))
+        implementation(platform(libs.micrometer.tracing.bom))
+        implementation(platform(libs.prometheus.metrics.bom))
+        implementation(platform(libs.micrometer.bom))
+    }
     implementation(platform(libs.jackson.bom))
-    //implementation(platform(libs.netty.bom))
-    //implementation(platform(libs.reactor.bom))
-    //implementation(platform(libs.spring.framework.bom))
-    //if (usePersistence) {
-    //    implementation(platform(libs.oracle.database.bom))
-    //    implementation(platform(libs.spring.data.bom))
-    //}
-    //if (useSecurity) {
-    //    implementation(platform(libs.spring.security.bom))
-    //}
+    implementation(platform(libs.netty.bom))
+    implementation(platform(libs.reactor.bom))
+    implementation(platform(libs.spring.framework.bom))
+    if (usePersistence) {
+        implementation(platform(libs.oracle.database.bom))
+        implementation(platform(libs.hibernate.platform))
+        implementation(platform(libs.spring.data.bom))
+    }
+    if (useSecurity) {
+        implementation(platform(libs.spring.security.bom))
+    }
     if (useKotlin) {
         implementation(platform(libs.kotlin.bom))
     }
@@ -358,7 +360,6 @@ dependencies {
     // org.springdoc:springdoc-openapi-starter-webmvc-ui verwendet org.apache.tomcat.embed:tomcat-embed-core
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-json")
-    implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     println("")
@@ -425,6 +426,13 @@ dependencies {
         println("Tracing und Metriken   d e a k t i v i e r t")
     }
 
+    if (useHateoas) {
+        println("HATEOAS                a k t i v i e r t")
+        implementation("org.springframework.boot:spring-boot-starter-hateoas")
+    } else {
+        println("HATEOAS                d e a k t i v i e r t")
+    }
+
     if (useGraphQL) {
         println("GraphQL                a k t i v i e r t")
         // HttpGraphQlClient benoetigt WebClient mit Project Reactor
@@ -489,10 +497,12 @@ dependencies {
     errorprone(libs.errorprone)
 
     constraints {
-        //implementation(libs.bundles.tomcat)
+        implementation(libs.bundles.tomcat)
         implementation(libs.jakarta.validation)
         implementation(libs.hibernate.validator)
-        //implementation(libs.spring.hateoas)
+        if (useHateoas) {
+            implementation(libs.spring.hateoas)
+        }
 
         //if (useMail) {
         //    implementation(libs.angus-mail)
@@ -502,9 +512,8 @@ dependencies {
             //runtimeOnly(libs.postgresql)
             //runtimeOnly(libs.mysql)
             //runtimeOnly(libs.h2)
-            implementation(libs.jakarta.persistence)
+            //implementation(libs.jakarta.persistence)
             implementation(libs.hikaricp)
-            implementation(libs.hibernate)
             if (!nativeImage) {
                 implementation(libs.flyway)
                 runtimeOnly(libs.bundles.flyway.database)
@@ -705,7 +714,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
                 )
             imageName = "${imageName.get()}-azul"
             println("")
-            println("Buildpacks: JVM durch   A z u l   Z u l u")
+            println("Buildpacks: JRE durch   A z u l   Z u l u")
             println("")
         }
         "adoptium" -> {
@@ -718,7 +727,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
                 )
             imageName = "${imageName.get()}-eclipse"
             println("")
-            println("Buildpacks: JVM durch   E c l i p s e   T e m u r i n")
+            println("Buildpacks: JRE durch   E c l i p s e   T e m u r i n")
             println("")
         }
         "sap-machine" -> {
@@ -731,7 +740,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
                 )
             imageName = "${imageName.get()}-sapmachine"
             println("")
-            println("Buildpacks: JVM durch   S a p M a c h i n e")
+            println("Buildpacks: JRE durch   S a p M a c h i n e")
             println("")
         }
         else -> {
@@ -739,7 +748,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
             // https://github.com/paketo-buildpacks/bellsoft-liberica/releases
             imageName = "${imageName.get()}-bellsoft"
             println("")
-            println("Buildpacks: JVM durch   B e l l s o f t   L i b e r i c a   (default)")
+            println("Buildpacks: JRE durch   B e l l s o f t   L i b e r i c a   (default)")
             println("")
 
             // *kein* JRE, nur JDK:
@@ -853,6 +862,7 @@ tasks.named<Test>("test") {
     systemProperty("junit.platform.output.capture.stdout", true)
     systemProperty("junit.platform.output.capture.stderr", true)
 
+    systemProperty("logging.file.name", "./build/log/application.log")
     val logLevelTest = project.properties["logLevelTest"] ?: "INFO"
     // systemProperty("logging.level.com.acme", logLevelTest)
     systemProperty("logging.level.org.hibernate.SQL", logLevelTest)

@@ -32,6 +32,7 @@ import org.springframework.util.MultiValueMap;
 @Service
 public class AutohausReadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausReadService.class);
+
     private final AutohausRepository autohausRepository;
 
     /**

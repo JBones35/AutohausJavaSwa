@@ -19,15 +19,15 @@ apiVersion: autoscaling/v2
 # Anwendung bereitgestellt werden
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "krankenhaus.fullname" . }}
+  name: {{ include "autohaus.fullname" . }}
   namespace: {{ .Values.namespace }}
   labels:
-    {{- include "krankenhaus.labels" . | nindent 4 }}
+    {{- include "autohaus.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "krankenhaus.fullname" . }}
+    name: {{ include "autohaus.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

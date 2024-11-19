@@ -6,7 +6,6 @@ import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.entity.Mitarbeiter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
 import static org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT;
 
 /*

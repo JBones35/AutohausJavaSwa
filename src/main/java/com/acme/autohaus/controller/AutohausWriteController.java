@@ -2,7 +2,12 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.service.AutohausWriteService;
 import com.acme.autohaus.service.EmailExistsException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.util.UUID;
+import jakarta.validation.groups.Default;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ProblemDetail;
@@ -12,14 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.util.UUID;
-
 import static com.acme.autohaus.controller.AutohausGetController.API_PATH;
-import static com.acme.autohaus.controller.AutohausGetController.ID_PATTERN;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static com.acme.autohaus.controller.AutohausDTO.OnCreate;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
 
@@ -29,25 +29,27 @@ import static org.springframework.http.ResponseEntity.created;
  * Behandelt außerdem gängige Exceptions und gibt ProblemDetail-Objekte gemäß RFC 9457 zurück.
  */
 @Controller
-@RequestMapping(path = API_PATH)
+@Validated
+@RequestMapping(API_PATH)
 public class AutohausWriteController {
     public static final String PROBLEM_PATH = "/problem";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausWriteController.class);
+
     private final AutohausWriteService autohausWriteService;
+
     private final AutohausMapper autohausMapper;
-    private final UriHelper uriHelper;
 
     /**
      * Konstruktor für {@link AutohausWriteController}.
      *
      * @param autohausWriteService Service für Schreiboperationen.
      * @param autohausMapper       Mapper für Autohaus-DTOs.
-     * @param uriHelper            Hilfsklasse für URI-Generierung.
      */
-    AutohausWriteController(final AutohausWriteService autohausWriteService, final AutohausMapper autohausMapper, final UriHelper uriHelper) {
+    AutohausWriteController(final AutohausWriteService autohausWriteService,
+                            final AutohausMapper autohausMapper) {
         this.autohausWriteService = autohausWriteService;
         this.autohausMapper = autohausMapper;
-        this.uriHelper = uriHelper;
     }
 
     /**
@@ -55,18 +57,23 @@ public class AutohausWriteController {
      *
      * @param autohausDTO DTO-Objekt des Autohauses.
      * @param request     HTTP-Request-Objekt.
-     * @return ResponseEntity mit dem Location-Header des erstellten Autohauses.
+     * @return Response mit Statuscode `201` einschließlich Location-Header oder Statuscode `422`, falls Constraints
+     * verletzt sind oder die E-Mail-Adresse bereits existiert oder Statuscode `400`, falls syntaktische Fehler im
+     * Request-Body vorliegen.
      */
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    @Operation(summary = "Ein neues Autohaus anlegen", tags = "Neuanlegen")
+    @ApiResponse(responseCode = "201", description = "Autohaus neu angelegt")
+    @ApiResponse(responseCode = "400", description = "Syntaktische Fehler im Request-Body")
+    @ApiResponse(responseCode = "422", description = "Ungültige Werte oder Email vorhanden")
     ResponseEntity<Void> post(
-        @RequestBody @Validated final AutohausDTO autohausDTO,
+        @RequestBody @Validated({Default.class, OnCreate.class})final AutohausDTO autohausDTO,
         final HttpServletRequest request
     ) {
         LOGGER.debug("post: {}", autohausDTO);
         final var autohausInput = autohausMapper.toAutohaus(autohausDTO);
         final var autohaus = autohausWriteService.create(autohausInput);
-        final var baseUri = uriHelper.getBaseUri(request).toString();
-        final var location = URI.create(baseUri + '/' + autohaus.getUUId());
+        final var location = URI.create(API_PATH + '/' + autohaus.getUUId());
         return created(location).build();
     }
 
@@ -76,7 +83,13 @@ public class AutohausWriteController {
      * @param id          UUID des zu aktualisierenden Autohauses.
      * @param autohausDTO DTO-Objekt des Autohauses.
      */
-    @PutMapping(path = "{id:" + ID_PATTERN + "}", consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(NO_CONTENT)
+    @Operation(summary = "Ein Autohaus mit neuen Werten aktualisieren", tags = "Aktualisieren")
+    @ApiResponse(responseCode = "204", description = "Aktualisiert")
+    @ApiResponse(responseCode = "400", description = "Syntaktische Fehler im Request-Body")
+    @ApiResponse(responseCode = "404", description = "Autohaus nicht vorhanden")
+    @ApiResponse(responseCode = "422", description = "Ungültige Werte oder Email vorhanden")
     void put(
         @PathVariable final UUID id,
         @RequestBody final AutohausDTO autohausDTO
@@ -101,7 +114,9 @@ public class AutohausWriteController {
     ) {
         LOGGER.debug("onConstraintViolations: {}", ex.getMessage());
         final var detailMessages = ex.getDetailMessageArguments();
-        final var detail = ((String) detailMessages[1]).replace(", and ", ", ");
+        final var detail = detailMessages == null
+            ? "Constraint Violations"
+            : ((String) detailMessages[1]).replace(", and ", ", ");
         final var problemDetail = ProblemDetail.forStatusAndDetail(UNPROCESSABLE_ENTITY, detail);
         problemDetail.setType(URI.create(PROBLEM_PATH + ProblemType.CONSTRAINTS.getValue()));
         problemDetail.setInstance(URI.create(request.getRequestURL().toString()));

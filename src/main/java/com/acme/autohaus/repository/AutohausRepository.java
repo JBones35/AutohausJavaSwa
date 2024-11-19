@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -174,6 +173,6 @@ public class AutohausRepository {
             return;
         }
         AUTOHAEUSER.set(index.getAsInt(), autohaus);
-        LOGGER.debug("update: {}", autohaus);
+        LOGGER.info("update: {}", autohaus);
     }
 }

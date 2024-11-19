@@ -100,7 +100,8 @@ public final class MockDB {
             .setUUID(UUID.randomUUID())
             .setTelefonnummer("06221 987654")
             .setEmail("urban@gmx.de")
-            .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(), "Klara", "Kundenservice",  "Heidelberg", "10", "69117"))
+            .setMitarbeiter(createMitarbeiterList(
+                UUID.randomUUID(), "Klara", "Kundenservice",  "Heidelberg", "10", "69117"))
             .setAutos(createAutoList(UUID.randomUUID(), "Volkswagen", "Golf", 2003, "Goat", new BigDecimal(3445)))
             .build();
     }

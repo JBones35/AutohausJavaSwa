@@ -19,13 +19,20 @@ package com.acme.autohaus.controller;
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.service.AutohausReadService;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-
-import static org.springframework.http.HttpStatus.NO_CONTENT;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -34,10 +41,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RestController
 @RequestMapping(AutohausGetController.API_PATH)
+@OpenAPIDefinition(info = @Info(title = "Autohaus API", version = "v1"))
 public class AutohausGetController {
     public static final String ID_PATTERN = "[\\da-f]{8}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{12}";
+
     public static final String API_PATH = "/autohaus";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausGetController.class);
+
     private final AutohausReadService autohausReadService;
 
     /**
@@ -56,6 +67,9 @@ public class AutohausGetController {
      * @return Gefundene Autohäuser als [List].
      */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @Operation(summary = "Suche mit Suchkriterien", tags = "Suchen")
+    @ApiResponse(responseCode = "200", description = "Liste mit Autohäuser")
+    @ApiResponse(responseCode = "404", description = "Keine Autohäuser gefunden")
     public List<Autohaus> get(
         @RequestParam @NonNull final MultiValueMap<String, String> suchkriterien
     ) {
@@ -72,7 +86,9 @@ public class AutohausGetController {
      * @return Das Autohaus-Objekt mit der angegebenen ID.
      */
     @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(NO_CONTENT)
+    @Operation(summary = "Suche mit der Autohaus-ID", tags = "Suchen")
+    @ApiResponse(responseCode = "200", description = "Autohaus gefunden")
+    @ApiResponse(responseCode = "404", description = "Autohaus nicht gefunden")
     public Autohaus getByID(@PathVariable final String id) {
         LOGGER.info("Suche nach Autohaus mit id: {}", id);
         final Autohaus autohaus = autohausReadService.getByID(id);

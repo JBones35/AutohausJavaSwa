@@ -20,6 +20,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+/// ValueObject für das Neuanlegen und Ändern eines neuen Kunden.
+///
+/// @param plz Postleitzahl
+/// @param ort Ort
 public record AdresseDTO(
     @NotNull
     @Pattern(regexp = PLZ_PATTERN)

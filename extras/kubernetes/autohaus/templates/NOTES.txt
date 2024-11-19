@@ -7,7 +7,7 @@ Nützliche Kommandos:
   helm status {{ .Release.Name }} --namespace {{ .Values.namespace }}
   helm get manifest {{ .Release.Name }} --namespace {{ .Values.namespace }}
 
-  kubectl describe configmap {{ include "krankenhaus.fullname" . }} --namespace {{ .Values.namespace }}
-  kubectl get configmap {{ include "krankenhaus.fullname" . }} --output jsonpath='{.data}' --namespace {{ .Values.namespace }}
+  kubectl describe configmap {{ include "autohaus.fullname" . }} --namespace {{ .Values.namespace }}
+  kubectl get configmap {{ include "autohaus.fullname" . }} --output jsonpath='{.data}' --namespace {{ .Values.namespace }}
 
 ========================================================================================================================

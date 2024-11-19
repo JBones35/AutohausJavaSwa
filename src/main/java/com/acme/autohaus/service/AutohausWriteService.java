@@ -20,13 +20,11 @@ package com.acme.autohaus.service;
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.repository.AutohausRepository;
 import jakarta.validation.Valid;
+import java.util.Objects;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
-import java.util.UUID;
-
 /**
  * Service-Klasse für Schreiboperationen auf Autohaus-Daten.
  */
