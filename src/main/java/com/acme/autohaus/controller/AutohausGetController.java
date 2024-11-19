@@ -18,12 +18,11 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.service.AutohausReadService;
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -35,16 +34,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-/**
- * Controller für die Verwaltung von Autohaus-Anfragen.
- * Dieser Controller bietet Endpunkte zum Abrufen von Autohäusern aus der Datenbank.
- */
+
+///Controller für die Verwaltung von Autohaus-Anfragen.
+/// Dieser Controller bietet Endpunkte zum Abrufen von Autohäusern aus der Datenbank.
+///![Klassendiagramm](../../../../../asciidoc/AutohausGetController.svg)
 @RestController
 @RequestMapping(AutohausGetController.API_PATH)
 @OpenAPIDefinition(info = @Info(title = "Autohaus API", version = "v1"))
 public class AutohausGetController {
+    /**
+     * Das Muster für die Autohaus-ID (UUID-Format).
+     */
     public static final String ID_PATTERN = "[\\da-f]{8}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{12}";
 
+    /**
+     * Der Basis-Pfad für alle Endpunkte dieses Controllers.
+     */
     public static final String API_PATH = "/autohaus";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausGetController.class);

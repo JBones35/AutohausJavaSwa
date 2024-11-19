@@ -18,16 +18,13 @@
 package com.acme.autohaus.repository;
 
 import com.acme.autohaus.entity.Autohaus;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.OptionalInt;
+
+import java.util.*;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.MultiValueMap;
 import static com.acme.autohaus.repository.MockDB.AUTOHAEUSER;
 import static java.util.Collections.emptyList;
 import static java.util.UUID.randomUUID;
@@ -61,7 +58,7 @@ public class AutohausRepository {
      * @return gefilterte Liste von Autohaus-Objekten oder alle, wenn keine Kriterien vorhanden sind.
      */
     @SuppressWarnings("ReturnCount")
-    public @NonNull List<Autohaus> get(@NonNull final MultiValueMap<String, String> suchkriterien) {
+    public @NonNull List<Autohaus> get(@NonNull final Map<String, List<String>> suchkriterien) {
         if (suchkriterien.isEmpty()) {
             return getAll();
         }

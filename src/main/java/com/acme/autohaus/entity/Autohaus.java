@@ -1,18 +1,16 @@
 /*
- * This file is part of [Projektname].
+ * Diese Datei ist Teil von [Projektname].
  *
- * [Projektname] is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * [Projektname] ist freie Software: Sie können es unter den Bedingungen der GNU General Public License, veröffentlicht von
+ * der Free Software Foundation, entweder Version 3 der Lizenz oder (nach Ihrer Wahl) einer späteren Version,
+ * weiterverbreiten und/oder modifizieren.
  *
- * [Projektname] is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * [Projektname] wird in der Hoffnung verbreitet, dass es nützlich ist, jedoch ohne jegliche Gewährleistung;
+ * ohne sogar die stillschweigende Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+ * Siehe die GNU General Public License für weitere Details.
  *
- * You should have received a copy of the GNU General Public License
- * along with [Projektname].  If not, see <http://www.gnu.org/licenses/>.
+ * Sie sollten eine Kopie der GNU General Public License zusammen mit [Projektname] erhalten haben.
+ * Falls nicht, siehe <http://www.gnu.org/licenses/>.
  */
 package com.acme.autohaus.entity;
 
@@ -21,16 +19,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Die Klasse Autohaus repräsentiert ein Autohaus und enthält typische Eigenschaften sowie Listen
- * von Autos, Mitarbeitern und Kunden.
- */
+/// Daten eines Autohauses. In DDD ist Autohaus ein Aggregate Root.
+/// ![Klassendiagramm](../../../../../asciidoc/Autohaus.svg)
+///
 public class Autohaus {
     private String name;
     private String standort;
     private String telefonnummer;
     private String email;
-    private UUID uuid;
+    private UUID autohausId;
     private final List<Auto> autos;
     private final List<Mitarbeiter> mitarbeiter;
 
@@ -40,16 +37,17 @@ public class Autohaus {
      * @param name          Der Name des Autohauses.
      * @param standort      Der Standort des Autohauses.
      * @param telefonnummer  Die Telefonnummer des Autohauses.
-     * @param uuid          Die UUID des Autohauses (kann null sein, eine neue UUID wird generiert).
+     * @param autohausId          Die UUID des Autohauses (kann null sein, eine neue UUID wird generiert).
+     * @param email         Die E-Mail-Adresse des Autohauses.
      * @param autos         Die Liste der Autos (kann null sein, in diesem Fall wird eine leere Liste erstellt).
      * @param mitarbeiter   Die Liste der Mitarbeiter (kann null sein, in diesem Fall wird eine leere Liste erstellt).
      */
-    public Autohaus(final String name, final String standort, final String telefonnummer, final UUID uuid,
+    public Autohaus(final String name, final String standort, final String telefonnummer, final UUID autohausId,
                     final String email, final List<Auto> autos, final List<Mitarbeiter> mitarbeiter) {
         this.name = name;
         this.standort = standort;
         this.telefonnummer = telefonnummer;
-        this.uuid = uuid != null ? uuid : UUID.randomUUID();
+        this.autohausId = autohausId != null ? autohausId : UUID.randomUUID();
         this.email = email;
         this.autos = autos != null ? autos : new ArrayList<>();
         this.mitarbeiter = mitarbeiter != null ? mitarbeiter : new ArrayList<>();
@@ -57,12 +55,12 @@ public class Autohaus {
 
     @Override
     public final boolean equals(final Object other) {
-        return other instanceof Autohaus autohaus && Objects.equals(uuid, autohaus.getUUId());
+        return other instanceof Autohaus autohaus && Objects.equals(autohausId, autohaus.getUUId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(uuid);
+        return Objects.hashCode(autohausId);
     }
 
     /**
@@ -125,7 +123,7 @@ public class Autohaus {
      * @return Die UUID des Autohauses.
      */
     public UUID getUUId() {
-        return uuid;
+        return autohausId;
     }
 
     /**
@@ -134,13 +132,23 @@ public class Autohaus {
      * @param id Die UUID des Autohauses.
      */
     public void setUUId(final UUID id) {
-        this.uuid = id;
+        this.autohausId = id;
     }
 
+    /**
+     * Gibt die E-Mail-Adresse des Autohauses zurück.
+     *
+     * @return Die E-Mail-Adresse des Autohauses.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Setzt die E-Mail-Adresse des Autohauses.
+     *
+     * @param email Die E-Mail-Adresse des Autohauses.
+     */
     public void setEmail(final String email) {
         this.email = email;
     }
@@ -169,7 +177,7 @@ public class Autohaus {
             "name='" + name + '\'' +
             ", standort='" + standort + '\'' +
             ", telefonnummer='" + telefonnummer + '\'' +
-            ", UUID='" + uuid + '\'' +
+            ", UUID='" + autohausId + '\'' +
             ", email='" + email + '\'' +
             ", autos=" + autos +
             ", mitarbeiter=" + mitarbeiter +

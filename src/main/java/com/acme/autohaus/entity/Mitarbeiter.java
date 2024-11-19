@@ -76,18 +76,38 @@ public class Mitarbeiter {
         return Objects.hashCode(mitarbeiterId);
     }
 
+    /**
+     * Gibt den Namen des Mitarbeiters zurück.
+     *
+     * @return Der Name des Mitarbeiters.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setzt den Namen des Mitarbeiters.
+     *
+     * @param name Der Name des Mitarbeiters.
+     */
     public void setName(final String name) {
         this.name = name;
     }
 
+    /**
+     * Gibt das Geburtsdatum des Mitarbeiters zurück.
+     *
+     * @return Das Geburtsdatum des Mitarbeiters.
+     */
     public LocalDate getGeburtsdatum() {
         return geburtsdatum;
     }
 
+    /**
+     * Setzt das Geburtsdatum des Mitarbeiters.
+     *
+     * @param geburtsdatum Das Geburtsdatum des Mitarbeiters.
+     */
     public void setGeburtsdatum(final LocalDate geburtsdatum) {
         this.geburtsdatum = geburtsdatum;
     }

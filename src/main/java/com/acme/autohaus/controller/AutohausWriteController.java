@@ -5,9 +5,9 @@ import com.acme.autohaus.service.EmailExistsException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.groups.Default;
 import java.net.URI;
 import java.util.UUID;
-import jakarta.validation.groups.Default;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ProblemDetail;
@@ -16,10 +16,18 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-import static com.acme.autohaus.controller.AutohausGetController.API_PATH;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import static com.acme.autohaus.controller.AutohausDTO.OnCreate;
-import static org.springframework.http.HttpStatus.*;
+import static com.acme.autohaus.controller.AutohausGetController.API_PATH;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
 
@@ -31,7 +39,11 @@ import static org.springframework.http.ResponseEntity.created;
 @Controller
 @Validated
 @RequestMapping(API_PATH)
+@SuppressWarnings({"ClassFanOutComplexity", "java:S1075"})
 public class AutohausWriteController {
+    /**
+     * Problem path, falls der ExceptionHandler aufgerufen wird
+     */
     public static final String PROBLEM_PATH = "/problem";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausWriteController.class);

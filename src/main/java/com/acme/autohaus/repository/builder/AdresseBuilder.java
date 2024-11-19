@@ -27,9 +27,10 @@ public class AdresseBuilder {
     private String plz;
     private String stadt;
 
-    /** Ein Builder-Objekt für die Klasse _Adresse_ bauen.
+    /**
+     * Erstellt einen neuen AdresseBuilder.
      *
-     * @return Das Builder-Objekt
+     * @return Das Builder-Objekt.
      */
     public static AdresseBuilder getBuilder() {
         return new AdresseBuilder();
@@ -86,5 +87,13 @@ public class AdresseBuilder {
      */
     public Adresse build() {
         return new Adresse(strasse, hausnummer, plz, stadt);
+    }
+
+    /**
+     * Privater Konstruktor, der verwendet wird, um einen neuen AdresseBuilder zu erstellen.
+     * Dieser Konstruktor verhindert die direkte Instanziierung der Klasse außerhalb des Builders.
+     */
+    private AdresseBuilder(){
+        // Der Konstruktor bleibt leer, um die Verwendung des Builders zu erzwingen.
     }
 }

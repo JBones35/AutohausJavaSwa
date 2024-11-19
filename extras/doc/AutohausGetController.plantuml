@@ -1,0 +1,64 @@
+@startuml AutohausGetController
+
+skinparam classAttributeIconSize 0
+
+package org.springframework {
+    package web.bind.annotation {
+        interface "@RestController" as RestController
+        interface "@RequestMapping" as RequestMapping
+        interface "@PathVariable" as PathVariable
+        interface "@RequestParam" as RequestParam
+        interface "@ExceptionHandler" as ExceptionHandler
+        interface "@ResponseStatus" as ResponseStatus
+    }
+
+    package util {
+        class MultiValueMap<K,V>
+    }
+}
+
+package java.util {
+    class List
+}
+
+package com.acme.autohaus {
+    package service {
+        class AutohausReadService << control >> << @Service >>
+        class NotFoundException
+    }
+
+package rest #DDDDDD {
+        class AutohausGetController << boundary >> << @RestController >> << @RequestMapping >> {
+            + @GetMapping get(@RequestParam queryParams: MultiValueMap<String, String>): List<Autohaus>
+            + @GetMapping getById(@PathVariable id: String): Autohaus
+        }
+
+        class CommonExceptionHandler << @ControllerAdvice >> {
+            + @ExceptionHandler @ResponseStatus onNotFound(ex: NotFoundException)
+        }
+
+        AutohausGetController o--> "1" AutohausReadService : service
+        AutohausGetController ..> Autohaus
+
+        AutohausGetController .up.> RestController
+        AutohausGetController .up.> RequestMapping
+        AutohausGetController .up.> PathVariable
+        AutohausGetController .up.> RequestParam
+        AutohausGetController .up.> MultiValueMap
+
+        CommonExceptionHandler .up.> ExceptionHandler
+        CommonExceptionHandler .up.> ResponseStatus
+        CommonExceptionHandler ..> NotFoundException
+        CommonExceptionHandler .up[hidden].> Autohaus
+
+        AutohausGetController .right.> List
+
+        Autohaus ..> AutohausReadService
+    }
+}
+
+hide empty members
+
+footer (c) Jonas Kirschner
+
+@enduml

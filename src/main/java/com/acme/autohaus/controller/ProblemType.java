@@ -16,6 +16,10 @@ package com.acme.autohaus.controller;
  * You should have received a copy of the GNU General Public License
  * along with Autohaus.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * Problem Type enum für einen spezifischeren Response-Header
+ */
 enum ProblemType {
     /// Constraints als Fehlerursache.
     CONSTRAINTS("constraints"),

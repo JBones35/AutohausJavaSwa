@@ -1,0 +1,75 @@
+@startuml Autohaus
+
+skinparam classAttributeIconSize 0
+
+package java {
+    package util {
+        class UUID
+        interface List<T>
+    }
+
+    package math {
+        class BigDecimal
+    }
+
+    package time {
+        class LocalDate
+    }
+
+    package com.acme.autohaus.entity #DDDDDD {
+    class Adresse {
+        strasse: String
+        hausnummer: String
+        plz: String
+        stadt: String
+    }
+
+    class Mitarbeiter {
+        mitarbeierId: UUID
+        name: String
+        geburtsdatum: LocalDate
+        position: String
+        gehalt: BigDecimal
+        adresse: Adresse
+    }
+
+    class Auto {
+        autoId: UUID
+        marke: String
+        modell: String
+        baujahr: int
+        besitzer:String
+        preis: BigDecimal
+    }
+
+    class Autohaus <<entity>> {
+        autohausID: UUID
+        name: String
+        standort: String
+        telefonnummer: String
+        email: String
+        autos: List<Auto>
+        mitarbeiter: List<Mitarbeiter>
+    }
+
+    Autohaus "1" *--> "0..*" Auto : autos
+    Autohaus "1" *--> "1..*" Mitarbeiter : mitarbeiter
+
+    Autohaus ..> UUID
+    Autohaus ..> List
+
+    Mitarbeiter *--> "1" Adresse : adresse
+
+    Mitarbeiter ..> UUID
+    Mitarbeiter ..> LocalDate
+    Mitarbeiter ..> BigDecimal
+
+    Auto ..> UUID
+    Auto ..> LocalDate
+}
+
+hide empty members
+
+footer (c) Jonas Kirschner
+
+@enduml

@@ -60,6 +60,10 @@ public final class NotFoundException extends RuntimeException {
         return id;
     }
 
+    /**s
+     * suchkriterien ermitteln
+     * @return fehlerhafte Suchkriterien
+     */
     public Map<String, List<String>> getSuchkriterien() {
         return suchkriterien;
     }

@@ -39,7 +39,7 @@ public interface AutohausMapper {
      * @param dto Das {@code AutohausDTO}, das konvertiert werden soll.
      * @return Eine neue {@code Autohaus}-Instanz basierend auf dem übergebenen DTO.
      */
-    @Mapping(target = "uuid", ignore = true)
+    @Mapping(target = "autohausId", ignore = true)
     Autohaus toAutohaus(AutohausDTO dto);
 
     /**

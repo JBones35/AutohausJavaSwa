@@ -116,4 +116,12 @@ public class MitarbeiterBuilder {
     public Mitarbeiter build() {
         return new Mitarbeiter(name, geburtsdatum, mitarbeiterId, position, gehalt, adresse);
     }
+
+    /**
+     * Privater Konstruktor, der verwendet wird, um einen neuen MitarbeiterBuilder zu erstellen.
+     * Dieser Konstruktor verhindert die direkte Instanziierung der Klasse außerhalb des Builders.
+     */
+    private MitarbeiterBuilder() {
+        // Der Konstruktor bleibt leer, um die Verwendung des Builders zu erzwingen.
+    }
 }

@@ -39,6 +39,9 @@ import java.util.stream.Stream;
 @SuppressWarnings({"checkstyle:ParameterNumber", "UtilityClassCanBeEnum",
     "UtilityClass", "MagicNumber", "RedundantSuppression", "java:S1192"})
 public final class MockDB {
+    /**
+     * Liste der Autohäuser
+     */
     @SuppressWarnings("StaticCollection")
     static final List<Autohaus> AUTOHAEUSER;
 

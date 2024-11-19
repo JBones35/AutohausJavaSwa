@@ -20,15 +20,15 @@ package com.acme.autohaus.service;
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.repository.AutohausRepository;
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
-/**
- * Service-Klasse für Leseoperationen auf Autohaus-Daten.
- */
+/// Anwendungslogik für Autohäuser
+/// ![Klassendiagramm](../../../../../asciidoc/AutohausReadService.svg)
 @Service
 public class AutohausReadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausReadService.class);
@@ -52,7 +52,7 @@ public class AutohausReadService {
      * @throws NotFoundException wenn keine Autohäuser in der Datenbank vorhanden sind
      */
     @SuppressWarnings({"ReturnCount", "NestedIfDepth", "checkstyle:CyclomaticComplexity"})
-    public @NonNull List<Autohaus> get(@NonNull final MultiValueMap<String, String> suchkriterien) {
+    public @NonNull List<Autohaus> get(@NonNull final Map<String, List<String>> suchkriterien) {
         LOGGER.debug("suche: suchkriterien = {}", suchkriterien);
 
         if (suchkriterien.isEmpty()) {
