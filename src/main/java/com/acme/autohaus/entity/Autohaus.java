@@ -1,7 +1,8 @@
 /*
  * Diese Datei ist Teil von [Projektname].
  *
- * [Projektname] ist freie Software: Sie können es unter den Bedingungen der GNU General Public License, veröffentlicht von
+ * [Projektname] ist freie Software: Sie können es unter den Bedingungen der GNU General Public License,
+ * veröffentlicht von
  * der Free Software Foundation, entweder Version 3 der Lizenz oder (nach Ihrer Wahl) einer späteren Version,
  * weiterverbreiten und/oder modifizieren.
  *

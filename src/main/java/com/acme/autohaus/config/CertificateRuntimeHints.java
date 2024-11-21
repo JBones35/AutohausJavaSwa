@@ -36,18 +36,18 @@ public class CertificateRuntimeHints {
     /**
      * Registrierung der PEM- und CRT-Dateien für GraalVM.
      */
-    static class CertificateResourcesRegistrar implements RuntimeHintsRegistrar {
-        @Override
-        public void registerHints(final RuntimeHints hints, final ClassLoader classLoader) {
-            hints.resources().registerPattern("*.pem");
-            hints.resources().registerPattern("*.crt");
-        }
-
+    static final class CertificateResourcesRegistrar implements RuntimeHintsRegistrar {
         /**
          * StandardKonstruktor
          */
         private CertificateResourcesRegistrar() {
             //Standardkonstruktor
+        }
+
+        @Override
+        public void registerHints(final RuntimeHints hints, final ClassLoader classLoader) {
+            hints.resources().registerPattern("*.pem");
+            hints.resources().registerPattern("*.crt");
         }
     }
 

@@ -18,8 +18,11 @@
 package com.acme.autohaus.repository;
 
 import com.acme.autohaus.entity.Autohaus;
-
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

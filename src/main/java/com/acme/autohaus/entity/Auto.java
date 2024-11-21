@@ -23,7 +23,8 @@ import java.util.UUID;
  * Die Klasse Auto repräsentiert ein Fahrzeug im Autohaus und enthält typische Eigenschaften wie
  * die Fahrzeug-ID, Marke, Modell, Baujahr, Besitzer und Preis.
  * <p>
- * Die Klasse stellt sicher, dass diese Eigenschaften nicht null sind und dass bestimmte Einschränkungen (z. B. positiver Preis, Jahr) eingehalten werden.
+ * Die Klasse stellt sicher, dass diese Eigenschaften
+ * nicht null sind und dass bestimmte Einschränkungen (z. B. positiver Preis, Jahr) eingehalten werden.
  * </p>
  */
 public class Auto {
@@ -190,7 +191,8 @@ public class Auto {
     /**
      * Gibt eine String-Darstellung des Autos zurück.
      * <p>
-     * Die String-Darstellung enthält alle Eigenschaften des Autos: Fahrzeug-ID, Marke, Modell, Baujahr, Besitzer und Preis.
+     * Die String-Darstellung enthält alle Eigenschaften des Autos:
+     * Fahrzeug-ID, Marke, Modell, Baujahr, Besitzer und Preis.
      * </p>
      *
      * @return Eine String-Darstellung des Autos.

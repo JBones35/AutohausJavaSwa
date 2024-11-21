@@ -1,8 +1,8 @@
 /*
  * Diese Datei ist Teil von [Projektname].
  *
- * [Projektname] ist freie Software: Sie können es unter den Bedingungen der GNU General Public License, veröffentlicht von
- * der Free Software Foundation, entweder Version 3 der Lizenz oder (nach Ihrer Wahl) einer späteren Version,
+ * [Projektname] ist freie Software: Sie können es unter den Bedingungen der GNU General Public License,
+ *  veröffentlicht von der Free Software Foundation, entweder Version 3 der Lizenz oder) einer späteren Version,
  * weiterverbreiten und/oder modifizieren.
  *
  * [Projektname] wird in der Hoffnung verbreitet, dass es nützlich ist, jedoch ohne jegliche Gewährleistung;
@@ -36,7 +36,8 @@ public class Adresse {
      * @param plz        Die Postleitzahl der Adresse (darf nicht null sein).
      * @param stadt      Die Stadt der Adresse (darf nicht null sein).
      */
-    public Adresse(final String strasse, final String hausnummer, final String plz, final String stadt) {
+    public Adresse(final String strasse, final String hausnummer,
+                   final String plz, final String stadt) {
         this.strasse = strasse;
         this.hausnummer = hausnummer;
         this.plz = plz;
