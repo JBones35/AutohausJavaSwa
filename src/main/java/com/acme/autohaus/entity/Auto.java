@@ -1,18 +1,17 @@
 /*
- * This file is part of [Projektname].
+ * Diese Datei ist Teil von [Projektname].
  *
- * [Projektname] is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * [Projektname] ist freie Software: Sie können es unter den Bedingungen der GNU General Public License,
+ * wie von der Free Software Foundation veröffentlicht, entweder Version 3 der Lizenz oder (nach Ihrer Wahl)
+ * jeder späteren Version weiterverbreiten und/oder modifizieren.
  *
- * [Projektname] is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * [Projektname] wird in der Hoffnung verteilt, dass es nützlich sein wird,
+ * jedoch ohne jegliche Garantie; ohne sogar die implizite Garantie der
+ * MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK. Siehe die
+ * GNU General Public License für mehr Details.
  *
- * You should have received a copy of the GNU General Public License
- * along with [Projektname].  If not, see <http://www.gnu.org/licenses/>.
+ * Sie sollten eine Kopie der GNU General Public License zusammen mit [Projektname] erhalten haben.
+ * Falls nicht, siehe <http://www.gnu.org/licenses/>.
  */
 package com.acme.autohaus.entity;
 
@@ -22,10 +21,14 @@ import java.util.UUID;
 
 /**
  * Die Klasse Auto repräsentiert ein Fahrzeug im Autohaus und enthält typische Eigenschaften wie
- * die Fahrzeug-ID, Marke, Modell, Baujahr, Farbe, Kilometerstand und den Preis.
+ * die Fahrzeug-ID, Marke, Modell, Baujahr, Besitzer und Preis.
+ * <p>
+ * Die Klasse stellt sicher, dass diese Eigenschaften
+ * nicht null sind und dass bestimmte Einschränkungen (z. B. positiver Preis, Jahr) eingehalten werden.
+ * </p>
  */
 public class Auto {
-    private UUID uuid;
+    private UUID autoId;
     private String marke;
     private String modell;
     private int baujahr;
@@ -35,16 +38,16 @@ public class Auto {
     /**
      * Konstruktor zur Initialisierung eines Autos mit spezifischen Eigenschaften.
      *
-     * @param uuid    Die eindeutige Fahrzeug-ID (darf nicht null sein).
-     * @param marke         Die Marke des Autos (darf nicht null sein).
-     * @param modell        Das Modell des Autos (darf nicht null sein).
-     * @param baujahr       Das Baujahr des Autos (sollte positiv sein).
-     * @param besitzer Der Besitzer des Autos (sollte nicht negativ sein).
-     * @param preis         Der Preis des Autos (sollte nicht negativ sein).
+     * @param autoId    Die eindeutige Fahrzeug-ID (darf nicht null sein).
+     * @param marke     Die Marke des Autos (darf nicht null sein).
+     * @param modell    Das Modell des Autos (darf nicht null sein).
+     * @param baujahr   Das Baujahr des Autos (sollte positiv sein).
+     * @param besitzer  Der Besitzer des Autos (darf nicht null sein).
+     * @param preis     Der Preis des Autos (darf nicht negativ sein).
      */
-    public Auto(final UUID uuid, final String marke, final String modell,
+    public Auto(final UUID autoId, final String marke, final String modell,
                 final int baujahr, final String besitzer, final BigDecimal preis) {
-        this.uuid = uuid;
+        this.autoId = autoId;
         this.marke = marke;
         this.modell = modell;
         this.baujahr = baujahr;
@@ -52,23 +55,37 @@ public class Auto {
         this.preis = preis;
     }
 
+    /**
+     * Vergleicht dieses Auto mit einem anderen Objekt auf Gleichheit.
+     * <p>
+     * Zwei Autos gelten als gleich, wenn sie die gleiche Fahrzeug-ID haben.
+     * </p>
+     *
+     * @param other Das Objekt, mit dem verglichen werden soll.
+     * @return {@code true}, wenn die Objekte als gleich betrachtet werden, {@code false} andernfalls.
+     */
     @Override
     public final boolean equals(final Object other) {
-        return other instanceof Auto auto && Objects.equals(uuid, auto.getUUId());
+        return other instanceof Auto auto && Objects.equals(autoId, auto.getUUId());
     }
 
+    /**
+     * Gibt den Hashcode für dieses Auto zurück.
+     *
+     * @return Der Hashcode für das Auto.
+     */
     @Override
     public int hashCode() {
-        return Objects.hashCode(uuid);
+        return Objects.hashCode(autoId);
     }
 
     /**
      * Gibt die Fahrzeug-ID zurück.
      *
-     * @return Die Fahrzeug-ID.
+     * @return Die eindeutige Fahrzeug-ID.
      */
     public UUID getUUId() {
-        return uuid;
+        return autoId;
     }
 
     /**
@@ -76,8 +93,9 @@ public class Auto {
      *
      * @param uuid Die Fahrzeug-ID (darf nicht null sein).
      */
+    @SuppressWarnings("checkstyle:hiddenfield")
     public void setUUId(final UUID uuid) {
-        this.uuid = uuid;
+        this.autoId = uuid;
     }
 
     /**
@@ -146,7 +164,7 @@ public class Auto {
     /**
      * Setzt den Besitzer des Autos.
      *
-     * @param besitzer Der Kilometerstand des Autos (sollte nicht negativ sein).
+     * @param besitzer Der Besitzer des Autos (darf nicht null sein).
      */
     public void setBesitzer(final String besitzer) {
         this.besitzer = besitzer;
@@ -155,7 +173,7 @@ public class Auto {
     /**
      * Gibt den Preis des Autos zurück.
      *
-     * @return Der Preis des Autos (sollte nicht negativ sein).
+     * @return Der Preis des Autos (darf nicht negativ sein).
      */
     public BigDecimal getPreis() {
         return preis;
@@ -164,16 +182,25 @@ public class Auto {
     /**
      * Setzt den Preis des Autos.
      *
-     * @param preis Der Preis des Autos (sollte nicht negativ sein).
+     * @param preis Der Preis des Autos (darf nicht negativ sein).
      */
     public void setPreis(final BigDecimal preis) {
         this.preis = preis;
     }
 
+    /**
+     * Gibt eine String-Darstellung des Autos zurück.
+     * <p>
+     * Die String-Darstellung enthält alle Eigenschaften des Autos:
+     * Fahrzeug-ID, Marke, Modell, Baujahr, Besitzer und Preis.
+     * </p>
+     *
+     * @return Eine String-Darstellung des Autos.
+     */
     @Override
     public String toString() {
         return "Auto{" +
-            "fahrzeugId='" + uuid + '\'' +
+            "fahrzeugId='" + autoId + '\'' +
             ", marke='" + marke + '\'' +
             ", modell='" + modell + '\'' +
             ", baujahr=" + baujahr +

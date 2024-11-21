@@ -17,7 +17,6 @@
 package com.acme.autohaus.repository.builder;
 
 import com.acme.autohaus.entity.Auto;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -31,6 +30,15 @@ public class AutoBuilder {
     private int baujahr;
     private String besitzer;
     private BigDecimal preis;
+
+    /**
+     * Standardkonstruktor für die Erstellung eines AutoBuilders.
+     * Dieser Konstruktor wird verwendet, um das Builder-Objekt zu instanziieren,
+     * bevor die Attribute des Autos gesetzt werden.
+     */
+    public AutoBuilder() {
+        // Standardkonstruktor ohne spezielle Initialisierungen
+    }
 
     /**
      * Erstellt einen neuen AutoBuilder.
@@ -88,7 +96,7 @@ public class AutoBuilder {
     /**
      * Setzt den Preis des Autos.
      *
-     * @param preis Die Farbe des Autos.
+     * @param preis Der Preis des Autos.
      * @return Der aktuelle AutoBuilder.
      */
     public AutoBuilder setPreis(final BigDecimal preis) {
@@ -97,9 +105,9 @@ public class AutoBuilder {
     }
 
     /**
-     * Setzt den besitzer des Autos.
+     * Setzt den Besitzer des Autos.
      *
-     * @param besitzer Der Kilometerstand des Autos.
+     * @param besitzer Der Besitzer des Autos.
      * @return Der aktuelle AutoBuilder.
      */
     public AutoBuilder setBesitzer(final String besitzer) {

@@ -28,9 +28,22 @@ import org.springframework.context.annotation.ImportRuntimeHints;
 @ImportRuntimeHints(CertificateRuntimeHints.CertificateResourcesRegistrar.class)
 public class CertificateRuntimeHints {
     /**
-     * Registrirung der PEM- und CRT-Dateien für GraalVM.
+     * StandardKonstruktor
      */
-    static class CertificateResourcesRegistrar implements RuntimeHintsRegistrar {
+    public CertificateRuntimeHints() {
+        //Standardkonstruktor
+    }
+    /**
+     * Registrierung der PEM- und CRT-Dateien für GraalVM.
+     */
+    static final class CertificateResourcesRegistrar implements RuntimeHintsRegistrar {
+        /**
+         * StandardKonstruktor
+         */
+        private CertificateResourcesRegistrar() {
+            //Standardkonstruktor
+        }
+
         @Override
         public void registerHints(final RuntimeHints hints, final ClassLoader classLoader) {
             hints.resources().registerPattern("*.pem");

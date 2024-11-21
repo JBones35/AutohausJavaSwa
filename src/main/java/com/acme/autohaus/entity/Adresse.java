@@ -1,26 +1,23 @@
 /*
- * This file is part of [Projektname].
+ * Diese Datei ist Teil von [Projektname].
  *
- * [Projektname] is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * [Projektname] ist freie Software: Sie können es unter den Bedingungen der GNU General Public License,
+ *  veröffentlicht von der Free Software Foundation, entweder Version 3 der Lizenz oder) einer späteren Version,
+ * weiterverbreiten und/oder modifizieren.
  *
- * [Projektname] is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * [Projektname] wird in der Hoffnung verbreitet, dass es nützlich ist, jedoch ohne jegliche Gewährleistung;
+ * ohne sogar die stillschweigende Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+ * Siehe die GNU General Public License für weitere Details.
  *
- * You should have received a copy of the GNU General Public License
- * along with [Projektname].  If not, see <http://www.gnu.org/licenses/>.
+ * Sie sollten eine Kopie der GNU General Public License zusammen mit [Projektname] erhalten haben.
+ * Falls nicht, siehe <http://www.gnu.org/licenses/>.
  */
-
 package com.acme.autohaus.entity;
 
 /**
- * Die Klasse Adresse repräsentiert eine physische Adresse mit typischen Attributen wie Straße, Hausnummer,
- * Postleitzahl und Stadt. Sie kann in verschiedenen Kontexten verwendet werden, beispielsweise zur
- * Speicherung der Adresse eines Kunden im Autohaus.
+ * Die Adresse-Klasse stellt eine physische Adresse mit typischen Attributen wie Straße, Hausnummer,
+ * Postleitzahl und Stadt dar. Sie kann in verschiedenen Kontexten verwendet werden, z. B. um die Adresse eines
+ * Kunden im Autohaussystem zu speichern.
  */
 public class Adresse {
     private String strasse;
@@ -29,14 +26,18 @@ public class Adresse {
     private String stadt;
 
     /**
-     * Konstruktor zur Initialisierung einer Adresse mit spezifischen Angaben.
+     * Konstruktor für eine Adresse mit spezifischen Details.
+     * <p>
+     * Alle Felder müssen nicht null sein, damit die Adresse gültig ist.
+     * </p>
      *
-     * @param strasse     Die Straße der Adresse (darf nicht null sein).
-     * @param hausnummer  Die Hausnummer der Adresse (darf nicht null sein).
-     * @param plz         Die Postleitzahl der Adresse (darf nicht null sein).
-     * @param stadt       Die Stadt der Adresse (darf nicht null sein).
+     * @param strasse    Die Straße der Adresse (darf nicht null sein).
+     * @param hausnummer Die Hausnummer der Adresse (darf nicht null sein).
+     * @param plz        Die Postleitzahl der Adresse (darf nicht null sein).
+     * @param stadt      Die Stadt der Adresse (darf nicht null sein).
      */
-    public Adresse(final String strasse, final String hausnummer, final String plz, final String stadt) {
+    public Adresse(final String strasse, final String hausnummer,
+                   final String plz, final String stadt) {
         this.strasse = strasse;
         this.hausnummer = hausnummer;
         this.plz = plz;
@@ -115,6 +116,14 @@ public class Adresse {
         this.stadt = stadt;
     }
 
+    /**
+     * Gibt eine Zeichenkettenrepräsentation der Adresse zurück.
+     * <p>
+     * Die Zeichenkette enthält alle Eigenschaften der Adresse: Straße, Hausnummer, Postleitzahl und Stadt.
+     * </p>
+     *
+     * @return Eine Zeichenkette, die die Adresse darstellt.
+     */
     @Override
     public String toString() {
         return "Adresse{" +

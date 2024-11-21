@@ -21,12 +21,15 @@ import com.acme.autohaus.dev.DevConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import static com.acme.autohaus.Banner.TEXT;
+
 /// Klasse mit der `main`-Methode für die Anwendung auf Basis von _Spring Boot_.
 ///
 /// @author [Jürgen Zimmermann](mailto:Juergen.Zimmermann@h-ka.de)
 @SpringBootApplication(proxyBeanMethods = false)
 @Import({ApplicationConfig.class, DevConfig.class})
+@ImportRuntimeHints(ApplicationConfig.GraalVmHints.class)
 @SuppressWarnings({"ImplicitSubclassInspection", "ClassUnconnectedToPackage"})
 public final class Application {
     private Application() {

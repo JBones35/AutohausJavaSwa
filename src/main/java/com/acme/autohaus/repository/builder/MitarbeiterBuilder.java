@@ -20,17 +20,26 @@ import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Mitarbeiter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * Der MitarbeiterBuilder ermöglicht die schrittweise Erstellung eines Mitarbeiters.
  */
-public class MitarbeiterBuilder {
+public final class MitarbeiterBuilder {
     private String name;
     private LocalDate geburtsdatum;
-    private String mitarbeiterId;
+    private UUID mitarbeiterId;
     private String position;
     private BigDecimal gehalt;
     private Adresse adresse;
+
+    /**
+     * Privater Konstruktor, der verwendet wird, um einen neuen MitarbeiterBuilder zu erstellen.
+     * Dieser Konstruktor verhindert die direkte Instanziierung der Klasse außerhalb des Builders.
+     */
+    private MitarbeiterBuilder() {
+        // Der Konstruktor bleibt leer, um die Verwendung des Builders zu erzwingen.
+    }
 
     /**
      * Erstellt einen neuen MitarbeiterBuilder.
@@ -69,7 +78,7 @@ public class MitarbeiterBuilder {
      * @param mitarbeiterId Die Mitarbeiter-ID des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setMitarbeiterId(final String mitarbeiterId) {
+    public MitarbeiterBuilder setMitarbeiterId(final UUID mitarbeiterId) {
         this.mitarbeiterId = mitarbeiterId;
         return this;
     }

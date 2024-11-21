@@ -21,15 +21,24 @@ import com.acme.autohaus.entity.Adresse;
 /**
  * Der AdresseBuilder ermöglicht die schrittweise Erstellung einer Adresse.
  */
-public class AdresseBuilder {
+public final class AdresseBuilder {
     private String strasse;
     private String hausnummer;
     private String plz;
     private String stadt;
 
-    /** Ein Builder-Objekt für die Klasse _Adresse_ bauen.
+    /**
+     * Privater Konstruktor, der verwendet wird, um einen neuen AdresseBuilder zu erstellen.
+     * Dieser Konstruktor verhindert die direkte Instanziierung der Klasse außerhalb des Builders.
+     */
+    private AdresseBuilder() {
+        // Der Konstruktor bleibt leer, um die Verwendung des Builders zu erzwingen.
+    }
+
+    /**
+     * Erstellt einen neuen AdresseBuilder.
      *
-     * @return Das Builder-Objekt
+     * @return Das Builder-Objekt.
      */
     public static AdresseBuilder getBuilder() {
         return new AdresseBuilder();
