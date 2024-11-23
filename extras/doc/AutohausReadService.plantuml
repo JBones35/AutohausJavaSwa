@@ -24,8 +24,8 @@ package com.acme.autohaus {
 
     package service #DDDDDD {
         class AutohausReadService << control >> << @Service >> {
-            + get(queryParams: Map<String, String>): List<Autohaus>
-            + getById(id: String):
+            + get(queryParams: Map<String,List<String>>): List<Autohaus>
+            + getById(id: String): Autohaus
         }
 
         AutohausReadService o--> AutohausRepository : repo

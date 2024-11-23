@@ -1,5 +1,4 @@
 package com.acme.autohaus.controller;
-
 /*
  * This file is part of JürgenZimmermanns Modul Softwarearchitektur.
  *

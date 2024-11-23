@@ -27,7 +27,7 @@ package com.acme.autohaus {
         class NotFoundException
     }
 
-package rest #DDDDDD {
+package controller #DDDDDD {
         class AutohausGetController << boundary >> << @RestController >> << @RequestMapping >> {
             + @GetMapping get(@RequestParam queryParams: MultiValueMap<String, String>): List<Autohaus>
             + @GetMapping getById(@PathVariable id: String): Autohaus
@@ -59,6 +59,6 @@ package rest #DDDDDD {
 
 hide empty members
 
-footer (c) David Flaig
+footer (c) Jonas Kirschner
 
 @enduml

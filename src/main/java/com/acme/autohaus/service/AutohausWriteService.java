@@ -53,12 +53,10 @@ public class AutohausWriteService {
     public Autohaus create(@Valid final Autohaus autohaus) {
         LOGGER.debug("create: {}", autohaus);
 
-        // Überprüfen, ob die E-Mail-Adresse bereits existiert
         if (autohausRepository.isEmailExisting(autohaus.getEmail())) {
             throw new EmailExistsException(autohaus.getEmail());
         }
 
-        // Neues Autohaus-Objekt erstellen und speichern
         final var autohausDB = autohausRepository.create(autohaus);
         LOGGER.debug("create: {}", autohausDB);
         return autohausDB;
@@ -76,21 +74,16 @@ public class AutohausWriteService {
         LOGGER.debug("update: {}", autohaus);
         LOGGER.debug("update: id={}", id);
 
-        // E-Mail des Autohaus-Objekts abrufen
         final var email = autohaus.getEmail();
-
-        // Autohaus aus der Datenbank anhand der ID abrufen
         final var autohausDb = autohausRepository
             .getByID(id.toString())
             .orElseThrow(() -> new NotFoundException(id.toString()));
 
-        // Überprüfen, ob die neue E-Mail-Adresse bereits existiert
         if (!Objects.equals(email, autohausDb.getEmail()) && autohausRepository.isEmailExisting(email)) {
             LOGGER.debug("update: email {} existiert", email);
             throw new EmailExistsException(email);
         }
 
-        // UUID setzen und Autohaus-Objekt aktualisieren
         autohaus.setUUId(id);
         autohausRepository.update(autohaus);
     }

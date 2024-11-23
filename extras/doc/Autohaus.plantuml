@@ -15,6 +15,7 @@ package java {
     package time {
         class LocalDate
     }
+}
 
     package com.acme.autohaus.entity #DDDDDD {
     class Adresse {
@@ -58,7 +59,7 @@ package java {
     Autohaus ..> UUID
     Autohaus ..> List
 
-    Mitarbeiter *--> "1" Adresse : adresse
+    Mitarbeiter "1" *--> "1" Adresse : adresse
 
     Mitarbeiter ..> UUID
     Mitarbeiter ..> LocalDate
@@ -67,6 +68,7 @@ package java {
     Auto ..> UUID
     Auto ..> LocalDate
 }
+
 
 hide empty members
 

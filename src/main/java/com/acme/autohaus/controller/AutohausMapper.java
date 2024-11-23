@@ -1,13 +1,3 @@
-package com.acme.autohaus.controller;
-
-import com.acme.autohaus.entity.Adresse;
-import com.acme.autohaus.entity.Auto;
-import com.acme.autohaus.entity.Autohaus;
-import com.acme.autohaus.entity.Mitarbeiter;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import static org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT;
-
 /*
  * This file is part of JürgenZimmermanns Modul Softwarearchitektur.
  *
@@ -24,6 +14,16 @@ import static org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT;
  * You should have received a copy of the GNU General Public License
  * along with Autohaus.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.acme.autohaus.controller;
+
+import com.acme.autohaus.entity.Adresse;
+import com.acme.autohaus.entity.Auto;
+import com.acme.autohaus.entity.Autohaus;
+import com.acme.autohaus.entity.Mitarbeiter;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import static org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT;
+
 
 /**
  * MapStruct-Mapper für die Konvertierung zwischen DTOs und Entitäten im Autohaus-Kontext.
