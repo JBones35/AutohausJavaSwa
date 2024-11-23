@@ -56,8 +56,6 @@ public record MitarbeiterDTO(
 ) {
     /**
      * Regulärer Ausdruck zur Validierung des Namens eines Mitarbeiters.
-     * Der Name muss zwischen 2 und 50 Zeichen lang sein und darf Buchstaben,
-     * Leerzeichen, Bindestriche sowie Apostrophe enthalten.
      */
-    public static final String NAME_PATTERN = "^[A-Za-zÄäÖöÜüß\\s'-]{2,50}$";
+    public static final String NAME_PATTERN = "(?:Dr\\.\\s)?(?:[A-ZÄÖÜ][a-zäöüß]+\\s)*(?:[Vv]an\\s)?[A-ZÄÖÜ][a-zäöüß]+\n";
 }
