@@ -43,11 +43,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @OpenAPIDefinition(info = @Info(title = "Autohaus API", version = "v1"))
 public class AutohausGetController {
     /**
-     * Das Muster für die Autohaus-ID (UUID-Format).
-     */
-    public static final String ID_PATTERN = "[\\da-f]{8}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{12}";
-
-    /**
      * Der Basis-Pfad für alle Endpunkte dieses Controllers.
      */
     public static final String API_PATH = "/autohaus";

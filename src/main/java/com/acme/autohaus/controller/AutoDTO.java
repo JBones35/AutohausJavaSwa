@@ -39,13 +39,11 @@ public record AutoDTO(
     String marke,
 
     @NotBlank
-    @Pattern(regexp = MODELL_PATTERN)
     String modell,
 
     int baujahr,
 
     @NotBlank
-    @Pattern(regexp = BESITZER_PATTERN)
     String besitzer,
 
     @NotNull
@@ -57,17 +55,5 @@ public record AutoDTO(
      * Regulärer Ausdruck zur Validierung der Marke.
      * Die Marke muss aus 2 bis 50 gültigen Zeichen bestehen, inklusive Buchstaben, Ziffern und Leerzeichen.
      */
-    public static final String MARKEN_PATTERN = "^[A-Za-zÄÖÜäöüß0-9 ]{2,50}$";
-
-    /**
-     * Regulärer Ausdruck zur Validierung des Modells.
-     * Das Modell muss aus 1 bis 50 gültigen Zeichen bestehen, inklusive Buchstaben, Ziffern und Leerzeichen.
-     */
-    public static final String MODELL_PATTERN = "^[A-Za-zÄÖÜäöüß0-9 ]{1,50}$";
-
-    /**
-     * Regulärer Ausdruck zur Validierung des Besitzernamens.
-     * Der Name muss aus 2 bis 100 gültigen Zeichen bestehen, inklusive Buchstaben und Leerzeichen.
-     */
-    public static final String BESITZER_PATTERN = "^[A-Za-zÄÖÜäöüß ]{2,100}$";
+    public static final String MARKEN_PATTERN = "^[A-Za-zÄÖÜäöüß0-9 ]{1,50}$";
 }

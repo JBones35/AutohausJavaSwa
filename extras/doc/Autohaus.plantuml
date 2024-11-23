@@ -54,7 +54,7 @@ package java {
     }
 
     Autohaus "1" *--> "0..*" Auto : autos
-    Autohaus "1" *--> "1..*" Mitarbeiter : mitarbeiter
+    Autohaus "1" *--> "0..*" Mitarbeiter : mitarbeiter
 
     Autohaus ..> UUID
     Autohaus ..> List

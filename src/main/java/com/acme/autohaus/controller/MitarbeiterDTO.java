@@ -18,6 +18,7 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Adresse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
@@ -45,6 +46,7 @@ public record MitarbeiterDTO(
     LocalDate geburtsdatum,
 
     @NotNull
+    @NotBlank
     String position,
 
     @NotNull

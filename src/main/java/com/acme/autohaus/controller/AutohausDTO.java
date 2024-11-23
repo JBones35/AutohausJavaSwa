@@ -54,12 +54,8 @@ public record AutohausDTO(
     @Email
     String email,
 
-    @Valid
-    @NotNull(groups = OnCreate.class)
     List<Auto> autos,
 
-    @Valid
-    @NotNull(groups = OnCreate.class)
     List<Mitarbeiter> mitarbeiter
 
 ) {
