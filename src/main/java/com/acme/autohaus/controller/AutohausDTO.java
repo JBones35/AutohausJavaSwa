@@ -18,7 +18,6 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Mitarbeiter;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

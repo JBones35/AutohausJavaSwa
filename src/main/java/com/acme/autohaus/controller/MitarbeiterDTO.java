@@ -59,5 +59,6 @@ public record MitarbeiterDTO(
     /**
      * Regulärer Ausdruck zur Validierung des Namens eines Mitarbeiters.
      */
-    public static final String NAME_PATTERN = "(?:Dr\\.\\s)?(?:[A-ZÄÖÜ][a-zäöüß]+\\s)*(?:[Vv]an\\s)?[A-ZÄÖÜ][a-zäöüß]+\n";
+    public static final String NAME_PATTERN =
+        "(?:Dr\\.\\s)?(?:[A-ZÄÖÜ][a-zäöüß]+\\s)*(?:[Vv]an\\s)?[A-ZÄÖÜ][a-zäöüß]+\n";
 }
