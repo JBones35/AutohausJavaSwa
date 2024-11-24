@@ -5,6 +5,7 @@ import com.acme.autohaus.service.EmailExistsException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import java.net.URI;
 import java.util.UUID;
@@ -104,7 +105,7 @@ public class AutohausWriteController {
     @ApiResponse(responseCode = "422", description = "Ungültige Werte oder Email vorhanden")
     void put(
         @PathVariable final UUID id,
-        @RequestBody final AutohausDTO autohausDTO
+        @RequestBody @Valid final AutohausDTO autohausDTO
     ) {
         LOGGER.debug("put: id={}, {}", id, autohausDTO);
         final var autohausInput = autohausMapper.toAutohaus(autohausDTO);

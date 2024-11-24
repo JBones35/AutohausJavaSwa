@@ -35,9 +35,9 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
-///Controller für die Verwaltung von Autohaus-Anfragen.
+/// Controller für die Verwaltung von Autohaus-Anfragen.
 /// Dieser Controller bietet Endpunkte zum Abrufen von Autohäusern aus der Datenbank.
-///![Klassendiagramm](../../../../../asciidoc/AutohausGetController.svg)
+/// ![Klassendiagramm](../../../../../asciidoc/AutohausGetController.svg)
 @RestController
 @RequestMapping(AutohausGetController.API_PATH)
 @OpenAPIDefinition(info = @Info(title = "Autohaus API", version = "v1"))

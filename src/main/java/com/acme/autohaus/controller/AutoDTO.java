@@ -53,7 +53,7 @@ public record AutoDTO(
 ) {
     /**
      * Regulärer Ausdruck zur Validierung der Marke.
-     * Die Marke muss aus 2 bis 50 gültigen Zeichen bestehen, inklusive Buchstaben, Ziffern und Leerzeichen.
+     * Die Marke muss aus 1 bis 50 gültigen Zeichen bestehen, inklusive Buchstaben, Ziffern und Leerzeichen.
      */
     public static final String MARKEN_PATTERN = "^[A-Za-zÄÖÜäöüß0-9 ]{1,50}$";
 }

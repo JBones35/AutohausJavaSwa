@@ -1,4 +1,3 @@
-package com.acme.autohaus.controller;
 /*
  * This file is part of JürgenZimmermanns Modul Softwarearchitektur.
  *
@@ -15,6 +14,7 @@ package com.acme.autohaus.controller;
  * You should have received a copy of the GNU General Public License
  * along with Autohaus.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.acme.autohaus.controller;
 
 /**
  * Problem Type enum für einen spezifischeren Response-Header

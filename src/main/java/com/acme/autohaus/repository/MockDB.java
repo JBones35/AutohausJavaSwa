@@ -63,7 +63,7 @@ public final class MockDB {
         return AutohausBuilder.getBuilder()
             .setName("Optik Automobile")
             .setStandort("Mühlacker")
-            .setUUID(UUID.randomUUID())
+            .setUUID(UUID.fromString("00000000-0000-0000-0000-000000000000"))
             .setTelefonnummer("015202744231")
             .setEmail("optik@gmx.de")
             .setMitarbeiter(createMitarbeiterList(UUID.randomUUID(), "Abdullah", "Office",  "Mühlacker", "35", "75417"))

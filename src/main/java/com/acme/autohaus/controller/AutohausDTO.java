@@ -63,13 +63,13 @@ public record AutohausDTO(
      * Unterstützt Namen mit optionalen Suffixen wie "GmbH", "AG", "Inc." oder "Ltd.".
      */
     public static final String NAME_PATTERN =
-        "^[A-ZÄÖÜa-zäöüß0-9&.,'’\\-()\\s]{2,70}$\n";
+        "^[A-Za-z0-9ÄäÖöÜüß&.,'\" ()\\-]{2,100}$";
 
     /**
      * Regulärer Ausdruck zur Validierung von Telefonnummern.
      * Unterstützt Ziffern, Leerzeichen, Klammern und das "+"-Präfix.
      */
-    public static final String TELEFONNUMER_PATTERN = "^(\\+49\\s?|0)[1-9][0-9\\s]{2,12}[0-9]$\n";
+    public static final String TELEFONNUMER_PATTERN =  "^(\\+49|0)[1-9]\\d{1,14}$";
 
     /**
      * Validierungsgruppe für die Erstellung eines neuen Autohauses.
