@@ -16,6 +16,13 @@
 # Aufruf:   docker compose up
 #           docker compose down
 
+# PostgreSQL statt H2:
+#   https://docs.sonarsource.com/sonarqube/latest/setup-and-upgrade/install-the-server/installing-sonarqube-from-docker
+
+# TLS durch einen Reverse Proxy
+#   https://bartugozet.medium.com/configuring-ssl-for-sonarqube-5a0212f61a41
+#   https://docs.sonarsource.com/sonarqube/latest/setup-and-upgrade/configure-and-operate-a-server/operating-the-server/#securing-the-server-behind-a-proxy
+
 services:
   sonarqube:
     image: sonarqube:10.7.0-community
@@ -41,11 +48,12 @@ services:
     hostname: sonarqube
     container_name: sonarqube
     cap_drop: [ ALL ]
+    restart: unless-stopped
     deploy:
       resources:
         limits:
           cpus: "2.0"
-          memory: 4096M
+          memory: 4G
         reservations:
           cpus: "2.0"
-          memory: 2048M
+          memory: 2G

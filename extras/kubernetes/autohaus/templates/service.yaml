@@ -40,4 +40,3 @@ spec:
       #protocol: TCP
   # https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   #type: ClusterIP
-  #type: LoadBalancer

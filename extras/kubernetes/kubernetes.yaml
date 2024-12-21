@@ -146,7 +146,7 @@ spec:
           #   kubernetes.docker.internal/autohausn wird zu kubernetes.docker.internal:8080/rest
           #   kubernetes.docker.internal/autohausn/123 wird zu kubernetes.docker.internal:8080/rest/123
           # https://github.com/kubernetes/ingress-nginx/issues/10200#issuecomment-1673141202
-          - path: /autohausn(/|$)(.*)
+          - path: /autohaeuser(/|$)(.*)
             #pathType: Prefix
             pathType: ImplementationSpecific
             backend:
@@ -275,7 +275,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: http
-            # Anzahl Seautohausn, bis die Probe fuer Liveness abgesetzt wird
+            # Anzahl Sekunden, bis die Probe fuer Liveness abgesetzt wird
             initialDelaySeconds: 45
             # default: 1 Sek.
             timeoutSeconds: 15
@@ -289,7 +289,7 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: http
-            # Anzahl Seautohausn, bis die Probe fuer Readiness abgesetzt wird
+            # Anzahl Sekunden, bis die Probe fuer Readiness abgesetzt wird
             initialDelaySeconds: 45
             # default: 1 Sek.
             timeoutSeconds: 15
@@ -299,7 +299,7 @@ spec:
             failureThreshold: 1
           volumeMounts:
             - mountPath: /tmp
-              name: log-autohaus
+              name: log-autohaus-v1
             - mountPath: /workspace/BOOT-INF/classes/private-key.pem
               name: private-key-autohaus
               readOnly: true
@@ -309,20 +309,20 @@ spec:
       serviceAccountName: autohaus
       automountServiceAccountToken: false
       volumes:
-        - name: log-autohaus
+        - name: log-autohaus-v1
           # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
           hostPath:
-            path: /run/desktop/mnt/host/c/Zimmermann/volumes/kunde-v1
+            path: /run/desktop/mnt/host/c/Zimmermann/volumes/autohaus-v1
             type: Directory
           # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
           #emptyDir: {}
         - name: private-key-autohaus
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/private-key.pem
+            path: /run/desktop/mnt/host/c/Users/j/IdeaProjects/Autohaus/autohaus/src/main/resources/private-key.pem
             type: File
         - name: certificate-autohaus
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/certificate.crt
+            path: /run/desktop/mnt/host/c/Users/j/IdeaProjects/Autohaus/autohaus/src/main/resources/certificate.crt
             type: File
 
 ---

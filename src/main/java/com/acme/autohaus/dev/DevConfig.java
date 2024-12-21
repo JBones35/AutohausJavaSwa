@@ -25,7 +25,7 @@ import static com.acme.autohaus.dev.DevConfig.DEV;
 /// @author [Jürgen Zimmermann](mailto:Juergen.Zimmermann@h-ka.de)
 @Profile(DEV)
 @SuppressWarnings({"ClassNamePrefixedWithPackageName", "HideUtilityClassConstructor"})
-public final class DevConfig implements com.acme.autohaus.dev.LogRequestHeaders, com.acme.autohaus.dev.K8s {
+public final class DevConfig implements LogRequestHeaders, K8s, Flyway, LogSignatureAlgorithms {
     /// Konstante für das Spring-Profile `dev`.
     public static final String DEV = "dev";
 

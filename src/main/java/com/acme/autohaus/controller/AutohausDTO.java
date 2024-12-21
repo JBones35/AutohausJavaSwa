@@ -16,12 +16,12 @@
  */
 package com.acme.autohaus.controller;
 
+import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Mitarbeiter;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+
 import java.util.List;
 
 /**
@@ -39,11 +39,8 @@ import java.util.List;
 public record AutohausDTO(
     @NotNull
     @Pattern(regexp = NAME_PATTERN)
+    @Size(max=NAME_MAX_LENGTH)
     String name,
-
-    @NotNull
-    @NotBlank
-    String standort,
 
     @NotNull
     @Pattern(regexp = TELEFONNUMER_PATTERN)
@@ -51,12 +48,20 @@ public record AutohausDTO(
 
     @NotNull
     @Email
+    @Size(max=EMAIL_MAX_LENGTH)
     String email,
+
+    @Valid
+    @NotNull(groups = OnCreate.class)
+    Adresse adresse,
 
     List<Auto> autos,
 
-    List<Mitarbeiter> mitarbeiter
+    List<Mitarbeiter> mitarbeiter,
 
+    String username,
+
+    String password
 ) {
     /**
      * Regulärer Ausdruck zur Validierung des Namens eines Autohauses.
@@ -70,6 +75,10 @@ public record AutohausDTO(
      * Unterstützt Ziffern, Leerzeichen, Klammern und das "+"-Präfix.
      */
     public static final String TELEFONNUMER_PATTERN =  "^(\\+49|0)[1-9]\\d{1,14}$";
+
+    private static final int NAME_MAX_LENGTH = 40;
+
+    private static final int EMAIL_MAX_LENGTH = 40;
 
     /**
      * Validierungsgruppe für die Erstellung eines neuen Autohauses.

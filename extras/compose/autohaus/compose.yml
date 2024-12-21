@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   docker compose up
+# Aufruf:   docker compose up autohaus
 #           Falls paketobuildpacks/builder-jammy-base:latest statt tiny verwendet wurde:
 #             docker compose exec autohaus bash
 #               id
@@ -30,16 +30,23 @@
 # https://docs.docker.com/compose/compose-file/compose-file-v3
 # https://github.com/compose-spec/compose-spec/blob/master/schema/compose-spec.json
 
+# https://docs.docker.com/compose/compose-file/14-include
+include:
+  - path:
+    - ../backend/compose.yml
+
 # https://docs.docker.com/compose/compose-file/05-services
 services:
   # https://stackoverflow.com/questions/76345884/how-to-select-specific-services-of-docker-compose-when-using-spring-boot-docker
   autohaus:
-    image: juergenzimmermann/autohaus:2024.10.1-buildpacks-bellsoft
-    #image: juergenzimmermann/autohaus:2024.10.1-buildpacks-eclipse
-    #image: juergenzimmermann/autohaus:2024.10.1-buildpacks-azul
-    #image: juergenzimmermann/autohaus:2024.10.1-eclipse-noble
-    #image: juergenzimmermann/autohaus:2024.10.1-eclipse-alpine
-    #image: juergenzimmermann/autohaus:2024.10.1-azul
+    image: juergenzimmermann/autohaus:2024.10.2-buildpacks-bellsoft
+    #image: juergenzimmermann/autohaus:2024.10.2-buildpacks-eclipse
+    #image: juergenzimmermann/autohaus:2024.10.2-buildpacks-azul
+    #image: juergenzimmermann/autohaus:2024.10.2-eclipse-noble
+    #image: juergenzimmermann/autohaus:2024.10.2-azul
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - published: 8080
         target: 8080
@@ -64,7 +71,7 @@ services:
         #target: /workspace/certificate.crt
         read_only: true
       - type: bind
-        source: C:\Zimmermann\volumes\kunde-v1
+        source: C:\Zimmermann\volumes\autohaus
         target: /tmp
     # https://docs.docker.com/compose/environment-variables/set-environment-variables
     env_file: .env

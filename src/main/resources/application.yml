@@ -118,15 +118,15 @@ spring:
   # ==============================================================================
   # M a i l
   # ==============================================================================
-#  mail:
-#    host: smtp.acme.com
-#    port: 25
+  mail:
+    host: smtp.acme.com
+    port: 25
 #    #protocol: smtp
-#    properties.mail:
-#      debug: false
-#      smtp:
-#        auth: false
-#        starttls.enable: false
+    properties.mail:
+      debug: false
+      smtp:
+        auth: false
+        starttls.enable: false
     # Mailserver des IZ
     #host: smtp.h-ka.de
     #port: 23

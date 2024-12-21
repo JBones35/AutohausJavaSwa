@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - present, Juergen Zimmermann, Hochschule Karlsruhe
+# Copyright (C) 2023 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # kubectl apply -f busybox.yaml
-#   nslookup autohaus.acme.svc.cluster.local
+#   nslookup kunde.acme.svc.cluster.local
 #   nslookup postgres.acme.svc.cluster.local
 # kubectl delete -f busybox.yaml
 

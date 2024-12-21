@@ -18,10 +18,8 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Adresse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import static com.acme.autohaus.controller.AutohausDTO.OnCreate;
@@ -50,11 +48,7 @@ public record MitarbeiterDTO(
     String position,
 
     @NotNull
-    BigDecimal gehalt,
-
-    @Valid
-    @NotNull(groups = OnCreate.class)
-    Adresse adresse
+    BigDecimal gehalt
 ) {
     /**
      * Regulärer Ausdruck zur Validierung des Namens eines Mitarbeiters.

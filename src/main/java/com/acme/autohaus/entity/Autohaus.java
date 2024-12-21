@@ -15,7 +15,12 @@
  */
 package com.acme.autohaus.entity;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,44 +29,143 @@ import java.util.UUID;
 /// ![Klassendiagramm](../../../../../asciidoc/Autohaus.svg)
 ///
 public class Autohaus {
+    /// NamedEntityGraph für das Attribut "adresse".
+    public static final String ADRESSE_GRAPH = "Autohaus.adresse";
+
+    /// NamedEntityGraph für die Attribute "adresse" und "umsaetze".
+    public static final String ADRESSE_AUTOS_GRAPH = "Kunde.adresseAutos";
+
+    /** Eindeutige ID des Autohauses (automatisch generiert als UUID). */
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    /** Version für Autohaus */
+    @Version
+    private int version;
+
+    /** Der Name des Autohauses. */
     private String name;
-    private String standort;
+
+    /** Telefonnummer des Autohauses. */
     private String telefonnummer;
+
+    /** E-Mail-Adresse des Autohauses. */
     private String email;
-    private UUID autohausId;
-    private final List<Auto> autos;
-    private final List<Mitarbeiter> mitarbeiter;
+
+    /** Die Adresse des Autohauses. */
+    @OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+        fetch = FetchType.LAZY, orphanRemoval = true)
+    private Adresse adresse;
+
+    /** Liste der im Autohaus verfügbaren Autos. */
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JoinColumn(name = "autohaus_id")
+    @OrderColumn(name = "idx", nullable = false)
+    @JsonIgnore
+    private List<Auto> autos;
+
+    /// Liste der Mitarbeiter im Autohaus.
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JoinColumn(name = "autohaus_id")
+    @OrderColumn(name = "idx", nullable = false)
+    @JsonIgnore
+    private List<Mitarbeiter> mitarbeiter;
+
+    /** Benutzername des Autohauses (z. B. für ein Login-System). */
+    private String username;
+
+    /** Zeitstempel der Erstellung des Eintrags. */
+    @CreationTimestamp
+    private LocalDateTime erzeugt;
+
+    /** Zeitstempel der letzten Aktualisierung des Eintrags. */
+    @UpdateTimestamp
+    private LocalDateTime aktualisiert;
 
     /**
-     * Konstruktor zur Initialisierung eines Autohauses mit spezifischen Eigenschaften und leeren Listen.
-     *
-     * @param name          Der Name des Autohauses.
-     * @param standort      Der Standort des Autohauses.
-     * @param telefonnummer  Die Telefonnummer des Autohauses.
-     * @param autohausId          Die UUID des Autohauses (kann null sein, eine neue UUID wird generiert).
-     * @param email         Die E-Mail-Adresse des Autohauses.
-     * @param autos         Die Liste der Autos (kann null sein, in diesem Fall wird eine leere Liste erstellt).
-     * @param mitarbeiter   Die Liste der Mitarbeiter (kann null sein, in diesem Fall wird eine leere Liste erstellt).
+     * Standardkonstruktor für Jakarta Persistence.
      */
-    public Autohaus(final String name, final String standort, final String telefonnummer, final UUID autohausId,
-                    final String email, final List<Auto> autos, final List<Mitarbeiter> mitarbeiter) {
+    public Autohaus() {
+    }
+
+    /**
+     * Konstruktor zum Initialisieren aller Attribute des Autohauses.
+     *
+     * @param id            die eindeutige ID des Autohauses.
+     * @param version       die Version des Eintrags.
+     * @param name          der Name des Autohauses.
+     * @param telefonnummer die Telefonnummer des Autohauses.
+     * @param email         die E-Mail-Adresse des Autohauses.
+     * @param adresse       die Adresse des Autohauses.
+     * @param autos         die Liste der im Autohaus verfügbaren Autos.
+     * @param mitarbeiter   die Liste der Mitarbeiter im Autohaus.
+     * @param username      der Benutzername des Autohauses.
+     * @param erzeugt       der Erstellungszeitpunkt des Eintrags.
+     * @param aktualisiert  der letzte Aktualisierungszeitpunkt des Eintrags.
+     */
+    @SuppressWarnings("ParameterNumber")
+    public Autohaus(final UUID id, final int version, final String name, final String telefonnummer, final String email,
+                    final Adresse adresse, final List<Auto> autos, final List<Mitarbeiter> mitarbeiter, final String username,
+                    final LocalDateTime erzeugt, final LocalDateTime aktualisiert) {
+        this.id = id;
+        this.version = version;
         this.name = name;
-        this.standort = standort;
         this.telefonnummer = telefonnummer;
-        this.autohausId = autohausId != null ? autohausId : UUID.randomUUID();
         this.email = email;
-        this.autos = autos != null ? autos : new ArrayList<>();
-        this.mitarbeiter = mitarbeiter != null ? mitarbeiter : new ArrayList<>();
+        this.adresse = adresse;
+        this.autos = autos;
+        this.mitarbeiter = mitarbeiter;
+        this.username = username;
+        this.erzeugt = erzeugt;
+        this.aktualisiert = aktualisiert;
     }
 
-    @Override
-    public final boolean equals(final Object other) {
-        return other instanceof Autohaus autohaus && Objects.equals(autohausId, autohaus.getUUId());
+    /**
+     * Autohausdaten überschreiben
+     *
+     * @param autohaus das Autohaus-Objekt mit den neuen Attributen.
+     */
+    public void set(final Autohaus autohaus) {
+        this.name = autohaus.name;
+        this.telefonnummer = autohaus.telefonnummer;
+        this.email = autohaus.email;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(autohausId);
+    /**
+     * Gibt die UUID des Autohauses zurück.
+     *
+     * @return Die UUID des Autohauses.
+     */
+    public UUID getId() {
+        return id;
+    }
+
+    /**
+     * Setzt die UUID des Autohauses.
+     *
+     * @param id Die UUID des Autohauses.
+     */
+    public void setID(final UUID id) {
+        this.id = id;
+    }
+
+    /**
+     * Gibt die Version des Eintrags zurück.
+     *
+     * @return die Version des Eintrags.
+     */
+    public int getVersion() {
+        return version;
+    }
+
+    /**
+     * Setzt die Version des Eintrags.
+     *
+     * @param version die neue Version des Eintrags.
+     */
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     /**
@@ -83,24 +187,6 @@ public class Autohaus {
     }
 
     /**
-     * Gibt den Standort des Autohauses zurück.
-     *
-     * @return Der Standort des Autohauses.
-     */
-    public String getStandort() {
-        return standort;
-    }
-
-    /**
-     * Setzt den Standort des Autohauses.
-     *
-     * @param standort Der Standort des Autohauses.
-     */
-    public void setStandort(final String standort) {
-        this.standort = standort;
-    }
-
-    /**
      * Gibt die Telefonnummer des Autohauses zurück.
      *
      * @return Die Telefonnummer des Autohauses.
@@ -116,24 +202,6 @@ public class Autohaus {
      */
     public void setTelefonnummer(final String telefonnummer) {
         this.telefonnummer = telefonnummer;
-    }
-
-    /**
-     * Gibt die UUID des Autohauses zurück.
-     *
-     * @return Die UUID des Autohauses.
-     */
-    public UUID getUUId() {
-        return autohausId;
-    }
-
-    /**
-     * Setzt die UUID des Autohauses.
-     *
-     * @param id Die UUID des Autohauses.
-     */
-    public void setUUId(final UUID id) {
-        this.autohausId = id;
     }
 
     /**
@@ -155,12 +223,39 @@ public class Autohaus {
     }
 
     /**
+     * Gibt den Standort des Autohauses zurück.
+     *
+     * @return Der Standort des Autohauses.
+     */
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    /**
+     * Setzt den Standort des Autohauses.
+     *
+     * @param adresse Der Standort des Autohauses.
+     */
+    public void setAdresse(final Adresse adresse) {
+        this.adresse = adresse;
+    }
+
+    /**
      * Gibt die Liste der Autos im Autohaus zurück.
      *
      * @return Die Liste der Autos. Die Liste ist nicht veränderbar durch den Aufruf dieser Methode.
      */
     public List<Auto> getAutos() {
         return autos;
+    }
+
+    /**
+     * Setzt die Liste der Autos im Autohaus.
+     *
+     * @param autos Die Liste der Autos.
+     */
+    public void setAutos(final List<Auto> autos) {
+        this.autos = autos;
     }
 
     /**
@@ -172,13 +267,86 @@ public class Autohaus {
         return mitarbeiter;
     }
 
+    /**
+     * Setzt die Liste der Mitarbeiter im Autohaus.
+     *
+     * @param mitarbeiter Die Liste der Mitarbeiter.
+     */
+    public void setMitarbeiter(final List<Mitarbeiter> mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
+    }
+
+    /**
+     * Gibt den Benutzernamen des Eintrags zurück.
+     *
+     * @return der Benutzername.
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Setzt den Benutzernamen des Eintrags.
+     *
+     * @param username der neue Benutzername.
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Gibt den Erstellungszeitpunkt des Eintrags zurück.
+     *
+     * @return der Zeitstempel der Erstellung.
+     */
+    public LocalDateTime getErzeugt() {
+        return erzeugt;
+    }
+
+    /**
+     * Setzt den Erstellungszeitpunkt des Eintrags.
+     *
+     * @param erzeugt der neue Erstellungszeitpunkt.
+     */
+    public void setErzeugt(LocalDateTime erzeugt) {
+        this.erzeugt = erzeugt;
+    }
+
+    /**
+     * Gibt den letzten Aktualisierungszeitpunkt des Eintrags zurück.
+     *
+     * @return der Zeitstempel der letzten Aktualisierung.
+     */
+    public LocalDateTime getAktualisiert() {
+        return aktualisiert;
+    }
+
+    /**
+     * Setzt den letzten Aktualisierungszeitpunkt des Eintrags.
+     *
+     * @param aktualisiert der neue Aktualisierungszeitpunkt.
+     */
+    public void setAktualisiert(LocalDateTime aktualisiert) {
+        this.aktualisiert = aktualisiert;
+    }
+
+    @Override
+    public final boolean equals(final Object other) {
+        return other instanceof Autohaus autohaus && Objects.equals(id, autohaus.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
     @Override
     public String toString() {
         return "Autohaus{" +
             "name='" + name + '\'' +
-            ", standort='" + standort + '\'' +
+            ", adresse='" + adresse + '\'' +
             ", telefonnummer='" + telefonnummer + '\'' +
-            ", UUID='" + autohausId + '\'' +
+            ", UUID='" + id + '\'' +
             ", email='" + email + '\'' +
             ", autos=" + autos +
             ", mitarbeiter=" + mitarbeiter +

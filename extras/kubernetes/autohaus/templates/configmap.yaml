@@ -25,8 +25,15 @@ data:
   # Key-Value-Paare (hier: fuer die Umgebungsvariable)
   TZ: Europe/Berlin
   LANG: de_DE.utf8
+  SPRING_MAIL_HOST: {{ .Values.mailhost }}
   SPRING_PROFILES_DEFAULT: {{ .Values.profile }}
   SPRING_PROFILES_ACTIVE: {{ .Values.profile }}
   SERVER_SSL_ENABLED: {{ quote .Values.ssl }}
   SERVER_HTTP2_ENABLED: {{ quote .Values.http2 }}
   SERVER_TOMCAT_BASEDIR: /tmp
+  SPRING_DATASOURCE_URL: {{ .Values.datasource.url }}
+  SPRING_DATASOURCE_USERNAME: {{ .Values.datasource.username }}
+  SPRING_H2_CONSOLE_ENABLED: {{ quote .Values.h2.console.enabled }}
+  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: {{ .Values.zipkin.endpoint }}
+  # MySQL:
+  #SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STRATEGY: com.acme.autohaus.entity.LowercaseNamingStrategy

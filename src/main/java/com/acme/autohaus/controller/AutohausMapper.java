@@ -39,7 +39,10 @@ public interface AutohausMapper {
      * @param dto Das {@code AutohausDTO}, das konvertiert werden soll.
      * @return Eine neue {@code Autohaus}-Instanz basierend auf dem übergebenen DTO.
      */
-    @Mapping(target = "autohausId", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "erzeugt", ignore = true)
+    @Mapping(target = "aktualisiert", ignore = true)
     Autohaus toAutohaus(AutohausDTO dto);
 
     /**
@@ -48,6 +51,7 @@ public interface AutohausMapper {
      * @param dto Das {@code AdresseDTO}, das konvertiert werden soll.
      * @return Eine neue {@code Adresse}-Instanz basierend auf dem übergebenen DTO.
      */
+    @Mapping(target = "id", ignore = true)
     Adresse toAdresse(AdresseDTO dto);
 
     /**
@@ -57,6 +61,7 @@ public interface AutohausMapper {
      * @param dto Das {@code AutoDTO}, das konvertiert werden soll.
      * @return Eine neue {@code Auto}-Instanz basierend auf dem übergebenen DTO.
      */
+    @Mapping(target = "id", ignore = true)
     Auto toAuto(AutoDTO dto);
 
     /**
@@ -65,5 +70,6 @@ public interface AutohausMapper {
      * @param dto Das {@code MitarbeiterDTO}, das konvertiert werden soll.
      * @return Eine neue {@code Mitarbeiter}-Instanz basierend auf dem übergebenen DTO.
      */
+    @Mapping(target = "id", ignore = true)
     Mitarbeiter toMitarbeiter(MitarbeiterDTO dto);
 }

@@ -31,7 +31,6 @@ package java {
         geburtsdatum: LocalDate
         position: String
         gehalt: BigDecimal
-        adresse: Adresse
     }
 
     class Auto {
@@ -46,7 +45,7 @@ package java {
     class Autohaus <<entity>> {
         autohausID: UUID
         name: String
-        standort: String
+        adresse: Adresse
         telefonnummer: String
         email: String
         autos: List<Auto>
@@ -55,11 +54,10 @@ package java {
 
     Autohaus "1" *--> "0..*" Auto : autos
     Autohaus "1" *--> "0..*" Mitarbeiter : mitarbeiter
+    Autohaus "1" *--> "1" Adresse : adresse
 
     Autohaus ..> UUID
     Autohaus ..> List
-
-    Mitarbeiter "1" *--> "1" Adresse : adresse
 
     Mitarbeiter ..> UUID
     Mitarbeiter ..> LocalDate

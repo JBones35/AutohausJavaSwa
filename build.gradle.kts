@@ -91,7 +91,7 @@
 //
 //  14) Initialisierung des Gradle Wrappers in der richtigen Version
 //      dazu ist ggf. eine Internetverbindung erforderlich
-//        gradle wrapper --gradle-version=8.11 --distribution-type=bin
+//        gradle wrapper --gradle-version=8.11.1 --distribution-type=bin
 
 // https://github.com/gradle/kotlin-dsl/tree/master/samples
 // https://docs.gradle.org/current/userguide/kotlin_dsl.html
@@ -102,7 +102,8 @@ import net.ltgt.gradle.errorprone.errorprone
 import java.nio.file.Paths
 
 val javaLanguageVersion = project.properties["javaLanguageVersion"] as? String? ?: JavaVersion.VERSION_23.majorVersion
-val javaLanguageVersionBuildpacks = project.properties["javaLanguageVersionBuildpacks"] as? String? ?: JavaVersion.VERSION_23.majorVersion
+val javaLanguageVersionBuildpacks =
+    project.properties["javaLanguageVersionBuildpacks"] as? String? ?: JavaVersion.VERSION_23.majorVersion
 val javaVersion = project.properties["javaVersion"] ?: libs.versions.javaVersion.get()
 
 // alternativ:   project.findProperty("...")
@@ -230,7 +231,7 @@ version = "2024.10.1"
 val imageTag = project.properties["imageTag"] ?: project.version.toString()
 
 sweeney {
-    enforce(mapOf("type" to "gradle", "expect" to "[8.11.0,8.11.0]"))
+    enforce(mapOf("type" to "gradle", "expect" to "[8.11.1,8.11.1]"))
     enforce(mapOf("type" to "jdk", "expect" to "[$javaVersion,$javaVersion]"))
     validate()
 }
@@ -260,8 +261,7 @@ repositories {
     maven("https://repo.spring.io/milestone")
 
     // Snapshots von Spring Framework, Spring Boot, Spring Data, Spring Security, Spring for GraphQL, ...
-    // TODO https://github.com/spring-projects/spring-boot/issues/42952
-    maven("https://repo.spring.io/snapshot") { mavenContent { snapshotsOnly() } }
+    // maven("https://repo.spring.io/snapshot") { mavenContent { snapshotsOnly() } }
 
     // Snapshots von Hibernate
     //maven("https://oss.sonatype.org/content/repositories/snapshots") { mavenContent { snapshotsOnly() } }
@@ -318,26 +318,26 @@ dependencies {
     if (useObservability) {
         //implementation(platform(libs.zipkin.reporter.bom))
         implementation(platform(libs.opentelemetry.bom))
-        implementation(platform(libs.micrometer.tracing.bom))
+        //implementation(platform(libs.micrometer.tracing.bom))
         implementation(platform(libs.prometheus.metrics.bom))
-        implementation(platform(libs.micrometer.bom))
+        //implementation(platform(libs.micrometer.bom))
     }
-    implementation(platform(libs.jackson.bom))
-    implementation(platform(libs.netty.bom))
-    implementation(platform(libs.reactor.bom))
-    implementation(platform(libs.spring.framework.bom))
+    //implementation(platform(libs.jackson.bom))
+    //implementation(platform(libs.netty.bom))
+    //implementation(platform(libs.reactor.bom))
+    //implementation(platform(libs.spring.framework.bom))
     if (usePersistence) {
         implementation(platform(libs.oracle.database.bom))
         implementation(platform(libs.hibernate.platform))
-        implementation(platform(libs.spring.data.bom))
+        //implementation(platform(libs.spring.data.bom))
     }
-    if (useSecurity) {
-        implementation(platform(libs.spring.security.bom))
-    }
+    //if (useSecurity) {
+    //    implementation(platform(libs.spring.security.bom))
+    //}
     if (useKotlin) {
         implementation(platform(libs.kotlin.bom))
     }
-    implementation(platform(libs.logback.parent))
+    //implementation(platform(libs.logback.parent))
 
     //testImplementation(platform(libs.assertj.bom))
     //testImplementation(platform(libs.mockito.bom))
@@ -497,12 +497,12 @@ dependencies {
     errorprone(libs.errorprone)
 
     constraints {
-        implementation(libs.bundles.tomcat)
+        //implementation(libs.bundles.tomcat)
         implementation(libs.jakarta.validation)
         implementation(libs.hibernate.validator)
-        if (useHateoas) {
-            implementation(libs.spring.hateoas)
-        }
+        //if (useHateoas) {
+        //    implementation(libs.spring.hateoas)
+        //}
 
         //if (useMail) {
         //    implementation(libs.angus-mail)
@@ -568,7 +568,7 @@ tasks.named<JavaCompile>("compileJava") {
         errorprone {
             errorproneArgs.add("-Xep:MissingSummary:OFF")
             // https://stackoverflow.com/questions/39561334/how-do-i-make-error-prone-ignore-my-generated-source-code#answer-76649506
-            disableWarningsInGeneratedCode = true   // fuer @Generated bei z.B. MapStruct
+            disableWarningsInGeneratedCode = true // fuer @Generated bei z.B. MapStruct
             excludedPaths = ".*/build/generated/.*" // fuer sonstigen generierten Code
         }
 

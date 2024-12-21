@@ -16,7 +16,6 @@
  */
 package com.acme.autohaus.repository.builder;
 
-import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Mitarbeiter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,10 +27,9 @@ import java.util.UUID;
 public final class MitarbeiterBuilder {
     private String name;
     private LocalDate geburtsdatum;
-    private UUID mitarbeiterId;
+    private UUID id;
     private String position;
     private BigDecimal gehalt;
-    private Adresse adresse;
 
     /**
      * Privater Konstruktor, der verwendet wird, um einen neuen MitarbeiterBuilder zu erstellen.
@@ -75,11 +73,11 @@ public final class MitarbeiterBuilder {
     /**
      * Setzt die Mitarbeiter-ID.
      *
-     * @param mitarbeiterId Die Mitarbeiter-ID des Mitarbeiters.
+     * @param id Die Mitarbeiter-ID des Mitarbeiters.
      * @return Der aktuelle MitarbeiterBuilder.
      */
-    public MitarbeiterBuilder setMitarbeiterId(final UUID mitarbeiterId) {
-        this.mitarbeiterId = mitarbeiterId;
+    public MitarbeiterBuilder setId(final UUID id) {
+        this.id = id;
         return this;
     }
 
@@ -106,22 +104,11 @@ public final class MitarbeiterBuilder {
     }
 
     /**
-     * Setzt die Adresse des Mitarbeiters.
-     *
-     * @param adresse Die Adresse des Mitarbeiters.
-     * @return Der aktuelle MitarbeiterBuilder.
-     */
-    public MitarbeiterBuilder setAdresse(final Adresse adresse) {
-        this.adresse = adresse;
-        return this;
-    }
-
-    /**
      * Baut eine Mitarbeiter-Instanz basierend auf den bisher festgelegten Werten.
      *
      * @return Eine neue Mitarbeiter-Instanz.
      */
     public Mitarbeiter build() {
-        return new Mitarbeiter(name, geburtsdatum, mitarbeiterId, position, gehalt, adresse);
+        return new Mitarbeiter(name, geburtsdatum, id, position, gehalt);
     }
 }

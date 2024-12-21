@@ -18,29 +18,35 @@
 package com.acme.autohaus.service;
 
 import com.acme.autohaus.entity.Autohaus;
-import com.acme.autohaus.repository.AutohausRepository;
+import com.acme.autohaus.repository.AutohausRepositoryDeprecated;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /// Anwendungslogik für Autohäuser
 /// ![Klassendiagramm](../../../../../asciidoc/AutohausReadService.svg)
 @Service
+@Transactional(readOnly = true)
 public class AutohausReadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausReadService.class);
 
-    private final AutohausRepository autohausRepository;
+    private final AutohausRepositoryDeprecated autohausRepositoryDeprecated;
+
+    private final SpecificationBuilder specificationBuilder;
 
     /**
      * Erstellt eine Instanz der AutohausReadService-Klasse.
      *
-     * @param autohausRepository das Repository für Autohaus-Operationen
+     * @param autohausRepositoryDeprecated das Repository für Autohaus-Operationen
      */
-    public AutohausReadService(final AutohausRepository autohausRepository) {
-        this.autohausRepository = autohausRepository;
+    public AutohausReadService(final AutohausRepositoryDeprecated autohausRepositoryDeprecated) {
+        this.autohausRepositoryDeprecated = autohausRepositoryDeprecated;
     }
 
     /**
@@ -52,46 +58,52 @@ public class AutohausReadService {
      */
     @SuppressWarnings({"ReturnCount", "NestedIfDepth", "checkstyle:CyclomaticComplexity"})
     public @NonNull List<Autohaus> get(@NonNull final Map<String, List<String>> suchkriterien) {
-        LOGGER.debug("suche: suchkriterien = {}", suchkriterien);
+        LOGGER.debug("find: suchkriterien={}", suchkriterien);
 
         if (suchkriterien.isEmpty()) {
-            return autohausRepository.getAll();
+            return autohausRepositoryDeprecated.getAll();
         }
 
         if (suchkriterien.size() == 1) {
-            final var name = suchkriterien.get("name");
-            if (name != null && name.size() == 1) {
-                final var autohaeuser = autohausRepository.getByName(name.getFirst());
-                if (autohaeuser.isEmpty()) {
-                    throw new NotFoundException(suchkriterien);
-                }
-                LOGGER.debug("suche (name): {}", name);
-                return autohaeuser;
+            final var namen = suchkriterien.get("name");
+            if (namen != null && namen.size() == 1) {
+                return findByName(namen.getFirst(), suchkriterien);
             }
 
-            final var standort = suchkriterien.get("standort");
-            if (standort != null && standort.size() == 1) {
-                final var autohaeuser = autohausRepository.getByStandort(standort.getFirst());
-                if (autohaeuser.isEmpty()) {
-                    throw new NotFoundException(suchkriterien);
-                }
-                LOGGER.debug("suche (standort): {}", standort);
-                return autohaeuser;
+            final var stadt = suchkriterien.get("stadt");
+            if (stadt != null && stadt.size() == 1) {
+                return findByStadt(stadt.getFirst(), suchkriterien);
             }
-
-            final var autohaeuser = autohausRepository.get(suchkriterien);
-            if (autohaeuser.isEmpty()) {
-                throw new NotFoundException(suchkriterien);
-            }
-            LOGGER.debug("suche: {}", autohaeuser);
-            return autohaeuser;
         }
 
-        final List<Autohaus> autohaeuser = autohausRepository.get(suchkriterien);
-        if (autohaeuser.isEmpty()) {
-            throw new NotFoundException("Keine Autohäuser in der Datenbank gefunden.");
+        final var specification = specificationBuilder
+            .build(suchkriterien)
+            .orElseThrow(() -> new NotFoundException(suchkriterien));
+        final var autohaus = AutohausRepositoryDeprecated.getAll(specification);
+        if (autohaus.isEmpty()) {
+            throw new NotFoundException(suchkriterien);
         }
+        LOGGER.debug("find: {}", autohaus);
+        return autohaus;
+    }
 
+    private List<Autohaus> findByName(final String name, final Map<String, List<String>> suchkriterien) {
+        LOGGER.trace("findByName: {}", name);
+        final var kunden = autohausRepositoryDeprecated.getByName(name);
+        if (kunden.isEmpty()) {
+            throw new NotFoundException(suchkriterien);
+        }
+        LOGGER.debug("findByName: {}", kunden);
+        return kunden;
+    }
+
+    private Collection<Autohaus> findByStadt(final String stadt, final Map<String, List<String>> suchkriterien) {
+        LOGGER.trace("findByStadt: {}", stadt);
+        final var autohaus = autohausRepositoryDeprecated
+            .getByStadt(stadt)
+            .orElseThrow(() -> new NotFoundException(suchkriterien));
+        final var autohaeuser = List.of(autohaus);
+        LOGGER.debug("findByStadt: {}", autohaeuser);
         return autohaeuser;
     }
 
@@ -105,7 +117,7 @@ public class AutohausReadService {
     public @NonNull Autohaus getByID(final String id) {
         LOGGER.debug("Starte Suche nach Autohaus mit id: {}", id);
 
-        final Autohaus autohaus = autohausRepository.getByID(id)
+        final Autohaus autohaus = autohausRepositoryDeprecated.getById(id)
             .orElseThrow(() -> new NotFoundException("Kein Autohaus für die angegebene ID gefunden."));
 
         LOGGER.debug("Suche nach Autohaus mit id beendet");

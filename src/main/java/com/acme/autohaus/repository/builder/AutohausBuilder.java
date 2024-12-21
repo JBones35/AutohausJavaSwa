@@ -16,9 +16,11 @@
  */
 package com.acme.autohaus.repository.builder;
 
+import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.entity.Mitarbeiter;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,13 +31,16 @@ import java.util.UUID;
  */
 public class AutohausBuilder {
     private String name;
-    private String standort;
+    private Adresse adresse;
     private String telefonnummer;
     private String email;
-
-    private UUID uuid;
+    private int version;
+    private UUID id;
     private List<Auto> autos;
     private List<Mitarbeiter> mitarbeiter;
+    private String username;
+    private LocalDateTime erzeugt;
+    private LocalDateTime aktualisiert;
 
     /**
      * Standardkonstruktor für die Erstellung eines AutohausBuilders.
@@ -67,13 +72,13 @@ public class AutohausBuilder {
     }
 
     /**
-     * Setzt den Standort des Autohauses.
+     * Setzt die Adresse des Autohauses.
      *
-     * @param standort Der Standort des Autohauses.
+     * @param adresse Der Standort des Autohauses.
      * @return Der aktuelle AutohausBuilder.
      */
-    public AutohausBuilder setStandort(final String standort) {
-        this.standort = standort;
+    public AutohausBuilder setAdresse(final Adresse adresse) {
+        this.adresse = adresse;
         return this;
     }
 
@@ -95,7 +100,7 @@ public class AutohausBuilder {
      * @return Der aktuelle AutohausBuilder.
      */
     public AutohausBuilder setUUID(final UUID id) {
-        this.uuid = id;
+        this.id = id;
         return this;
     }
 
@@ -133,11 +138,55 @@ public class AutohausBuilder {
     }
 
     /**
+     * Setzt die Version des Autohauses.
+     *
+     * @param version Die E-Mail-Adresse des Autohauses.
+     * @return Der aktuelle AutohausBuilder.
+     */
+    public AutohausBuilder setVersion(final int version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Setzt den Username des Autohauses.
+     *
+     * @param username Username des Autohauses.
+     * @return Der aktuelle AutohausBuilder.
+     */
+    public AutohausBuilder setUsername(final String username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Setzt das Erzeugungsdatum des Autohauses.
+     *
+     * @param erzeugt Das Erzeugungsdatum des Autohauses.
+     * @return Der aktuelle AutohausBuilder.
+     */
+    public AutohausBuilder setErzeugt(final LocalDateTime erzeugt) {
+        this.erzeugt = erzeugt;
+        return this;
+    }
+
+    /**
+     * Setzt das Erzeugungsdatum des Autohauses.
+     *
+     * @param aktualisiert Das Aktualisierungsdatum des Autohauses.
+     * @return Der aktuelle AutohausBuilder.
+     */
+    public AutohausBuilder setAktualisiert(final LocalDateTime aktualisiert) {
+        this.aktualisiert = aktualisiert;
+        return this;
+    }
+
+    /**
      * Baut und gibt ein neues Autohaus-Objekt mit den aktuell gesetzten Werten zurück.
      *
      * @return Das neu erstellte Autohaus-Objekt.
      */
     public Autohaus build() {
-        return new Autohaus(name, standort, telefonnummer, uuid, email, autos, mitarbeiter);
+        return new Autohaus(name, adresse, telefonnummer, id, email, autos, mitarbeiter, username, version, erzeugt, aktualisiert);
     }
 }

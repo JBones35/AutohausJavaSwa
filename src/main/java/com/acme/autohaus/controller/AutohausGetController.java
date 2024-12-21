@@ -18,21 +18,26 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.service.AutohausReadService;
+import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.NOT_MODIFIED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 
 /// Controller für die Verwaltung von Autohaus-Anfragen.
@@ -83,16 +88,27 @@ public class AutohausGetController {
      * Endpunkt zum Abrufen eines Autohauses anhand seiner ID.
      *
      * @param id Die ID des Autohauses.
+     * @param version die Version des Entities als Optional
      * @return Das Autohaus-Objekt mit der angegebenen ID.
      */
     @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @Observed(name = "get-by-id")
     @Operation(summary = "Suche mit der Autohaus-ID", tags = "Suchen")
     @ApiResponse(responseCode = "200", description = "Autohaus gefunden")
     @ApiResponse(responseCode = "404", description = "Autohaus nicht gefunden")
-    public Autohaus getByID(@PathVariable final String id) {
-        LOGGER.info("Suche nach Autohaus mit id: {}", id);
-        final Autohaus autohaus = autohausReadService.getByID(id);
-        LOGGER.info("Suche nach Autohaus mit id {} abgeschlossen", id);
-        return autohaus;
+    public ResponseEntity<Autohaus> getByID(@PathVariable final String id, @RequestHeader("If-None-Match") final Optional<String> version) {
+        LOGGER.debug("getById: id={}, version={}", id, version);
+
+        final var autohaus = autohausReadService.getByID(id);
+        LOGGER.trace("getById: {}", autohaus);
+
+        final var currentVersion = "\"" + autohaus.getVersion() + '"';
+        if (Objects.equals(version.orElse(null), currentVersion)) {
+            return status(NOT_MODIFIED).build();
+        }
+
+        System.out.println("autohaus=" + autohaus);
+        LOGGER.debug("getById: autohaus={}", autohaus);
+        return ok().eTag(currentVersion).body(autohaus);
     }
 }

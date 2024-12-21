@@ -14,15 +14,43 @@
  */
 package com.acme.autohaus.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+import java.util.Objects;
+import java.util.UUID;
+
 /**
  * Die Adresse-Klasse stellt eine physische Adresse mit typischen Attributen wie Straße, Hausnummer,
  * Postleitzahl und Stadt dar. Sie kann in verschiedenen Kontexten verwendet werden, z. B. um die Adresse eines
  * Kunden im Autohaussystem zu speichern.
  */
 public class Adresse {
+    /**
+     * Eindeutige ID der Adresse (automatisch generiert als UUID).
+     */
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    /**
+     * Die Straße der Adresse (z. B. "Musterstraße").
+     */
     private String strasse;
+
+    /**
+     * Die Hausnummer der Adresse (z. B. "12a").
+     */
     private String hausnummer;
+
+    /**
+     * Die Postleitzahl (PLZ) der Adresse (z. B. "12345").
+     */
     private String plz;
+
+    /**
+     * Die Stadt der Adresse (z. B. "Berlin").
+     */
     private String stadt;
 
     /**
@@ -36,14 +64,28 @@ public class Adresse {
      * @param plz        Die Postleitzahl der Adresse (darf nicht null sein).
      * @param stadt      Die Stadt der Adresse (darf nicht null sein).
      */
-    public Adresse(final String strasse, final String hausnummer,
+    public Adresse(final UUID id,final String strasse, final String hausnummer,
                    final String plz, final String stadt) {
+        this.id = id;
         this.strasse = strasse;
         this.hausnummer = hausnummer;
         this.plz = plz;
         this.stadt = stadt;
     }
 
+    /// ID ermitteln.
+    ///
+    /// @return Die ID.
+    public UUID getId() {
+        return id;
+    }
+
+    /// ID setzen.
+    ///
+    /// @param id Die ID.
+    public void setId(final UUID id) {
+        this.id = id;
+    }
     /**
      * Gibt die Straße der Adresse zurück.
      *
@@ -116,6 +158,16 @@ public class Adresse {
         this.stadt = stadt;
     }
 
+    @Override
+    public final boolean equals(final Object other) {
+        return other instanceof Adresse adresse && Objects.equals(id, adresse.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
     /**
      * Gibt eine Zeichenkettenrepräsentation der Adresse zurück.
      * <p>
@@ -127,6 +179,7 @@ public class Adresse {
     @Override
     public String toString() {
         return "Adresse{" +
+            "uuid=" + id +
             "strasse='" + strasse + '\'' +
             ", hausnummer='" + hausnummer + '\'' +
             ", plz='" + plz + '\'' +

@@ -16,6 +16,9 @@
  */
 package com.acme.autohaus.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -26,54 +29,68 @@ import java.util.UUID;
  * Sie enthält spezifische Eigenschaften eines Mitarbeiters wie Mitarbeiter-ID, Position, Gehalt und Adresse.
  */
 public class Mitarbeiter {
+    /**
+     * Die eindeutige ID des Mitarbeiters (automatisch generiert als UUID).
+     */
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    /**
+     * Der Name des Mitarbeiters.
+     */
     private String name;
+
+    /**
+     * Das Geburtsdatum des Mitarbeiters.
+     */
     private LocalDate geburtsdatum;
-    private UUID mitarbeiterId;
+
+    /**
+     * Die Position des Mitarbeiters (z. B. Manager, Techniker).
+     */
     private String position;
+
+    /**
+     * Das Gehalt des Mitarbeiters.
+     * Verwendet BigDecimal für eine präzise Darstellung von Geldwerten.
+     */
     private BigDecimal gehalt;
-    private Adresse adresse;
 
     /**
      * Konstruktor zur Initialisierung eines Mitarbeiters.
      *
      * @param name          Der Name des Mitarbeiters.
      * @param geburtsdatum  Das Geburtsdatum des Mitarbeiters.
-     * @param mitarbeiterId Die eindeutige Mitarbeiter-ID.
+     * @param id Die eindeutige Mitarbeiter-ID.
      * @param position      Die Position des Mitarbeiters im Autohaus.
      * @param gehalt        Das Gehalt des Mitarbeiters.
-     * @param adresse       Die Adresse des Mitarbeiters.
      */
     public Mitarbeiter(final String name, final LocalDate geburtsdatum,
-                       final UUID mitarbeiterId, final String position, final BigDecimal gehalt,
-                       final Adresse adresse) {
+                       final UUID id, final String position, final BigDecimal gehalt) {
         this.name = name;
         this.geburtsdatum = geburtsdatum;
-        this.mitarbeiterId = mitarbeiterId;
+        this.id = id;
         this.position = position;
         this.gehalt = gehalt;
-        this.adresse = adresse;
     }
 
     /**
-     * Vergleicht diesen Mitarbeiter mit einem anderen Objekt auf Gleichheit basierend auf der Mitarbeiter-ID.
+     * Gibt die eindeutige Mitarbeiter-ID zurück.
      *
-     * @param other Das Objekt, mit dem verglichen werden soll.
-     * @return true, wenn die Mitarbeiter-IDs gleich sind, andernfalls false.
+     * @return Die Mitarbeiter-ID.
      */
-    @Override
-    public final boolean equals(final Object other) {
-        return other instanceof Mitarbeiter mitarbeiter &&
-            Objects.equals(mitarbeiterId, mitarbeiter.mitarbeiterId);
+    public UUID getId() {
+        return id;
     }
 
     /**
-     * Berechnet den Hashcode basierend auf der Mitarbeiter-ID.
+     * Setzt die Mitarbeiter-ID.
      *
-     * @return Der Hashcode des Mitarbeiters.
+     * @param id Die neue Mitarbeiter-ID.
      */
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(mitarbeiterId);
+    public void setId(final UUID id) {
+        this.id = id;
     }
 
     /**
@@ -112,23 +129,7 @@ public class Mitarbeiter {
         this.geburtsdatum = geburtsdatum;
     }
 
-    /**
-     * Gibt die eindeutige Mitarbeiter-ID zurück.
-     *
-     * @return Die Mitarbeiter-ID.
-     */
-    public UUID getMitarbeiterId() {
-        return mitarbeiterId;
-    }
 
-    /**
-     * Setzt die Mitarbeiter-ID.
-     *
-     * @param mitarbeiterId Die neue Mitarbeiter-ID.
-     */
-    public void setMitarbeiterId(final UUID mitarbeiterId) {
-        this.mitarbeiterId = mitarbeiterId;
-    }
 
     /**
      * Gibt die Position des Mitarbeiters im Autohaus zurück.
@@ -167,21 +168,25 @@ public class Mitarbeiter {
     }
 
     /**
-     * Gibt die Adresse des Mitarbeiters zurück.
+     * Vergleicht diesen Mitarbeiter mit einem anderen Objekt auf Gleichheit basierend auf der Mitarbeiter-ID.
      *
-     * @return Die Adresse des Mitarbeiters.
+     * @param other Das Objekt, mit dem verglichen werden soll.
+     * @return true, wenn die Mitarbeiter-IDs gleich sind, andernfalls false.
      */
-    public Adresse getAdresse() {
-        return adresse;
+    @Override
+    public final boolean equals(final Object other) {
+        return other instanceof Mitarbeiter mitarbeiter &&
+            Objects.equals(id, mitarbeiter.id);
     }
 
     /**
-     * Setzt die Adresse des Mitarbeiters.
+     * Berechnet den Hashcode basierend auf der Mitarbeiter-ID.
      *
-     * @param adresse Die neue Adresse des Mitarbeiters.
+     * @return Der Hashcode des Mitarbeiters.
      */
-    public void setAdresse(final Adresse adresse) {
-        this.adresse = adresse;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     /**
@@ -192,10 +197,9 @@ public class Mitarbeiter {
     @Override
     public String toString() {
         return "Mitarbeiter{" +
-            "mitarbeiterId='" + mitarbeiterId + '\'' +
+            "mitarbeiterId='" + id + '\'' +
             ", position='" + position + '\'' +
             ", gehalt=" + gehalt +
-            ", adresse=" + adresse +
             ", name='" + name + '\'' +
             ", geburtsdatum=" + geburtsdatum +
             '}';

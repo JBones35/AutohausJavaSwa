@@ -18,7 +18,7 @@
 package com.acme.autohaus.service;
 
 import com.acme.autohaus.entity.Autohaus;
-import com.acme.autohaus.repository.AutohausRepository;
+import com.acme.autohaus.repository.AutohausRepositoryDeprecated;
 import jakarta.validation.Valid;
 import java.util.Objects;
 import java.util.UUID;
@@ -32,15 +32,15 @@ import org.springframework.stereotype.Service;
 public class AutohausWriteService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausWriteService.class);
 
-    private final AutohausRepository autohausRepository;
+    private final AutohausRepositoryDeprecated autohausRepositoryDeprecated;
 
     /**
      * Konstruktor zur Initialisierung des AutohausWriteService mit dem AutohausRepository.
      *
-     * @param autohausRepository das Repository für Autohaus-Daten.
+     * @param autohausRepositoryDeprecated das Repository für Autohaus-Daten.
      */
-    public AutohausWriteService(final AutohausRepository autohausRepository) {
-        this.autohausRepository = autohausRepository;
+    public AutohausWriteService(final AutohausRepositoryDeprecated autohausRepositoryDeprecated) {
+        this.autohausRepositoryDeprecated = autohausRepositoryDeprecated;
     }
 
     /**
@@ -53,11 +53,11 @@ public class AutohausWriteService {
     public Autohaus create(@Valid final Autohaus autohaus) {
         LOGGER.debug("create: {}", autohaus);
 
-        if (autohausRepository.isEmailExisting(autohaus.getEmail())) {
+        if (autohausRepositoryDeprecated.isEmailExisting(autohaus.getEmail())) {
             throw new EmailExistsException(autohaus.getEmail());
         }
 
-        final var autohausDB = autohausRepository.create(autohaus);
+        final var autohausDB = autohausRepositoryDeprecated.create(autohaus);
         LOGGER.debug("create: {}", autohausDB);
         return autohausDB;
     }
@@ -75,16 +75,16 @@ public class AutohausWriteService {
         LOGGER.debug("update: id={}", id);
 
         final var email = autohaus.getEmail();
-        final var autohausDb = autohausRepository
-            .getByID(id.toString())
+        final var autohausDb = autohausRepositoryDeprecated
+            .getById(id.toString())
             .orElseThrow(() -> new NotFoundException(id.toString()));
 
-        if (!Objects.equals(email, autohausDb.getEmail()) && autohausRepository.isEmailExisting(email)) {
+        if (!Objects.equals(email, autohausDb.getEmail()) && autohausRepositoryDeprecated.isEmailExisting(email)) {
             LOGGER.debug("update: email {} existiert", email);
             throw new EmailExistsException(email);
         }
 
-        autohaus.setUUId(id);
-        autohausRepository.update(autohaus);
+        autohaus.setID(id);
+        autohausRepositoryDeprecated.update(autohaus);
     }
 }

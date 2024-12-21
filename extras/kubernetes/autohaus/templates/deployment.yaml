@@ -39,17 +39,7 @@ spec:
       {{- include "autohaus.selectorLabels" . | nindent 6 }}
   # Anzahl laufender Pods fuer das Template zu diesem Deployment (s.u.) -> ReplicaSet
   replicas: {{ .Values.replicaCount }}
-  #strategy:
-  #  # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment
-  #  type: RollingUpdate
-  #  rollingUpdate:
-  #    # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#max-surge
-  #    # to surge = anschwellen
-  #    maxSurge: {{ .Values.rollingUpdate.maxSurge }}
-  #    # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#max-unavailable
-  #    # unavailable during the update process
-  #    maxUnavailable: {{ .Values.rollingUpdate.maxUnavailable }}
-  # max. Wartezeit in Seautohausn, bis "failed progressing" eintritt
+  # max. Wartezeit in Sekunden, bis "failed progressing" eintritt
   # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
   progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
   # https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates
@@ -64,7 +54,6 @@ spec:
       containers:
         # https://kubernetes.io/docs/concepts/containers/images
         - image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          # default
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Chart.Name }}
           # https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables
@@ -73,6 +62,12 @@ spec:
             # https://kubernetes.io/docs/concepts/configuration/configmap
             - configMapRef:
                 name: {{ include "autohaus.fullname" . }}
+          env:
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "autohaus.fullname" . }}
+                  key: SPRING_DATASOURCE_PASSWORD
           ports:
             - containerPort: {{ .Values.deployment.containerPort }}
               name: http
@@ -129,7 +124,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: http
-            # Anzahl Seautohausn, bis die Probe fuer Liveness abgesetzt wird
+            # Anzahl Sekunden, bis die Probe fuer Liveness abgesetzt wird
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelay }}
             # default: 1 Sek.
             timeoutSeconds: {{ .Values.livenessProbe.timeout }}
@@ -143,7 +138,7 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: http
-            # Anzahl Seautohausn, bis die Probe fuer Readiness abgesetzt wird
+            # Anzahl Sekunden, bis die Probe fuer Readiness abgesetzt wird
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelay }}
             # default: 1 Sek.
             timeoutSeconds: {{ .Values.readinessProbe.timeout }}
@@ -165,17 +160,17 @@ spec:
         - name: log-{{ include "autohaus.name" . }}{{ .Values.versionSuffix }}
           # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
           hostPath:
-            path: /run/desktop/mnt/host/c/Zimmermann/volumes/kunde-v1
+            path: /run/desktop/mnt/host/c/Zimmermann/volumes/{{ include "autohaus.name" . }}{{ .Values.versionSuffix }}
             type: Directory
           # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
           #emptyDir: {}
         - name: private-key-{{ include "autohaus.name" . }}
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/autohaus/autohaus/src/main/resources/private-key.pem
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/private-key.pem
             type: File
         - name: certificate-{{ include "autohaus.name" . }}
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/autohaus/autohaus/src/main/resources/certificate.crt
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/certificate.crt
             type: File
       # https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints
       # https://polaris.docs.fairwinds.com/checks/reliability
