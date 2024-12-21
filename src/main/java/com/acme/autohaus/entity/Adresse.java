@@ -14,9 +14,9 @@
  */
 package com.acme.autohaus.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-
 import java.util.Objects;
 import java.util.UUID;
 
@@ -25,6 +25,7 @@ import java.util.UUID;
  * Postleitzahl und Stadt dar. Sie kann in verschiedenen Kontexten verwendet werden, z. B. um die Adresse eines
  * Kunden im Autohaussystem zu speichern.
  */
+@Entity
 public class Adresse {
     /**
      * Eindeutige ID der Adresse (automatisch generiert als UUID).
@@ -53,18 +54,23 @@ public class Adresse {
      */
     private String stadt;
 
+    /// Konstruktor mit `package private`
+    public Adresse() {
+    //Standardkonstruktor
+    }
+
     /**
      * Konstruktor für eine Adresse mit spezifischen Details.
      * <p>
      * Alle Felder müssen nicht null sein, damit die Adresse gültig ist.
      * </p>
-     *
+     * @param id         Die Id der Adresse
      * @param strasse    Die Straße der Adresse (darf nicht null sein).
      * @param hausnummer Die Hausnummer der Adresse (darf nicht null sein).
      * @param plz        Die Postleitzahl der Adresse (darf nicht null sein).
      * @param stadt      Die Stadt der Adresse (darf nicht null sein).
      */
-    public Adresse(final UUID id,final String strasse, final String hausnummer,
+    public Adresse(final UUID id, final String strasse, final String hausnummer,
                    final String plz, final String stadt) {
         this.id = id;
         this.strasse = strasse;

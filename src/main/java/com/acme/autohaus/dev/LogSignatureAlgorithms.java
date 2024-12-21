@@ -16,19 +16,18 @@
  */
 package com.acme.autohaus.dev;
 
+import java.security.Provider;
+import java.security.Security;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-
-import java.security.Provider;
-import java.security.Security;
-import java.util.Arrays;
-
 import static org.springframework.context.annotation.Bean.Bootstrap.BACKGROUND;
 
+/// LogSignatureAlgorhitms Interface
 sealed interface LogSignatureAlgorithms permits DevConfig {
     /// Bean-Definition, um einen _Listener_ bereitzustellen, damit die im JDK vorhandenen Signature-Algorithmen
     /// aufgelistet werden.

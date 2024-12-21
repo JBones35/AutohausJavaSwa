@@ -318,11 +318,11 @@ spec:
           #emptyDir: {}
         - name: private-key-autohaus
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/j/IdeaProjects/Autohaus/autohaus/src/main/resources/private-key.pem
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/private-key.pem
             type: File
         - name: certificate-autohaus
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/j/IdeaProjects/Autohaus/autohaus/src/main/resources/certificate.crt
+            path: /run/desktop/mnt/host/c/Users/jonas/IdeaProjects/Autohaus/autohaus/src/main/resources/certificate.crt
             type: File
 
 ---

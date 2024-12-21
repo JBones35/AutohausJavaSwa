@@ -73,43 +73,43 @@ spring:
   # D a t e n b a nk
   # ==============================================================================
   # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data
-#  datasource:
-#    username: Change Me! # als System-Property oder Umgebungsvariable
-#    password: Change Me! # als System-Property oder Umgebungsvariable
-#    url: Change Me! # als System-Property oder Umgebungsvariable
-#  # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data-migration
-#  flyway:
-#    locations: classpath:db/migration/{vendor}
-#    create-schemas: false
-#  # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data
-#  jpa:
-#    #database-platform: POSTGRESQL
-#    hibernate:
-#      # https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl
-#      #ddl-auto: none
-#      naming.physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-#    open-in-view: false
-#    properties:
-#      # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/AvailableSettings.html
-#      # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/Environment.html
-#      hibernate:
-#        #default_schema: kunde
-#        jdbc:
-#          time_zone: Europe/Berlin
-#          batch_versioned_data: true
-#          # fuer Oracle: der Treiber teilt bei SELECT das Resultat in standardmaessig maximal 10 Datensaetze auf
-#          #fetch_size: 10
-#        order_inserts: true
-#        order_updates: true
-#        session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 20
-#        xml_mapping_enabled: false
-#        #mapping.default_list_semantics: LIST
-#      # https://stackoverflow.com/questions/31585698/spring-boot-jpa2-hibernate-enable-second-level-cache
-#      # https://jakarta.ee/xml/ns/persistence
-#      # https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd
-#      jakarta.persistence:
-#        sharedCache.mode: ENABLE_SELECTIVE
-#        validation.mode: NONE
+  datasource:
+    username: postgres
+    password: p
+    url: https://postgres:5432
+  # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data-migration
+  flyway:
+    locations: classpath:db/migration/{vendor}
+    create-schemas: false
+  # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data
+  jpa:
+    #database-platform: POSTGRESQL
+    hibernate:
+      # https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl
+      #ddl-auto: none
+      naming.physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false
+    properties:
+      # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/AvailableSettings.html
+      # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/Environment.html
+      hibernate:
+        #default_schema: kunde
+        jdbc:
+          time_zone: Europe/Berlin
+          batch_versioned_data: true
+          # fuer Oracle: der Treiber teilt bei SELECT das Resultat in standardmaessig maximal 10 Datensaetze auf
+          #fetch_size: 10
+        order_inserts: true
+        order_updates: true
+        session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 20
+        xml_mapping_enabled: false
+        #mapping.default_list_semantics: LIST
+      # https://stackoverflow.com/questions/31585698/spring-boot-jpa2-hibernate-enable-second-level-cache
+      # https://jakarta.ee/xml/ns/persistence
+      # https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd
+      jakarta.persistence:
+        sharedCache.mode: ENABLE_SELECTIVE
+        validation.mode: NONE
 
   # siehe org.springframework.boot.autoconfigure.jackson.JacksonProperties
   jackson.default-property-inclusion: non_null
@@ -121,7 +121,7 @@ spring:
   mail:
     host: smtp.acme.com
     port: 25
-#    #protocol: smtp
+    #protocol: smtp
     properties.mail:
       debug: false
       smtp:
@@ -140,14 +140,14 @@ spring:
   main.lazy-initialization: true
   mvc.problemdetails.enabled: true
 
-  # ==============================================================================
-  # S e c u r i t y
-  # ==============================================================================
-  # https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
-#  security.oauth2.resourceserver.jwt:
-#    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
-#    issuer-uri: ${app.keycloak.issuer-uri}
-    #jws-algorithms: RS256
+    # ==============================================================================
+    # S e c u r i t y
+    # ==============================================================================
+    # https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
+    #  security.oauth2.resourceserver.jwt:
+    #    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
+    #    issuer-uri: ${app.keycloak.issuer-uri}
+  #jws-algorithms: RS256
 
   # ==============================================================================
   # T L S
@@ -201,18 +201,18 @@ logging:
     org.springframework.security.core.userdetails.User: error
     io.micrometer.observation.contextpropagation.ObservationThreadLocalAccessor: error
 
-# ==============================================================================
-# E i g e n e   P r o p e r t i e s
-# ==============================================================================
-#app:
+  # ==============================================================================
+  # E i g e n e   P r o p e r t i e s
+  # ==============================================================================
+  #app:
   # siehe Klasse KeycloakProps
-#  keycloak:
-#    client-id: spring-client
-#    client-secret: Change Me! # als System-Property oder Umgebungsvariable
-#    host: keycloak
-#    port: 8080
-#    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
-#    issuer-uri: http://keycloak:8080/realms/spring
+  #  keycloak:
+  #    client-id: spring-client
+  #    client-secret: Change Me! # als System-Property oder Umgebungsvariable
+  #    host: keycloak
+  #    port: 8080
+  #    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
+  #    issuer-uri: http://keycloak:8080/realms/spring
 
   #mail:
   #  from: Theo Test <theo@test.de>
@@ -242,16 +242,16 @@ spring:
   # ==============================================================================
   # D a t e n b a n k
   # ==============================================================================
-#  datasource:
-#    # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#appendix.application-properties.data
-#    # https://github.com/brettwooldridge/HikariCP#frequently-used
-#    # https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
-#    # https://stackoverflow.com/questions/51136693/how-to-check-hikaricp-connection-pooling-is-working-or-not-in-java
-#    hikari:
-#      connection-timeout: 10000 # Default: 30_000 = 30 Sekunden
-#      idle-timeout: 120000 # Default: 600_000 = 10 Minuten
-#      maximum-pool-size: 3 # Default: 10
-#      minimum-idle: 1 # Default: maximumPoolSize
+  datasource:
+    # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#appendix.application-properties.data
+    # https://github.com/brettwooldridge/HikariCP#frequently-used
+    # https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
+    # https://stackoverflow.com/questions/51136693/how-to-check-hikaricp-connection-pooling-is-working-or-not-in-java
+    hikari:
+      connection-timeout: 10000 # Default: 30_000 = 30 Sekunden
+      idle-timeout: 120000 # Default: 600_000 = 10 Minuten
+      maximum-pool-size: 3 # Default: 10
+      minimum-idle: 1 # Default: maximumPoolSize
 
   devtools:
     #livereload.enabled: true
@@ -260,15 +260,6 @@ spring:
       #poll-interval: 1s
       #quiet-period: 400ms
       trigger-file: .reloadtrigger
-
-  # ==============================================================================
-  # D o c k e r   C o m p o s e   b e i   G r a d l e   u n d   M a v e n
-  # ==============================================================================
-  # https://docs.spring.io/spring-boot/reference/features/dev-services.html
-  # https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.docker-compose
-  # "gradle bootRun" mit Modul "org.springframework.boot:spring-boot-docker-compose"
-  # "spring-boot:run" mit Artifakt "org.springframework.boot:spring-boot-docker-compose"
-#  docker.compose.file: extras/compose/backend/compose.yml
 
   # ==============================================================================
   # G r a p h Q L
@@ -284,23 +275,23 @@ spring:
   # ==============================================================================
   # D a t e n b a n k
   # ==============================================================================
-#  jpa.properties:
-#    # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/AvailableSettings.html
-#    # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/Environment.html
-#    hibernate:
-#      connection.pool_size: 10
-#      format_sql: true
-#      highlight_sql: true
-#      # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/tool/schema/internal/script/MultiLineSqlScriptExtractor.html
-#      #hbm2ddl.import_files_sql_extractor: org.hibernate.tool.schema.internal.script.MultiLineSqlScriptExtractor
-#      use_sql_comments: true
+  # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/AvailableSettings.html
+  # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/cfg/Environment.html
+  jpa.properties.hibernate:
+    connection.pool_size: 3
+    # https://docs.jboss.org/hibernate/orm/current/introduction/html_single/Hibernate_Introduction.html#logging-generated-sql
+    format_sql: true
+    highlight_sql: true
+    # https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/tool/schema/internal/script/MultiLineSqlScriptExtractor.html
+    #hbm2ddl.import_files_sql_extractor: org.hibernate.tool.schema.internal.script.MultiLineSqlScriptExtractor
+    use_sql_comments: true
 
   # ==============================================================================
   # M a i l
   # ==============================================================================
-#  mail:
-#    host: localhost
-#    port: 8025
+  mail:
+    host: localhost
+    port: 8025
 
   # https://stackoverflow.com/questions/53723613/how-to-set-enableloggingrequestdetails-true-in-spring-boot#answer-62817587
   mvc.log-request-details: true
@@ -314,7 +305,7 @@ management:
     health:
       access: read_only
       probes.enabled: true
-      show-details: ALWAYS
+      show-details: always
     shutdown.access: unrestricted
   info.os.enabled: true
 
@@ -390,17 +381,3 @@ spring:
 server:
   http2.enabled: false
   ssl.enabled: false
-
----
-# ==============================================================================
-# P r o f i l e   " n a t i v e "
-# ==============================================================================
-spring:
-  config.activate.on-profile: native
-  ssl.bundle.pem.microservice:
-    keystore:
-      private-key: ./private-key.pem
-      certificate: ./certificate.crt
-    truststore:
-      certificate: ./certificate.crt
-logging.file.name: ./application.log

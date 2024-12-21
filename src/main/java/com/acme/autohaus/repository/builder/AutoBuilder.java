@@ -25,10 +25,15 @@ import java.util.UUID;
  */
 public class AutoBuilder {
     private UUID id;
+
     private String marke;
+
     private String modell;
+
     private int baujahr;
+
     private String besitzer;
+
     private BigDecimal preis;
 
     /**
@@ -94,17 +99,6 @@ public class AutoBuilder {
     }
 
     /**
-     * Setzt den Preis des Autos.
-     *
-     * @param preis Der Preis des Autos.
-     * @return Der aktuelle AutoBuilder.
-     */
-    public AutoBuilder setPreis(final BigDecimal preis) {
-        this.preis = preis;
-        return this;
-    }
-
-    /**
      * Setzt den Besitzer des Autos.
      *
      * @param besitzer Der Besitzer des Autos.
@@ -112,6 +106,17 @@ public class AutoBuilder {
      */
     public AutoBuilder setBesitzer(final String besitzer) {
         this.besitzer = besitzer;
+        return this;
+    }
+
+    /**
+     * Setzt den Preis des Autos.
+     *
+     * @param preis Der Preis des Autos.
+     * @return Der aktuelle AutoBuilder.
+     */
+    public AutoBuilder setPreis(final BigDecimal preis) {
+        this.preis = preis;
         return this;
     }
 

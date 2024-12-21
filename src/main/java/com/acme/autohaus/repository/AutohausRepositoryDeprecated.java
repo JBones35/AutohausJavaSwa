@@ -151,7 +151,7 @@ public class AutohausRepositoryDeprecated {
      */
     public @NonNull Autohaus create(final @NonNull Autohaus autohaus) {
         LOGGER.debug("create: {}", autohaus);
-        autohaus.setID(randomUUID());
+        autohaus.setId(randomUUID());
         AUTOHAEUSER.add(autohaus);
         LOGGER.debug("create: {}", autohaus);
         return autohaus;

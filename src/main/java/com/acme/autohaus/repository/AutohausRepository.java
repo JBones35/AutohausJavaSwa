@@ -17,64 +17,62 @@
 package com.acme.autohaus.repository;
 
 import com.acme.autohaus.entity.Autohaus;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import static com.acme.autohaus.entity.Autohaus.ADRESSE_GRAPH;
 
+/// Repository Interface für den Mikroservice Autohaus
 @Repository
 public interface AutohausRepository extends JpaRepository<Autohaus, UUID>, JpaSpecificationExecutor<Autohaus> {
     @EntityGraph(ADRESSE_GRAPH)
     @Override
-    List<Autohaus> getAll();
+    List<Autohaus> findAll();
 
     @EntityGraph(ADRESSE_GRAPH)
     @Override
-    List<Autohaus> getAll(@Nullable Specification<Autohaus> spec);
+    List<Autohaus> findAll(@Nullable Specification<Autohaus> spec);
 
     @EntityGraph(ADRESSE_GRAPH)
     @Override
-    Optional<Autohaus> getById(UUID id);
+    Optional<Autohaus> findById(UUID id);
 
-    /// Abfrage, ob es einen Autohausn mit gegebener Emailadresse gibt.
+    /// Autohaus zu gegebener Emailadresse aus der DB ermitteln.
     ///
     /// @param email Emailadresse für die Suche
-    /// @return true, falls es einen solchen Autohausn gibt, sonst false
+    /// @return Optional mit dem gefundenen Autohaus oder leeres Optional
+    @Query("""
+        SELECT a
+        FROM   #{#entityName} a
+        WHERE  lower(a.email) LIKE concat(lower(:email), '%')
+        """)
+    @EntityGraph(ADRESSE_GRAPH)
+    Optional<Autohaus> findByEmail(String email);
+
+    /// Abfrage, ob es ein Autohaus mit gegebener Emailadresse gibt.
+    ///
+    /// @param email Emailadresse für die Suche
+    /// @return true, falls es ein solches Autohaus gibt, sonst false
     @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
     boolean existsByEmail(String email);
 
-    /// Autohausn anhand des Nachnamens suchen.
+    /// Autohäuser anhand des Names suchen.
     ///
-    /// @param nachname Der (Teil-) Nachname der gesuchten Autohausn
-    /// @return Die gefundenen Autohausn oder eine leere Collection
+    /// @param name Der (Teil-) Name des gesuchten Autohauses
+    /// @return Die gefundenen Autohäuser oder eine leere Collection
     @Query("""
-        SELECT   k
-        FROM     #{#entityName} k
-        WHERE    lower(k.nachname) LIKE concat('%', lower(:nachname), '%')
-        ORDER BY k.nachname
+        SELECT   a
+        FROM     #{#entityName} a
+        WHERE    lower(a.name) LIKE concat('%', lower(:name), '%')
+        ORDER BY a.name
         """)
     @EntityGraph(ADRESSE_GRAPH)
     List<Autohaus> findByName(CharSequence name);
-
-    /// Abfrage, welche Nachnamen es zu einem Präfix gibt.
-    ///
-    /// @param prefix Nachname-Präfix.
-    /// @return Die passenden Nachnamen oder eine leere Collection.
-    @Query("""
-        SELECT DISTINCT k.nachname
-        FROM     #{#entityName} k
-        WHERE    lower(k.nachname) LIKE concat(lower(:prefix), '%')
-        ORDER BY k.nachname
-        """)
-    List<String> findNachnamenByPrefix(String prefix);
 }

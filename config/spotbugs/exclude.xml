@@ -12,7 +12,26 @@
         <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
     </Match>
     <Match>
+        <Clas name="com.acme.autohaus.entity.Autohaus_"/>
+    </Match>
+    <Match>
+        <Class name="com.acme.autohaus.entity.Adresse_"/>
+    </Match>
+    <Match>
+        <Class name="com.acme.autohaus.entity.Auto_"/>
+    </Match>
+    <Match>
+        <Class name="com.acme.autohaus.entity.Mitarbeiter_"/>
+    </Match>
+    <Match>
+        <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+    </Match>
+    <Match>
         <!-- https://spotbugs.readthedocs.io/en/stable/filter.html#class -->
-        <Class name="~.*\.*MapperImpl"/>
+        <Class name="~.*\.*Mapper"/>
+    </Match>
+    <Match>
+        <!-- https://spotbugs.readthedocs.io/en/stable/filter.html#class -->
+        <Class name="com.acme.autohaus.controller.AutohausMapper"/>
     </Match>
 </FindBugsFilter>

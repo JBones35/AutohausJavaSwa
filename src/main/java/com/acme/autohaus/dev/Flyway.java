@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Bean;
  * You should have received a copy of the GNU General Public License
  * along with Autohaus.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/// Flyway Interface
 sealed interface Flyway permits DevConfig {
     /// Bean-Definition, um eine Migrationsstrategie für _Flyway_ im Profile `dev` bereitzustellen, so dass zuerst alle
     /// Tabellen, Indexe etc. gelöscht und dann neu aufgebaut werden.

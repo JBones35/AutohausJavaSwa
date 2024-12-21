@@ -15,9 +15,9 @@
  */
 package com.acme.autohaus.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
@@ -26,6 +26,7 @@ import java.util.UUID;
  * Die Klasse Auto repräsentiert ein Fahrzeug im Autohaus und enthält typische Eigenschaften wie
  * die Fahrzeug-ID, Marke, Modell, Baujahr, Besitzer und Preis.
  */
+@Entity
 public class Auto {
     /**
      * Eindeutige ID des Fahrzeugs (automatisch generiert als UUID).
@@ -61,6 +62,11 @@ public class Auto {
      * Verwendet BigDecimal für exakte Berechnungen.
      */
     private BigDecimal preis;
+
+    /// Konstruktor mit `package private`
+    public Auto() {
+        //StandardKonstruktor
+    }
 
     /**
      * Konstruktor zur Initialisierung eines Autos mit spezifischen Eigenschaften.

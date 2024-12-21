@@ -17,7 +17,6 @@
 package com.acme.autohaus.repository.builder;
 
 import com.acme.autohaus.entity.Adresse;
-
 import java.util.UUID;
 
 /**
@@ -25,9 +24,13 @@ import java.util.UUID;
  */
 public final class AdresseBuilder {
     private UUID id;
+
     private String strasse;
+
     private String hausnummer;
+
     private String plz;
+
     private String stadt;
 
     /**
@@ -48,17 +51,6 @@ public final class AdresseBuilder {
     }
 
     /**
-     * Setzt die Straße der Adresse.
-     *
-     * @param strasse Die Straße.
-     * @return Der aktuelle AdresseBuilder.
-     */
-    public AdresseBuilder setStrasse(final String strasse) {
-        this.strasse = strasse;
-        return this;
-    }
-
-    /**
      * Setzt die ID der Adresse.
      *
      * @param id Die ID.
@@ -66,6 +58,17 @@ public final class AdresseBuilder {
      */
     public AdresseBuilder setId(final UUID id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Setzt die Straße der Adresse.
+     *
+     * @param strasse Die Straße.
+     * @return Der aktuelle AdresseBuilder.
+     */
+    public AdresseBuilder setStrasse(final String strasse) {
+        this.strasse = strasse;
         return this;
     }
 
@@ -108,6 +111,6 @@ public final class AdresseBuilder {
      * @return Eine neue Adresse-Instanz.
      */
     public Adresse build() {
-        return new Adresse(id,strasse, hausnummer, plz, stadt);
+        return new Adresse(id, strasse, hausnummer, plz, stadt);
     }
 }

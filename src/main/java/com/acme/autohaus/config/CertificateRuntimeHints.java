@@ -50,5 +50,4 @@ public class CertificateRuntimeHints {
             hints.resources().registerPattern("*.crt");
         }
     }
-
 }

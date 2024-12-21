@@ -16,13 +16,13 @@
  */
 package com.acme.autohaus.controller;
 
-import com.acme.autohaus.entity.Adresse;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import static com.acme.autohaus.controller.AutohausDTO.OnCreate;
 
 /**
  * Das MitarbeiterDTO repräsentiert die Daten eines Mitarbeiters,
@@ -32,7 +32,6 @@ import static com.acme.autohaus.controller.AutohausDTO.OnCreate;
  * @param geburtsdatum das Geburtsdatum des Mitarbeiters; muss in der Vergangenheit liegen und darf nicht null sein.
  * @param position     die Position des Mitarbeiters im Unternehmen; darf nicht null oder leer sein.
  * @param gehalt       das Gehalt des Mitarbeiters; darf nicht null sein und muss positiv sein.
- * @param adresse      die Adresse des Mitarbeiters; darf nicht null sein und wird zusätzlich validiert.
  */
 public record MitarbeiterDTO(
     @NotNull

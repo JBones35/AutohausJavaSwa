@@ -16,6 +16,7 @@
  */
 package com.acme.autohaus.dev;
 
+import java.util.Map;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
-
 import static com.acme.autohaus.dev.DevConfig.DEV;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

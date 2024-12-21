@@ -20,8 +20,10 @@ import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Mitarbeiter;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -30,16 +32,18 @@ import java.util.List;
  * sowie Listen von Autos und Mitarbeitern.
  *
  * @param name          der Name des Autohauses; darf nicht leer sein und muss einem bestimmten Muster entsprechen.
- * @param standort      der Standort des Autohauses; darf nicht leer oder null sein.
  * @param telefonnummer die Telefonnummer des Autohauses; muss einem bestimmten Muster entsprechen.
  * @param email         die E-Mail-Adresse des Autohauses; muss ein gültiges E-Mail-Format haben.
+ * @param adresse       Adresse des Autohauses
+ * @param username      Benutzername
+ * @param password      Password
  * @param autos         die Liste der Autos, die in diesem Autohaus verfügbar sind; darf nicht null sein.
  * @param mitarbeiter   die Liste der Mitarbeiter des Autohauses; darf nicht null sein.
  */
 public record AutohausDTO(
     @NotNull
     @Pattern(regexp = NAME_PATTERN)
-    @Size(max=NAME_MAX_LENGTH)
+    @Size(max = NAME_MAX_LENGTH)
     String name,
 
     @NotNull
@@ -48,7 +52,7 @@ public record AutohausDTO(
 
     @NotNull
     @Email
-    @Size(max=EMAIL_MAX_LENGTH)
+    @Size(max = EMAIL_MAX_LENGTH)
     String email,
 
     @Valid

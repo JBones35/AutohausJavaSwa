@@ -26,9 +26,13 @@ import java.util.UUID;
  */
 public final class MitarbeiterBuilder {
     private String name;
+
     private LocalDate geburtsdatum;
+
     private UUID id;
+
     private String position;
+
     private BigDecimal gehalt;
 
     /**
@@ -46,6 +50,17 @@ public final class MitarbeiterBuilder {
      */
     public static MitarbeiterBuilder getBuilder() {
         return new MitarbeiterBuilder();
+    }
+
+    /**
+     * Setzt die Mitarbeiter-ID.
+     *
+     * @param id Die Mitarbeiter-ID des Mitarbeiters.
+     * @return Der aktuelle MitarbeiterBuilder.
+     */
+    public MitarbeiterBuilder setId(final UUID id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -67,17 +82,6 @@ public final class MitarbeiterBuilder {
      */
     public MitarbeiterBuilder setGeburtsdatum(final LocalDate geburtsdatum) {
         this.geburtsdatum = geburtsdatum;
-        return this;
-    }
-
-    /**
-     * Setzt die Mitarbeiter-ID.
-     *
-     * @param id Die Mitarbeiter-ID des Mitarbeiters.
-     * @return Der aktuelle MitarbeiterBuilder.
-     */
-    public MitarbeiterBuilder setId(final UUID id) {
-        this.id = id;
         return this;
     }
 

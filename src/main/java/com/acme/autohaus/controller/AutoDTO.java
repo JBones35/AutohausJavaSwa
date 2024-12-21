@@ -51,7 +51,7 @@ public record AutoDTO(
     BigDecimal preis
 
 ) {
-     /**
+    /**
      * Regulärer Ausdruck zur Validierung der Marke.
      * Die Marke muss aus 1 bis 50 gültigen Zeichen bestehen, inklusive Buchstaben, Ziffern und Leerzeichen.
      */

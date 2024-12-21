@@ -31,15 +31,25 @@ import java.util.UUID;
  */
 public class AutohausBuilder {
     private String name;
+
     private Adresse adresse;
+
     private String telefonnummer;
+
     private String email;
+
     private int version;
+
     private UUID id;
+
     private List<Auto> autos;
+
     private List<Mitarbeiter> mitarbeiter;
+
     private String username;
+
     private LocalDateTime erzeugt;
+
     private LocalDateTime aktualisiert;
 
     /**
@@ -61,6 +71,28 @@ public class AutohausBuilder {
     }
 
     /**
+     * Setzt die UUID des Autohauses.
+     *
+     * @param id Die eindeutige UUID des Autohauses.
+     * @return Der aktuelle AutohausBuilder.
+     */
+    public AutohausBuilder setId(final UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Setzt die Version des Autohauses.
+     *
+     * @param version Die E-Mail-Adresse des Autohauses.
+     * @return Der aktuelle AutohausBuilder.
+     */
+    public AutohausBuilder setVersion(final int version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Setzt den Namen des Autohauses.
      *
      * @param name Der Name des Autohauses.
@@ -68,17 +100,6 @@ public class AutohausBuilder {
      */
     public AutohausBuilder setName(final String name) {
         this.name = name;
-        return this;
-    }
-
-    /**
-     * Setzt die Adresse des Autohauses.
-     *
-     * @param adresse Der Standort des Autohauses.
-     * @return Der aktuelle AutohausBuilder.
-     */
-    public AutohausBuilder setAdresse(final Adresse adresse) {
-        this.adresse = adresse;
         return this;
     }
 
@@ -93,16 +114,6 @@ public class AutohausBuilder {
         return this;
     }
 
-    /**
-     * Setzt die UUID des Autohauses.
-     *
-     * @param id Die eindeutige UUID des Autohauses.
-     * @return Der aktuelle AutohausBuilder.
-     */
-    public AutohausBuilder setUUID(final UUID id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Setzt die E-Mail-Adresse des Autohauses.
@@ -112,6 +123,17 @@ public class AutohausBuilder {
      */
     public AutohausBuilder setEmail(final String email) {
         this.email = email;
+        return this;
+    }
+
+    /**
+     * Setzt die Adresse des Autohauses.
+     *
+     * @param adresse Der Standort des Autohauses.
+     * @return Der aktuelle AutohausBuilder.
+     */
+    public AutohausBuilder setAdresse(final Adresse adresse) {
+        this.adresse = adresse;
         return this;
     }
 
@@ -134,17 +156,6 @@ public class AutohausBuilder {
      */
     public AutohausBuilder setMitarbeiter(final List<Mitarbeiter> mitarbeiter) {
         this.mitarbeiter = mitarbeiter;
-        return this;
-    }
-
-    /**
-     * Setzt die Version des Autohauses.
-     *
-     * @param version Die E-Mail-Adresse des Autohauses.
-     * @return Der aktuelle AutohausBuilder.
-     */
-    public AutohausBuilder setVersion(final int version) {
-        this.version = version;
         return this;
     }
 
@@ -187,6 +198,7 @@ public class AutohausBuilder {
      * @return Das neu erstellte Autohaus-Objekt.
      */
     public Autohaus build() {
-        return new Autohaus(name, adresse, telefonnummer, id, email, autos, mitarbeiter, username, version, erzeugt, aktualisiert);
+        return new Autohaus(id, version, name, telefonnummer, email, adresse,
+            autos, mitarbeiter, username, erzeugt, aktualisiert);
     }
 }

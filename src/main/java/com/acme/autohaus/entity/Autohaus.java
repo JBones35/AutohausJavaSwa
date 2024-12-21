@@ -16,18 +16,38 @@
 package com.acme.autohaus.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderColumn;
+import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 
 /// Daten eines Autohauses. In DDD ist Autohaus ein Aggregate Root.
 /// ![Klassendiagramm](../../../../../asciidoc/Autohaus.svg)
 ///
+@Entity
+@NamedEntityGraph(name = Autohaus.ADRESSE_GRAPH, attributeNodes = @NamedAttributeNode("adresse"))
+@SuppressWarnings({
+    "ClassFanOutComplexity",
+    "RequireEmptyLineBeforeBlockTagGroup",
+    "DeclarationOrder",
+    "JavadocDeclaration",
+    "MissingSummary",
+    "RedundantSuppression", "com.intellij.jpb.LombokEqualsAndHashCodeInspection"})
 public class Autohaus {
     /// NamedEntityGraph für das Attribut "adresse".
     public static final String ADRESSE_GRAPH = "Autohaus.adresse";
@@ -106,7 +126,8 @@ public class Autohaus {
      */
     @SuppressWarnings("ParameterNumber")
     public Autohaus(final UUID id, final int version, final String name, final String telefonnummer, final String email,
-                    final Adresse adresse, final List<Auto> autos, final List<Mitarbeiter> mitarbeiter, final String username,
+                    final Adresse adresse, final List<Auto> autos,
+                    final List<Mitarbeiter> mitarbeiter, final String username,
                     final LocalDateTime erzeugt, final LocalDateTime aktualisiert) {
         this.id = id;
         this.version = version;
@@ -146,7 +167,8 @@ public class Autohaus {
      *
      * @param id Die UUID des Autohauses.
      */
-    public void setID(final UUID id) {
+    @SuppressWarnings("checkstyle:hiddenfield")
+    public void setId(final UUID id) {
         this.id = id;
     }
 
@@ -164,7 +186,7 @@ public class Autohaus {
      *
      * @param version die neue Version des Eintrags.
      */
-    public void setVersion(int version) {
+    public void setVersion(final int version) {
         this.version = version;
     }
 
@@ -290,7 +312,7 @@ public class Autohaus {
      *
      * @param username der neue Benutzername.
      */
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -308,7 +330,7 @@ public class Autohaus {
      *
      * @param erzeugt der neue Erstellungszeitpunkt.
      */
-    public void setErzeugt(LocalDateTime erzeugt) {
+    public void setErzeugt(final LocalDateTime erzeugt) {
         this.erzeugt = erzeugt;
     }
 
@@ -326,7 +348,7 @@ public class Autohaus {
      *
      * @param aktualisiert der neue Aktualisierungszeitpunkt.
      */
-    public void setAktualisiert(LocalDateTime aktualisiert) {
+    public void setAktualisiert(final LocalDateTime aktualisiert) {
         this.aktualisiert = aktualisiert;
     }
 

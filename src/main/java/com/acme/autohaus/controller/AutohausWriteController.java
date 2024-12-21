@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.groups.Default;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -18,14 +17,23 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import static com.acme.autohaus.controller.AutohausDTO.OnCreate;
 import static com.acme.autohaus.controller.AutohausGetController.API_PATH;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;
+import static org.springframework.http.HttpStatus.PRECONDITION_REQUIRED;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
-
 
 /**
  * Controller für Schreiboperationen im Autohaus.
@@ -79,7 +87,7 @@ public class AutohausWriteController {
     ResponseEntity<Void> post(
         @RequestBody @Validated({Default.class, OnCreate.class}) final AutohausDTO autohausDTO,
         final HttpServletRequest request
-    ) throws URISyntaxException {
+    ) {
         LOGGER.debug("post: autohausDTO={}", autohausDTO);
 
         if (autohausDTO.username() == null || autohausDTO.password() == null) {
@@ -98,6 +106,8 @@ public class AutohausWriteController {
      *
      * @param id          UUID des zu aktualisierenden Autohauses.
      * @param autohausDTO DTO-Objekt des Autohauses.
+     * @param version     Version
+     * @param request     HTTPSErvletRequest
      */
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(NO_CONTENT)
@@ -113,7 +123,7 @@ public class AutohausWriteController {
         final HttpServletRequest request
     ) {
         LOGGER.debug("put: id={}, autohausDTO={}", id, autohausDTO);
-        final int versionInt = getVersion(version,request);
+        final int versionInt = getVersion(version, request);
         final var autohausInput = autohausMapper.toAutohaus(autohausDTO);
         final var autohaus = autohausWriteService.update(autohausInput, id, versionInt);
         LOGGER.debug("put: {}", autohaus);

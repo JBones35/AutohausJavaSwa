@@ -1,21 +1,24 @@
 package com.acme.autohaus.repository;
+import com.acme.autohaus.entity.Adresse_;
 import com.acme.autohaus.entity.Autohaus;
+import com.acme.autohaus.entity.Autohaus_;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
 
 /// Singleton-Klasse, um Specifications für Queries in Spring Data JPA zu bauen.
-///
-/// @author [Jürgen Zimmermann](mailto:Juergen.Zimmermann@h-ka.de)
 @Component
 public class SpecificationBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpecificationBuilder.class);
 
     /// Konstruktor mit `package private` für _Spring_.
     SpecificationBuilder() {
+        //Standardkonstruktor
     }
 
     /// Specification für eine Query mit Spring Data bauen.
@@ -26,7 +29,6 @@ public class SpecificationBuilder {
         LOGGER.debug("build: queryParams={}", queryParams);
 
         if (queryParams.isEmpty()) {
-            // keine Suchkriterien
             return Optional.empty();
         }
 
@@ -56,24 +58,23 @@ public class SpecificationBuilder {
         final var value = values.getFirst();
         return switch (key) {
             case "name" -> name(value);
+            case "telefonnummer" -> telefonnummer(value);
             case "email" ->  email(value);
-            case "kategorie" -> kategorie(value);
-            case "newsletter" -> newsletter(value);
-            case "geschlecht" -> geschlecht(value);
-            case "familienstand" -> familienstand(value);
+            case "strasse" -> strasse(value);
+            case "hausnummer" -> hausnummer(value);
             case "plz" -> plz(value);
-            case "ort" -> ort(value);
+            case "stadt" -> stadt(value);
             default -> null;
         };
     }
 
-    private Specification<Autohaus> nachname(final String teil) {
+    private Specification<Autohaus> name(final String teil) {
         // root ist jakarta.persistence.criteria.Root<autohaus>
         // query ist jakarta.persistence.criteria.CriteriaQuery<autohaus>
         // builder ist jakarta.persistence.criteria.CriteriaBuilder
         // https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/meta-model.html
         return (root, _, builder) -> builder.like(
-            builder.lower(root.get(Autohaus_.nachname)),
+            builder.lower(root.get(Autohaus_.name)),
             builder.lower(builder.literal("%" + teil + '%'))
         );
     }
@@ -85,56 +86,38 @@ public class SpecificationBuilder {
         );
     }
 
-    private Specification<Autohaus> kategorie(final String kategorie) {
-        final int kategorieInt;
-        try {
-            kategorieInt = Integer.parseInt(kategorie);
-        } catch (NumberFormatException _) {
-            //noinspection ReturnOfNull
-            return null;
-        }
-        return (root, _, builder) -> builder.equal(root.get(autohaus_.kategorie), kategorieInt);
-    }
-
-    private Specification<Autohaus> newsletter(final String hasNewsletter) {
+    private Specification<Autohaus> telefonnummer(final String telefonnummer) {
         return (root, _, builder) -> builder.equal(
-            root.get(autohaus_.hasNewsletter),
-            Boolean.parseBoolean(hasNewsletter)
+            builder.lower(root.get(Autohaus_.telefonnummer)),
+            builder.lower(builder.literal("%" + telefonnummer + '%'))
         );
     }
 
-    private Specification<Autohaus> geschlecht(final String geschlecht) {
-        return (root, _, builder) -> builder.equal(
-            root.get(Autohaus_.geschlecht),
-            GeschlechtType.of(geschlecht)
-        );
-    }
-
-    private Specification<Autohaus> familienstand(final String familienstand) {
-        return (root, _, builder) -> builder.equal(
-            root.get(Autohaus_.familienstand),
-            FamilienstandType.of(familienstand)
-        );
-    }
-
-    private Specification<Autohaus> interesse(final String interesse) {
-        final var interesseEnum = InteresseType.of(interesse);
-        if (interesseEnum == null) {
-            return null;
-        }
+    private Specification<Autohaus> strasse(final String prefix) {
         return (root, _, builder) -> builder.like(
-            root.get(Autohaus_.interessenStr),
-            builder.literal("%" + interesseEnum.name() + '%')
+            builder.lower(root.get(Autohaus_.adresse).get(Adresse_.strasse)),
+            builder.lower(builder.literal(prefix + '%'))
         );
+    }
+
+    private Specification<Autohaus> hausnummer(final String hausnummer) {
+        final int hausnummerInt;
+        try {
+            hausnummerInt = Integer.parseInt(hausnummer);
+        } catch (NumberFormatException _) {
+            return null;
+        }
+        return (root, _, builder) -> builder.equal(
+            root.get(Autohaus_.adresse).get(Adresse_.hausnummer), hausnummerInt);
     }
 
     private Specification<Autohaus> plz(final String prefix) {
-        return (root, _, builder) -> builder.like(root.get(autohaus_.adresse).get(Adresse_.plz), prefix + '%');
+        return (root, _, builder) -> builder.like(root.get(Autohaus_.adresse).get(Adresse_.plz), prefix + '%');
     }
 
-    private Specification<Autohaus> ort(final String prefix) {
+    private Specification<Autohaus> stadt(final String prefix) {
         return (root, _, builder) -> builder.like(
-            builder.lower(root.get(Autohaus_.adresse).get(Adresse_.ort)),
+            builder.lower(root.get(Autohaus_.adresse).get(Adresse_.stadt)),
             builder.lower(builder.literal(prefix + '%'))
         );
     }

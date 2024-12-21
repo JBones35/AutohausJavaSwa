@@ -26,14 +26,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.HttpStatus.NOT_MODIFIED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.ok;
@@ -79,7 +83,7 @@ public class AutohausGetController {
         @RequestParam @NonNull final MultiValueMap<String, String> suchkriterien
     ) {
         LOGGER.debug("get:Suchkriterien= {}", suchkriterien);
-        final List<Autohaus> autohauser = autohausReadService.get(suchkriterien);
+        final List<Autohaus> autohauser = autohausReadService.find(suchkriterien);
         LOGGER.debug("get:Autohaeuser= {}", autohauser);
         return autohauser;
     }
@@ -96,10 +100,12 @@ public class AutohausGetController {
     @Operation(summary = "Suche mit der Autohaus-ID", tags = "Suchen")
     @ApiResponse(responseCode = "200", description = "Autohaus gefunden")
     @ApiResponse(responseCode = "404", description = "Autohaus nicht gefunden")
-    public ResponseEntity<Autohaus> getByID(@PathVariable final String id, @RequestHeader("If-None-Match") final Optional<String> version) {
+    public ResponseEntity<Autohaus> getByID(
+        @PathVariable final UUID id,
+        @RequestHeader("If-None-Match") final Optional<String> version) {
         LOGGER.debug("getById: id={}, version={}", id, version);
 
-        final var autohaus = autohausReadService.getByID(id);
+        final var autohaus = autohausReadService.findById(id);
         LOGGER.trace("getById: {}", autohaus);
 
         final var currentVersion = "\"" + autohaus.getVersion() + '"';

@@ -19,11 +19,12 @@ package com.acme.autohaus.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /// [RuntimeException], falls kein autohaus gefunden wurde.
 public final class NotFoundException extends RuntimeException {
     /// Fehlerhafte ID
-    private final String id;
+    private final UUID id;
 
     ///  Fehlerhafte Suchkriterien
     private final Map<String, List<String>> suchkriterien;
@@ -38,8 +39,8 @@ public final class NotFoundException extends RuntimeException {
     /// Konstruktor für den [AutohausReadService] bei fehlerhafter ID.
     ///
     /// @param id Die fehlerhafte ID
-    NotFoundException(final String id) {
-        super("Kein Autohaus mit der ID " + id + " gefunden.");
+    NotFoundException(final UUID id) {
+        super("Kein Autohaus mit der ID " + id.toString() + " gefunden.");
         this.id = id;
         suchkriterien = null;
     }
@@ -56,7 +57,7 @@ public final class NotFoundException extends RuntimeException {
     /// id ermitteln.
     ///
     /// @return Die fehlerhafte id.
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 

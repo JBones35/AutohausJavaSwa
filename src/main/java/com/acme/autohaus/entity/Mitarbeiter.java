@@ -16,9 +16,9 @@
  */
 package com.acme.autohaus.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -28,6 +28,7 @@ import java.util.UUID;
  * Die Klasse Mitarbeiter repräsentiert einen Mitarbeiter im Autohaus und erweitert die abstrakte Klasse Mensch.
  * Sie enthält spezifische Eigenschaften eines Mitarbeiters wie Mitarbeiter-ID, Position, Gehalt und Adresse.
  */
+@Entity
 public class Mitarbeiter {
     /**
      * Die eindeutige ID des Mitarbeiters (automatisch generiert als UUID).
@@ -56,6 +57,11 @@ public class Mitarbeiter {
      * Verwendet BigDecimal für eine präzise Darstellung von Geldwerten.
      */
     private BigDecimal gehalt;
+
+    /// Konstruktor
+    public Mitarbeiter() {
+        //StandardKonstruktor
+    }
 
     /**
      * Konstruktor zur Initialisierung eines Mitarbeiters.
