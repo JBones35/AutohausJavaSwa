@@ -23,14 +23,22 @@ import jakarta.validation.constraints.Pattern;
 /// ValueObject für das Neuanlegen und Ändern eines neuen Kunden.
 ///
 /// @param plz Postleitzahl
-/// @param ort Ort
+/// @param stadt Ort
+/// @param strasse Strasse
+/// @param hausnummer int
 public record AdresseDTO(
     @NotNull
     @Pattern(regexp = PLZ_PATTERN)
     String plz,
 
     @NotBlank
-    String ort
+    String stadt,
+
+    @NotBlank
+    int hausnummer,
+
+    @NotBlank
+    String strasse
 ) {
     /// Konstante für den regulären Ausdruck einer Postleitzahl als 5-stellige Zahl mit führender Null.
     public static final String PLZ_PATTERN = "^\\d{5}$";

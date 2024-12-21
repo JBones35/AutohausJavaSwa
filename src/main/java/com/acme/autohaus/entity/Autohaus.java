@@ -41,6 +41,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 ///
 @Entity
 @NamedEntityGraph(name = Autohaus.ADRESSE_GRAPH, attributeNodes = @NamedAttributeNode("adresse"))
+@NamedEntityGraph(name = Autohaus.ADRESSE_AUTOS_GRAPH, attributeNodes = {
+    @NamedAttributeNode("adresse"), @NamedAttributeNode("autos")
+})
 @SuppressWarnings({
     "ClassFanOutComplexity",
     "RequireEmptyLineBeforeBlockTagGroup",
@@ -48,6 +51,7 @@ import org.hibernate.annotations.UpdateTimestamp;
     "JavadocDeclaration",
     "MissingSummary",
     "RedundantSuppression", "com.intellij.jpb.LombokEqualsAndHashCodeInspection"})
+
 public class Autohaus {
     /// NamedEntityGraph für das Attribut "adresse".
     public static final String ADRESSE_GRAPH = "Autohaus.adresse";
@@ -85,13 +89,6 @@ public class Autohaus {
     @JsonIgnore
     private List<Auto> autos;
 
-    /// Liste der Mitarbeiter im Autohaus.
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    @JoinColumn(name = "autohaus_id")
-    @OrderColumn(name = "idx", nullable = false)
-    @JsonIgnore
-    private List<Mitarbeiter> mitarbeiter;
-
     /** Benutzername des Autohauses (z. B. für ein Login-System). */
     private String username;
 
@@ -119,7 +116,6 @@ public class Autohaus {
      * @param email         die E-Mail-Adresse des Autohauses.
      * @param adresse       die Adresse des Autohauses.
      * @param autos         die Liste der im Autohaus verfügbaren Autos.
-     * @param mitarbeiter   die Liste der Mitarbeiter im Autohaus.
      * @param username      der Benutzername des Autohauses.
      * @param erzeugt       der Erstellungszeitpunkt des Eintrags.
      * @param aktualisiert  der letzte Aktualisierungszeitpunkt des Eintrags.
@@ -127,7 +123,7 @@ public class Autohaus {
     @SuppressWarnings("ParameterNumber")
     public Autohaus(final UUID id, final int version, final String name, final String telefonnummer, final String email,
                     final Adresse adresse, final List<Auto> autos,
-                    final List<Mitarbeiter> mitarbeiter, final String username,
+                    final String username,
                     final LocalDateTime erzeugt, final LocalDateTime aktualisiert) {
         this.id = id;
         this.version = version;
@@ -136,7 +132,6 @@ public class Autohaus {
         this.email = email;
         this.adresse = adresse;
         this.autos = autos;
-        this.mitarbeiter = mitarbeiter;
         this.username = username;
         this.erzeugt = erzeugt;
         this.aktualisiert = aktualisiert;
@@ -281,24 +276,6 @@ public class Autohaus {
     }
 
     /**
-     * Gibt die Liste der Mitarbeiter im Autohaus zurück.
-     *
-     * @return Die Liste der Mitarbeiter. Die Liste ist nicht veränderbar durch den Aufruf dieser Methode.
-     */
-    public List<Mitarbeiter> getMitarbeiter() {
-        return mitarbeiter;
-    }
-
-    /**
-     * Setzt die Liste der Mitarbeiter im Autohaus.
-     *
-     * @param mitarbeiter Die Liste der Mitarbeiter.
-     */
-    public void setMitarbeiter(final List<Mitarbeiter> mitarbeiter) {
-        this.mitarbeiter = mitarbeiter;
-    }
-
-    /**
      * Gibt den Benutzernamen des Eintrags zurück.
      *
      * @return der Benutzername.
@@ -366,12 +343,9 @@ public class Autohaus {
     public String toString() {
         return "Autohaus{" +
             "name='" + name + '\'' +
-            ", adresse='" + adresse + '\'' +
             ", telefonnummer='" + telefonnummer + '\'' +
             ", UUID='" + id + '\'' +
             ", email='" + email + '\'' +
-            ", autos=" + autos +
-            ", mitarbeiter=" + mitarbeiter +
             '}';
     }
 }

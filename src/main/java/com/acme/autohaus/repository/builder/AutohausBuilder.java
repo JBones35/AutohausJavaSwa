@@ -19,7 +19,7 @@ package com.acme.autohaus.repository.builder;
 import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Autohaus;
-import com.acme.autohaus.entity.Mitarbeiter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -43,8 +43,6 @@ public class AutohausBuilder {
     private UUID id;
 
     private List<Auto> autos;
-
-    private List<Mitarbeiter> mitarbeiter;
 
     private String username;
 
@@ -149,17 +147,6 @@ public class AutohausBuilder {
     }
 
     /**
-     * Setzt die Liste von Mitarbeitern im Autohaus.
-     *
-     * @param mitarbeiter Eine Liste von Mitarbeitern.
-     * @return Der aktuelle AutohausBuilder.
-     */
-    public AutohausBuilder setMitarbeiter(final List<Mitarbeiter> mitarbeiter) {
-        this.mitarbeiter = mitarbeiter;
-        return this;
-    }
-
-    /**
      * Setzt den Username des Autohauses.
      *
      * @param username Username des Autohauses.
@@ -199,6 +186,6 @@ public class AutohausBuilder {
      */
     public Autohaus build() {
         return new Autohaus(id, version, name, telefonnummer, email, adresse,
-            autos, mitarbeiter, username, erzeugt, aktualisiert);
+            autos, username, erzeugt, aktualisiert);
     }
 }

@@ -18,7 +18,6 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
-import com.acme.autohaus.entity.Mitarbeiter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -38,7 +37,6 @@ import java.util.List;
  * @param username      Benutzername
  * @param password      Password
  * @param autos         die Liste der Autos, die in diesem Autohaus verfügbar sind; darf nicht null sein.
- * @param mitarbeiter   die Liste der Mitarbeiter des Autohauses; darf nicht null sein.
  */
 public record AutohausDTO(
     @NotNull
@@ -60,8 +58,6 @@ public record AutohausDTO(
     Adresse adresse,
 
     List<Auto> autos,
-
-    List<Mitarbeiter> mitarbeiter,
 
     String username,
 

@@ -25,8 +25,10 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import static com.acme.autohaus.entity.Autohaus.ADRESSE_AUTOS_GRAPH;
 import static com.acme.autohaus.entity.Autohaus.ADRESSE_GRAPH;
 
 /// Repository Interface für den Mikroservice Autohaus
@@ -43,6 +45,19 @@ public interface AutohausRepository extends JpaRepository<Autohaus, UUID>, JpaSp
     @EntityGraph(ADRESSE_GRAPH)
     @Override
     Optional<Autohaus> findById(UUID id);
+
+    /// Kunde einschließlich Umsätze anhand der ID suchen.
+    ///
+    /// @param id Kunde ID
+    /// @return Gefundener Kunde
+    @Query("""
+        SELECT DISTINCT a
+        FROM     #{#entityName} a
+        WHERE    a.id = :id
+        """)
+    @EntityGraph(ADRESSE_AUTOS_GRAPH)
+    @NonNull
+    Optional<Autohaus> findByIdFetchAutos(UUID id);
 
     /// Autohaus zu gegebener Emailadresse aus der DB ermitteln.
     ///

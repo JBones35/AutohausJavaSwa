@@ -58,7 +58,6 @@ public class AutohausWriteService {
     public Autohaus create(final Autohaus autohaus) {
         LOGGER.debug("create: autohaus={}", autohaus);
         LOGGER.debug("create: adresse={}", autohaus.getAdresse());
-        LOGGER.debug("create: mitarbeiter={}", autohaus.getMitarbeiter());
         LOGGER.debug("create: autos={}", autohaus.getAutos());
 
         if (repo.existsByEmail(autohaus.getEmail())) {

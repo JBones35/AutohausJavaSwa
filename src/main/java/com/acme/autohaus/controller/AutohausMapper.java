@@ -19,7 +19,6 @@ package com.acme.autohaus.controller;
 import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Autohaus;
-import com.acme.autohaus.entity.Mitarbeiter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import static org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT;
@@ -63,13 +62,4 @@ public interface AutohausMapper {
      */
     @Mapping(target = "id", ignore = true)
     Auto toAuto(AutoDTO dto);
-
-    /**
-     * Konvertiert ein {@link MitarbeiterDTO} in eine {@link Mitarbeiter}-Entität.
-     *
-     * @param dto Das {@code MitarbeiterDTO}, das konvertiert werden soll.
-     * @return Eine neue {@code Mitarbeiter}-Instanz basierend auf dem übergebenen DTO.
-     */
-    @Mapping(target = "id", ignore = true)
-    Mitarbeiter toMitarbeiter(MitarbeiterDTO dto);
 }

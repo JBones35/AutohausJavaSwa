@@ -55,18 +55,19 @@ public class AutohausReadService {
     /// @return das gefundene Autohaus
     /// @throws NotFoundException Falls kein Autohaus gefunden wurde
     public @NonNull Autohaus findById(
-        final UUID id
+        final UUID id,
+        final boolean fetchAutos
     ) {
         LOGGER.debug("findById: id={}", id);
 
-        final var autohausOptional = repo.findById(id);
+        final var autohausOptional = fetchAutos ? repo.findByIdFetchAutos(id) : repo.findById(id);
         final var autohaus = autohausOptional.orElse(null);
         LOGGER.trace("findById: Autohaus={}", autohaus);
 
         if (autohaus == null) {
             throw new NotFoundException(id);
         }
-        LOGGER.debug("findById: autohaus={}", autohaus);
+        LOGGER.debug("findById: autohaus={}, autos={}", autohaus, fetchAutos ? autohaus.getAutos() : "N/A");
         return autohaus;
     }
 
