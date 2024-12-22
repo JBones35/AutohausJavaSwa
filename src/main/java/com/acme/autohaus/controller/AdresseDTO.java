@@ -31,12 +31,15 @@ public record AdresseDTO(
     @Pattern(regexp = PLZ_PATTERN)
     String plz,
 
+    @NotNull
     @NotBlank
     String stadt,
 
+    @NotNull
     @NotBlank
-    int hausnummer,
+    String hausnummer,
 
+    @NotNull
     @NotBlank
     String strasse
 ) {

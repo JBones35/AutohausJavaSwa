@@ -51,7 +51,6 @@ import org.hibernate.annotations.UpdateTimestamp;
     "JavadocDeclaration",
     "MissingSummary",
     "RedundantSuppression", "com.intellij.jpb.LombokEqualsAndHashCodeInspection"})
-
 public class Autohaus {
     /// NamedEntityGraph für das Attribut "adresse".
     public static final String ADRESSE_GRAPH = "Autohaus.adresse";

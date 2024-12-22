@@ -30,7 +30,6 @@ import static org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT;
  */
 @Mapper(nullValueIterableMappingStrategy = RETURN_DEFAULT, componentModel = "spring")
 public interface AutohausMapper {
-
     /**
      * Konvertiert ein {@link AutohausDTO} in eine {@link Autohaus}-Entität.
      * Die UUID wird hierbei ignoriert und nicht gesetzt.

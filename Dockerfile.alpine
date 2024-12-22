@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   docker build --tag juergenzimmermann/autohaus:2024.10.1-eclipse-alpine -f Dockerfile.alpine .
+# Aufruf:   docker build --tag juergenzimmermann/autohaus:2024.10.2-eclipse-alpine -f Dockerfile.alpine .
 #           Get-Content Dockerfile.eclipse-ubi | docker run --rm --interactive hadolint/hadolint:2.12.1-beta-debian
 
 # https://docs.docker.com/engine/reference/builder/#syntax
@@ -57,11 +57,11 @@ set -eux
 
 # Gradle:
 ./gradlew --no-configuration-cache --no-daemon --no-watch-fs bootJar
-java -Djarmode=tools -jar ./build/libs/autohaus-2024.10.1.jar extract
+java -Djarmode=tools -jar ./build/libs/autohaus-2024.10.2.jar extract
 
 # Maven:
 #./mvnw package spring-boot:repackage -Dmaven.test.skip=true -Dspring-boot.build-image.skip=true -P !persistence -P !mail -P !security -P !observability -P !graphql
-#java -Djarmode=tools -jar ./target/autohaus-2024.10.1.jar extract
+#java -Djarmode=tools -jar ./target/autohaus-2024.10.2.jar extract
 EOF
 
 # ---------------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ FROM eclipse-temurin:${JAVA_VERSION}-jre-alpine AS final
 # MAINTAINER ist deprecated https://docs.docker.com/engine/reference/builder/#maintainer-deprecated
 LABEL org.opencontainers.image.title="autohaus" \
       org.opencontainers.image.description="Microservice autohaus v0 mit Basis-Image Eclipse Temurin und Alpine" \
-      org.opencontainers.image.version="2024.10.1-eclipse-alpine" \
+      org.opencontainers.image.version="2024.10.2-eclipse-alpine" \
       org.opencontainers.image.licenses="GPL-3.0-or-later" \
       org.opencontainers.image.vendor="Juergen Zimmermann" \
       org.opencontainers.image.authors="Juergen.Zimmermann@h-ka.de" \
@@ -111,8 +111,8 @@ EOF
 
 # ADD hat mehr Funktionalitaet als COPY, z.B. auch Download von externen Dateien
 # ggf. auch /source/snapshot-dependencies/
-COPY --from=builder --chown=app:app /source/autohaus-2024.10.1/lib/ ./lib/
-COPY --from=builder --chown=app:app /source/autohaus-2024.10.1/autohaus-2024.10.1.jar .
+COPY --from=builder --chown=app:app /source/autohaus-2024.10.2/lib/ ./lib/
+COPY --from=builder --chown=app:app /source/autohaus-2024.10.2/autohaus-2024.10.2.jar .
 
 USER app
 EXPOSE 8080
@@ -120,4 +120,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD wget -qO- --no-check-certificate https://localhost:8080/actuator/health/ | grep UP || exit 1
 
 # Bei CMD statt ENTRYPOINT kann das Kommando bei "docker run ..." ueberschrieben werden
-ENTRYPOINT ["java", "--enable-preview", "-classpath", "autohaus-2024.10.1.jar:lib/*", "com.acme.autohaus.Application"]
+ENTRYPOINT ["java", "--enable-preview", "-classpath", "autohaus-2024.10.2.jar:lib/*", "com.acme.autohaus.Application"]

@@ -227,7 +227,7 @@ plugins {
 
 defaultTasks = mutableListOf("compileTestJava")
 group = "com.acme"
-version = "2024.10.1"
+version = "2024.10.2"
 val imageTag = project.properties["imageTag"] ?: project.version.toString()
 
 sweeney {

@@ -72,8 +72,8 @@ public final class MockDB {
             .setEmail("optik@gmx.de")
             .setAutos(createAutoList(UUID.randomUUID(), "Audi", "1.9", 2012, "Jonas", new BigDecimal(3435)))
             .setUsername("jonas")
-            .setErzeugt(LocalDateTime.now())
-            .setAktualisiert(LocalDateTime.now())
+            .setErzeugt(LocalDateTime.of(2024, 12, 22, 23, 23))
+            .setAktualisiert(LocalDateTime.of(2024, 12, 22, 23, 23))
             .build();
     }
 
@@ -92,8 +92,8 @@ public final class MockDB {
             .setEmail("premium@gmx.de")
             .setAutos(createAutoList(UUID.randomUUID(), "BMW", "M3", 2005, "Jonas", new BigDecimal(435345)))
             .setUsername("jonas")
-            .setErzeugt(LocalDateTime.now())
-            .setAktualisiert(LocalDateTime.now())
+            .setErzeugt(LocalDateTime.of(2024, 12, 22, 23, 23))
+            .setAktualisiert(LocalDateTime.of(2024, 12, 22, 23, 23))
             .build();
     }
 
@@ -111,8 +111,8 @@ public final class MockDB {
             .setEmail("classic@motors.de")
             .setAutos(createAutoList(UUID.randomUUID(), "Mercedes", "C-Klasse", 2019, "Mika", new BigDecimal(54543)))
             .setUsername("jonas")
-            .setErzeugt(LocalDateTime.now())
-            .setAktualisiert(LocalDateTime.now())
+            .setErzeugt(LocalDateTime.of(2024, 12, 22, 23, 23))
+            .setAktualisiert(LocalDateTime.of(2024, 12, 22, 23, 23))
             .build();
     }
 
@@ -131,8 +131,8 @@ public final class MockDB {
             .setEmail("urban@gmx.de")
             .setAutos(createAutoList(UUID.randomUUID(), "Volkswagen", "Golf", 2003, "Goat", new BigDecimal(3445)))
             .setUsername("jonas")
-            .setErzeugt(LocalDateTime.now())
-            .setAktualisiert(LocalDateTime.now())
+            .setErzeugt(LocalDateTime.of(2024, 12, 22, 23, 23))
+            .setAktualisiert(LocalDateTime.of(2024, 12, 22, 23, 23))
             .build();
     }
 
@@ -151,8 +151,8 @@ public final class MockDB {
             .setEmail("luxury@motors.de")
             .setAutos(createAutoList(UUID.randomUUID(), "Porsche", "911", 2005, "Joans", new BigDecimal(34535)))
             .setUsername("jonas")
-            .setErzeugt(LocalDateTime.now())
-            .setAktualisiert(LocalDateTime.now())
+            .setErzeugt(LocalDateTime.of(2024, 12, 22, 23, 23))
+            .setAktualisiert(LocalDateTime.of(2024, 12, 22, 23, 23))
             .build();
     }
 
@@ -171,8 +171,8 @@ public final class MockDB {
             .setEmail("eco@cars.des")
             .setAutos(createAutoList(UUID.randomUUID(),  "Tesla",  "Model 3",  2023, "Kenan", new BigDecimal(4335)))
             .setUsername("jonas")
-            .setErzeugt(LocalDateTime.now())
-            .setAktualisiert(LocalDateTime.now())
+            .setErzeugt(LocalDateTime.of(2024, 12, 22, 23, 23))
+            .setAktualisiert(LocalDateTime.of(2024, 12, 22, 23, 23))
             .build();
     }
 

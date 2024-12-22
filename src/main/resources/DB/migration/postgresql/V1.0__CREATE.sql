@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS adresse (
                                        id          uuid PRIMARY KEY USING INDEX TABLESPACE autohausspace,
                                        plz         text NOT NULL CHECK(plz~'\d{5}'),
-                                       stadt         text NOT NULL,
-                                       strasse         text NOT NULL,
-                                       hausnummer  integer NOT NULL
+                                       stadt       text NOT NULL,
+                                       strasse    text NOT NULL,
+                                       hausnummer  text NOT NULL
 ) TABLESPACE autohausspace;
 CREATE INDEX IF NOT EXISTS adresse_plz_idx ON adresse(plz) TABLESPACE autohausspace;
 
@@ -11,11 +11,10 @@ CREATE TABLE IF NOT EXISTS autohaus (
                                         id          uuid PRIMARY KEY USING INDEX TABLESPACE autohausspace,
                                         version       integer NOT NULL DEFAULT 0,
                                         name        text NOT NULL,
-                                        standort    text NOT NULL,
                                         telefonnummer text NOT NULL,
                                         email       text NOT NULL UNIQUE USING INDEX TABLESPACE autohausspace,
                                         adresse_id  uuid NOT NULL UNIQUE USING INDEX TABLESPACE autohausspace REFERENCES adresse,
-                                        username      text NOT NULL,
+                                        username      text,
                                         erzeugt       timestamp NOT NULL,
                                         aktualisiert  timestamp NOT NULL
 ) TABLESPACE autohausspace;
@@ -26,7 +25,7 @@ CREATE TABLE IF NOT EXISTS auto (
                                     modell      text NOT NULL,
                                     baujahr     integer,
                                     marke       text NOT NULL,
-                                    besitzer    text NOT NULL,
+                                    besitzer    text,
                                     preis       decimal NOT NULL,
                                     autohaus_id uuid REFERENCES autohaus,
                                     idx       integer NOT NULL DEFAULT 0

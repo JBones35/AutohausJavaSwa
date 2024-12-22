@@ -105,7 +105,7 @@ public class AutohausGetController {
         @RequestHeader("If-None-Match") final Optional<String> version) {
         LOGGER.debug("getById: id={}, version={}", id, version);
 
-        final var autohaus = autohausReadService.findById(id, true);
+        final var autohaus = autohausReadService.findById(id, false);
         LOGGER.trace("getById: {}", autohaus);
 
         final var currentVersion = "\"" + autohaus.getVersion() + '"';

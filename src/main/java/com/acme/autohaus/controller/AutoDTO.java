@@ -34,10 +34,12 @@ import java.math.BigDecimal;
  * @param preis   der Preis des Autos; muss positiv und darf nicht null sein.
  */
 public record AutoDTO(
+    @NotNull
     @NotBlank
     @Pattern(regexp = MARKEN_PATTERN)
     String marke,
 
+    @NotNull
     @NotBlank
     String modell,
 

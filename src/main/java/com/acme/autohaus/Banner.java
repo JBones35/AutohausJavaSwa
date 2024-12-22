@@ -56,7 +56,7 @@ final class Banner {
 
         $figlet
         (C) Juergen Zimmermann, Hochschule Karlsruhe
-        Version             2024.10.1
+        Version             2024.10.2
         Spring Boot         $springBoot
         Spring Framework    $spring
         Java                $java

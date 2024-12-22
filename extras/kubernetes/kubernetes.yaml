@@ -208,7 +208,7 @@ spec:
       containers:
         # https://kubernetes.io/docs/concepts/containers/images
         #- image: juergenzimmermann/autohaus@sha256:...
-        - image: juergenzimmermann/autohaus:2024.10.1-buildpacks
+        - image: juergenzimmermann/autohaus:2024.10.2-buildpacks
           # default
           imagePullPolicy: IfNotPresent
           name: autohaus
@@ -299,7 +299,7 @@ spec:
             failureThreshold: 1
           volumeMounts:
             - mountPath: /tmp
-              name: log-autohaus-v1
+              name: log-autohaus
             - mountPath: /workspace/BOOT-INF/classes/private-key.pem
               name: private-key-autohaus
               readOnly: true
@@ -309,10 +309,10 @@ spec:
       serviceAccountName: autohaus
       automountServiceAccountToken: false
       volumes:
-        - name: log-autohaus-v1
+        - name: log-autohaus
           # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
           hostPath:
-            path: /run/desktop/mnt/host/c/Zimmermann/volumes/autohaus-v1
+            path: /run/desktop/mnt/host/c/Zimmermann/volumes/autohaus
             type: Directory
           # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
           #emptyDir: {}

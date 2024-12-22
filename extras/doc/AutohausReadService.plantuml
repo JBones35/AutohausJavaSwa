@@ -2,37 +2,48 @@
 
 skinparam classAttributeIconSize 0
 
-package org.springframework.stereotype {
-    interface Service
-}
-
 package java.util {
     interface List<T>
-    interface Map<K,V>
+    interface Map<K, V>
+    class UUID
+}
+
+package org.springframework {
+    package stereotype {
+        interface Service
+    }
+
+    package transaction.annotation {
+        interface Transactional
+    }
 }
 
 package com.acme.autohaus {
     package entity {
         class Autohaus << entity >>
 
-        Autohaus .up[hidden].> List
+        Autohaus .up[hidden].> UUID
+        Autohaus .up[hidden].> Service
+        Autohaus .up[hidden].> Transactional
     }
 
     package repository {
-        class AutohausRepository << control >> << @Repository >>
+        interface AutohausRepository << control >>
     }
 
     package service #DDDDDD {
         class AutohausReadService << control >> << @Service >> {
-            + get(queryParams: Map<String,List<String>>): List<Autohaus>
-            + getById(id: String): Autohaus
+            + findById(id: UUID, boolean: fetchAutos): Autohaus
+            + find(suchkriterien: Map<String, List<String>>): List<Autohaus>
         }
 
-        AutohausReadService o--> AutohausRepository : repo
-        AutohausReadService .right.> Autohaus
-        AutohausReadService .up> Service
-        AutohausReadService .up> List
+        AutohausReadService o--> "1" AutohausRepository : repo
+        AutohausReadService .up.> Autohaus
+        AutohausReadService .up.> UUID
+        AutohausReadService .up.> List
         AutohausReadService .up.> Map
+        AutohausReadService .up.> Service
+        AutohausReadService ..> Transactional
     }
 }
 

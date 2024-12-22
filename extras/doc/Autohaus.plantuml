@@ -25,14 +25,6 @@ package java {
         stadt: String
     }
 
-    class Mitarbeiter {
-        mitarbeierId: UUID
-        name: String
-        geburtsdatum: LocalDate
-        position: String
-        gehalt: BigDecimal
-    }
-
     class Auto {
         autoId: UUID
         marke: String
@@ -49,24 +41,17 @@ package java {
         telefonnummer: String
         email: String
         autos: List<Auto>
-        mitarbeiter: List<Mitarbeiter>
     }
 
     Autohaus "1" *--> "0..*" Auto : autos
-    Autohaus "1" *--> "0..*" Mitarbeiter : mitarbeiter
     Autohaus "1" *--> "1" Adresse : adresse
 
     Autohaus ..> UUID
     Autohaus ..> List
 
-    Mitarbeiter ..> UUID
-    Mitarbeiter ..> LocalDate
-    Mitarbeiter ..> BigDecimal
-
     Auto ..> UUID
     Auto ..> LocalDate
 }
-
 
 hide empty members
 

@@ -66,7 +66,7 @@ set -eux
 
 # Gradle:
 ./gradlew --no-configuration-cache --no-daemon --no-watch-fs -DuseTracing=false bootJar
-java -Djarmode=tools -jar ./build/libs/autohaus-2024.10.1.jar extract
+java -Djarmode=tools -jar ./build/libs/autohaus-2024.10.2.jar extract
 
 # Maven:
 #./mvnw package spring-boot:repackage -Dmaven.test.skip=true -Dspring-boot.build-image.skip=true -P !persistence -P !mail -P !security -P !observability -P !graphql
@@ -92,7 +92,7 @@ FROM eclipse-temurin:${JAVA_VERSION}-jre-noble AS final
 # MAINTAINER ist deprecated https://docs.docker.com/engine/reference/builder/#maintainer-deprecated
 LABEL org.opencontainers.image.title="autohaus" \
       org.opencontainers.image.description="Microservice autohaus v1 mit Basis-Image Eclipse Temurin und Ubuntu Noble" \
-      org.opencontainers.image.version="2024.10.1-eclipse-noble" \
+      org.opencontainers.image.version="2024.10.2-eclipse-noble" \
       org.opencontainers.image.licenses="GPL-3.0-or-later" \
       org.opencontainers.image.vendor="Juergen Zimmermann" \
       org.opencontainers.image.authors="Juergen.Zimmermann@h-ka.de" \
@@ -121,8 +121,8 @@ EOF
 
 # ADD hat mehr Funktionalitaet als COPY, z.B. auch Download von externen Dateien
 # ggf. auch /source/snapshot-dependencies/
-COPY --from=builder --chown=ubuntu:ubuntu /source/autohaus-2024.10.1/lib/ ./lib/
-COPY --from=builder --chown=ubuntu:ubuntu /source/autohaus-2024.10.1/autohaus-2024.10.1.jar .
+COPY --from=builder --chown=ubuntu:ubuntu /source/autohaus-2024.10.2/lib/ ./lib/
+COPY --from=builder --chown=ubuntu:ubuntu /source/autohaus-2024.10.2/autohaus-2024.10.2.jar .
 
 USER ubuntu
 EXPOSE 8080
@@ -130,4 +130,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD wget -qO- --no-check-certificate https://localhost:8080/actuator/health/ | grep UP || exit 1
 
 # Bei CMD statt ENTRYPOINT kann das Kommando bei "docker run ..." ueberschrieben werden
-ENTRYPOINT ["java", "--enable-preview", "-classpath", "autohaus-2024.10.1.jar:lib/*", "com.acme.autohaus.Application"]
+ENTRYPOINT ["java", "--enable-preview", "-classpath", "autohaus-2024.10.2.jar:lib/*", "com.acme.autohaus.Application"]

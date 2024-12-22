@@ -19,7 +19,6 @@ package com.acme.autohaus.repository.builder;
 import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Autohaus;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

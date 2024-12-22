@@ -1,0 +1,45 @@
+@startuml ER Diagramm
+
+hide circle
+
+skinparam linetype ortho
+
+entity "Adresse" {
+  * id : UUID <<generated>>
+  --
+  * strasse : text
+  * hausnummer : text
+  * plz : text
+  * ort : text
+}
+
+entity "Autohaus" {
+  * id : UUID <<generated>>
+  --
+  * version: integer
+  * name : text
+  * telefonnummer: text
+  * email : text <<unique>>
+  * **adresse_id**: UUID <<FK>>
+    username: text
+  * erzeugt: timestamp
+  * aktualisiert: timestamp
+}
+
+entity "Auto" {
+  * id : UUID <<generated>>
+  --
+  * marke : text
+  * modell : text
+    baujahr : integer
+    besitzer : text
+  * preis : decimal
+  * **kunde_id**: UUID <<FK>>
+}
+
+Autohaus ||.left.|| Adresse
+Autohaus ||.right.o{ Auto
+
+footer (c) Jonas Kirschner
+
+@enduml

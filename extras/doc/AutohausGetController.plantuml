@@ -2,6 +2,10 @@
 
 skinparam classAttributeIconSize 0
 
+package io.micrometer.observation.annotation {
+        interface "@Observed" as Observed
+}
+
 package org.springframework {
     package web.bind.annotation {
         interface "@RestController" as RestController
@@ -10,6 +14,7 @@ package org.springframework {
         interface "@RequestParam" as RequestParam
         interface "@ExceptionHandler" as ExceptionHandler
         interface "@ResponseStatus" as ResponseStatus
+        interface "@RequestHeader" as RequestHeader
     }
 
     package util {
@@ -30,7 +35,7 @@ package com.acme.autohaus {
 package controller #DDDDDD {
         class AutohausGetController << boundary >> << @RestController >> << @RequestMapping >> {
             + @GetMapping get(@RequestParam queryParams: MultiValueMap<String, String>): List<Autohaus>
-            + @GetMapping getById(@PathVariable id: String): Autohaus
+            + @GetMapping getById(@PathVariable id: UUID, @RequestHeader("If-None-Match") version: String): Autohaus
         }
 
         class CommonExceptionHandler << @ControllerAdvice >> {

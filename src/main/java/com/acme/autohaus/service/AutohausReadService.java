@@ -52,6 +52,7 @@ public class AutohausReadService {
     /// Ein Autohaus anhand seiner ID suchen.
     ///
     /// @param id Die Id des gesuchten Autohauses
+    /// @param fetchAutos boolean für fetch-autos
     /// @return das gefundene Autohaus
     /// @throws NotFoundException Falls kein Autohaus gefunden wurde
     public @NonNull Autohaus findById(
