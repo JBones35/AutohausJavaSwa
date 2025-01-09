@@ -1,6 +1,8 @@
 # Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
 # This program is free software: you can redistribute it and/or modify
+#
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -25,15 +27,10 @@ data:
   # Key-Value-Paare (hier: fuer die Umgebungsvariable)
   TZ: Europe/Berlin
   LANG: de_DE.utf8
-  SPRING_MAIL_HOST: {{ .Values.mailhost }}
   SPRING_PROFILES_DEFAULT: {{ .Values.profile }}
   SPRING_PROFILES_ACTIVE: {{ .Values.profile }}
   SERVER_SSL_ENABLED: {{ quote .Values.ssl }}
   SERVER_HTTP2_ENABLED: {{ quote .Values.http2 }}
   SERVER_TOMCAT_BASEDIR: /tmp
-  SPRING_DATASOURCE_URL: {{ .Values.datasource.url }}
-  SPRING_DATASOURCE_USERNAME: {{ .Values.datasource.username }}
-  SPRING_H2_CONSOLE_ENABLED: {{ quote .Values.h2.console.enabled }}
-  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: {{ .Values.zipkin.endpoint }}
   # MySQL:
   #SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STRATEGY: com.acme.autohaus.entity.LowercaseNamingStrategy

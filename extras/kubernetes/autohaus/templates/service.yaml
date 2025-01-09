@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+
 apiVersion: v1
 # https://kubernetes.io/docs/concepts/services-networking/connect-applications-service
 # https://kubernetes.io/docs/concepts/services-networking/service
@@ -25,8 +26,8 @@ metadata:
   name: {{ include "autohaus.fullname" . }}
   namespace: {{ .Values.namespace }}
   labels:
-    # https://helm.sh/docs/chart_template_guide/function_list
-    # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
+  # https://helm.sh/docs/chart_template_guide/function_list
+  # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
     {{- include "autohaus.labels" . | nindent 4 }}
 spec:
   # Selektion der Pods fuer eingehende Requests
@@ -40,3 +41,4 @@ spec:
       #protocol: TCP
   # https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   #type: ClusterIP
+  #type: LoadBalancer

@@ -22,7 +22,7 @@
 # https://github.com/helmfile/helmfile
 
 helmBinary: C:/Zimmermann/helm/helm
-kubeVersion: v1.30.0
+kubeVersion: v1.28.2
 
 helmDefaults:
   cleanupOnFail: true
@@ -34,4 +34,6 @@ releases:
     namespace: acme
     chart: extras/kubernetes/autohaus
     values: [extras/kubernetes/autohaus/dev.yaml]
+    #values: [extras/kubernetes/kunde/dev.yaml, extras/kubernetes/kunde/dev-mysql.yaml]
+    #values: [extras/kubernetes/kunde/dev.yaml, extras/kubernetes/kunde/dev-h2.yaml]
     #atomic: true

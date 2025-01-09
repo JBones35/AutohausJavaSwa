@@ -231,7 +231,7 @@ version = "2024.10.2"
 val imageTag = project.properties["imageTag"] ?: project.version.toString()
 
 sweeney {
-    enforce(mapOf("type" to "gradle", "expect" to "[8.11.1,8.11.1]"))
+    enforce(mapOf("type" to "gradle", "expect" to "[8.12.0,8.12.0]"))
     enforce(mapOf("type" to "jdk", "expect" to "[$javaVersion,$javaVersion]"))
     validate()
 }

@@ -56,7 +56,7 @@ public class Autohaus {
     public static final String ADRESSE_GRAPH = "Autohaus.adresse";
 
     /// NamedEntityGraph für die Attribute "adresse" und "umsaetze".
-    public static final String ADRESSE_AUTOS_GRAPH = "Kunde.adresseAutos";
+    public static final String ADRESSE_AUTOS_GRAPH = "Autohaus.adresseAutos";
 
     /** Eindeutige ID des Autohauses (automatisch generiert als UUID). */
     @Id

@@ -2,10 +2,6 @@
 
 skinparam classAttributeIconSize 0
 
-package io.micrometer.observation.annotation {
-        interface "@Observed" as Observed
-}
-
 package org.springframework {
     package web.bind.annotation {
         interface "@RestController" as RestController

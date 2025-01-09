@@ -29,9 +29,9 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: autohaus
-              app.kubernetes.io/name: autohaus
-              app.kubernetes.io/instance: autohaus
+              app: kunde
+              app.kubernetes.io/name: kunde
+              app.kubernetes.io/instance: kunde
       ports:
         - port: {{ .Chart.Name }}
           protocol: TCP

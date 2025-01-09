@@ -42,7 +42,7 @@ version: 2024.10.2
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # https://wiki.debian.org/DebianReleases
-appVersion: "17.3-bookworm"
+appVersion: "17.2-bookworm"
 
 kubeVersion: ">=1.30.0"
 

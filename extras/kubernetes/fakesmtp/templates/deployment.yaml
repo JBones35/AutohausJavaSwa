@@ -32,7 +32,7 @@ spec:
   # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector
   selector:
     # Labels, mit denen z.B. ein Service einen Pod (zu diesem Deployment) identifizieren kann
-    # z.B. fuer:   kubectl delete deployment --selector app=autohaus,version=2.0.0 --namespace acme
+    # z.B. fuer:   kubectl delete deployment --selector app=kunde,version=2.0.0 --namespace acme
     # i.a. gleicher Wert wie in template.metadata.labels
     matchLabels:
       {{- include "fakesmtp.selectorLabels" . | nindent 6 }}

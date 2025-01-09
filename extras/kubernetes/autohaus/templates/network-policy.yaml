@@ -18,6 +18,7 @@
 # https://hub.armosec.io/docs/c-0049
 # Kein "NetworkPolicy controller" durch Docker Desktop, z.B. Calico, Cilium, Antrea
 
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -29,32 +30,3 @@ spec:
     matchLabels:
       {{- include "autohaus.selectorLabels" . | nindent 6 }}
   policyTypes: [Ingress, Egress]
-  ingress:
-    - from:
-        - podSelector:
-            matchLabels:
-              app: bestellung
-              app.kubernetes.io/name: bestellung
-              app.kubernetes.io/instance: bestellung
-      ports:
-        - port: 8080
-          protocol: TCP
-  egress:
-    - to:
-        - podSelector:
-            matchLabels:
-              app: postgres
-              app.kubernetes.io/name: postgres
-              app.kubernetes.io/instance: postgres
-      ports:
-        - port: 5432
-          protocol: TCP
-    - to:
-        - podSelector:
-            matchLabels:
-              app: mysql
-              app.kubernetes.io/name: mysql
-              app.kubernetes.io/instance: mysql
-      ports:
-        - port: 3306
-          protocol: TCP

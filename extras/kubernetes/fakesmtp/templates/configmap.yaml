@@ -27,3 +27,4 @@ data:
   SPRING_MAIN_BANNER-MODE: {{ .Values.bannerMode }}
   SPRING_LAZY-INITIALIZATION: "true"
   SPRING_JPA_OPEN-IN-VIEW: "true"
+  FAKESMTP_PORT: "8025"

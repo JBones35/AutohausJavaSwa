@@ -74,9 +74,9 @@ spring:
   # ==============================================================================
   # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data
   datasource:
-    username: postgres
-    password: p
-    url: https://postgres:5432
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    url: ${POSTGRES_URL}
   # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.data-migration
   flyway:
     locations: classpath:db/migration/{vendor}

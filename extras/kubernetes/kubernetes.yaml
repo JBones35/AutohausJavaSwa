@@ -39,8 +39,8 @@
 #   kubectl get pod autohaus-?????????-????? --output wide --namespace acme
 #   kubectl get pod autohaus-?????????-????? --output yaml --namespace acme
 #   kubectl describe pod autohaus-?????????-????? --namespace acme
-#   kubectl exec autohaus-?????????-????? --namespace acme -- printenv autohaus_SERVICE_HOST
-#   kubectl exec autohaus-?????????-????? --namespace acme -- printenv autohaus_SERVICE_PORT
+#   kubectl exec autohaus-?????????-????? --namespace acme -- printenv KUNDE_SERVICE_HOST
+#   kubectl exec autohaus-?????????-????? --namespace acme -- printenv KUNDE_SERVICE_PORT
 #   kubectl exec autohaus-?????????-????? --namespace acme -- printenv | sort
 #   kubectl exec autohaus-?????????-????? --stdin --tty --namespace acme  -- bash
 #   kubectl get service autohaus --namespace acme
@@ -275,7 +275,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: http
-            # Anzahl Sekunden, bis die Probe fuer Liveness abgesetzt wird
+            # Anzahl Seautohausn, bis die Probe fuer Liveness abgesetzt wird
             initialDelaySeconds: 45
             # default: 1 Sek.
             timeoutSeconds: 15
@@ -289,7 +289,7 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: http
-            # Anzahl Sekunden, bis die Probe fuer Readiness abgesetzt wird
+            # Anzahl Seautohausn, bis die Probe fuer Readiness abgesetzt wird
             initialDelaySeconds: 45
             # default: 1 Sek.
             timeoutSeconds: 15

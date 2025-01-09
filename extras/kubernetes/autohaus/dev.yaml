@@ -13,17 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-datasource:
-  # Passwort für die DB (Base64)
-  password: cA==
-  url: jdbc:postgresql://postgres/autohaus
-
 autoscaling:
   maxReplicas: 1
 
 replicaCount: 1
+rollingUpdate:
+  maxUnavailable: 0
 
-progressDeadlineSeconds: 45
+progressDeadlineSeconds: 90
 
 image:
   pullPolicy: IfNotPresent
@@ -31,8 +28,6 @@ image:
 profile: dev
 ssl: "false"
 http2: "false"
-
-mailhost: fakesmtp
 
 resourcesRequests:
   #cpu: 1000m

@@ -13,11 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf: helm install [--debug --dry-run] autohaus . -f values.yaml -f dev.yaml
+# Aufruf: helm install kunde . -f values.yaml -f dev.yaml
 #           ggf. zusaetzlich --dry-run
-#         helm uninstall autohaus
+#         helm uninstall kunde
 
-# Metadaten generiert durch: helm create autohaus
+# Metadaten generiert durch: helm create kunde
 
 apiVersion: v2
 name: autohaus
@@ -36,16 +36,17 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2024.10.2
+version: 2024.10.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 2024.10.2-buildpacks-bellsoft
-#appVersion: 2024.10.2-buildpacks-eclipse
-#appVersion: 2024.10.2-buildpacks-azul
-#appVersion: 2024.10.2-eclipse-noble
-#appVersion: 2024.10.2-azul
+appVersion: 2024.10.1-buildpacks-bellsoft
+#appVersion: 2024.10.1-buildpacks-eclipse
+#appVersion: 2024.10.1-buildpacks-azul
+#appVersion: 2024.10.1-eclipse-noble
+#appVersion: 2024.10.1-azul
+#appVersion: 2024.10.1-eclipse-alpine
 
 # https://helm.sh/docs/topics/version_skew
 # https://helm.sh/docs/helm/helm_version
@@ -56,8 +57,8 @@ keywords:
   - Spring
   - Java
 
-home: https://www.www.h-ka.de
-icon: https://www.www.h-ka.de/typo3conf/ext/in2template/Resources/Public/Images/Icons/Favicons/favicon-256x256.png
+home: https://www.h-ka.de
+icon: https://www.h-ka.de/typo3conf/ext/in2template/Resources/Public/Images/Icons/Favicons/favicon-256x256.png
 
 maintainers:
   - name: Jürgen Zimmermann

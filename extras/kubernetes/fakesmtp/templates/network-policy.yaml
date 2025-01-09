@@ -36,9 +36,9 @@ spec:
               app.kubernetes.io/instance: autohaus
         - podSelector:
             matchLabels:
-              app: bestellung
-              app.kubernetes.io/name: bestellung
-              app.kubernetes.io/instance: bestellung
+              app: kunde
+              app.kubernetes.io/name: kunde
+              app.kubernetes.io/instance: kunde
       ports:
         - port: smtp
           protocol: TCP
