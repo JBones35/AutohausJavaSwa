@@ -16,6 +16,7 @@
  */
 package com.acme.autohaus.dev;
 
+import com.acme.autohaus.security.RolleAdmin;
 import java.util.Map;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class DbPopulateController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbPopulateController.class);
 
-    private final org.flywaydb.core.Flyway flyway;
+    private final Flyway flyway;
 
     /// Konstruktor mit `package private` für Constructor Injection bei _Spring_.
     ///
@@ -49,6 +50,7 @@ public class DbPopulateController {
     ///
     /// @return Response mit Statuscode `200` und Body `{"db_populate": "ok"}`, falls keine Exception aufgetreten ist.
     @PostMapping(value = "db_populate", produces = APPLICATION_JSON_VALUE)
+    @RolleAdmin
     Map<String, String> dbPopulate() {
         LOGGER.warn("Die DB wird neu geladen");
         flyway.clean();

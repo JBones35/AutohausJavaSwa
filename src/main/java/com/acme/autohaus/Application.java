@@ -18,21 +18,25 @@ package com.acme.autohaus;
 
 import com.acme.autohaus.dev.DevConfig;
 import com.acme.autohaus.mail.MailProps;
+import com.acme.autohaus.security.KeycloakProps;
+import com.acme.autohaus.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import static com.acme.autohaus.Banner.TEXT;
 
 /// Klasse mit der `main`-Methode für die Anwendung auf Basis von _Spring Boot_.
 ///
 /// @author [Jürgen Zimmermann](mailto:Juergen.Zimmermann@h-ka.de)
 @SpringBootApplication(proxyBeanMethods = false)
-@Import(DevConfig.class)
-@EnableConfigurationProperties(MailProps.class)
+@Import({SecurityConfig.class, DevConfig.class})
+@EnableConfigurationProperties({KeycloakProps.class, MailProps.class})
 @EnableJpaRepositories
+@EnableMethodSecurity
 @EnableAsync
 @SuppressWarnings({"ImplicitSubclassInspection", "ClassUnconnectedToPackage"})
 public final class Application {

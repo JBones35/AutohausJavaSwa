@@ -13,6 +13,10 @@ package org.springframework {
         interface "@RequestHeader" as RequestHeader
     }
 
+    package security.core {
+            class Authentication
+        }
+
     package util {
         class MultiValueMap<K,V>
     }
@@ -26,11 +30,15 @@ package com.acme.autohaus {
     package service {
         class AutohausReadService << control >> << @Service >>
         class NotFoundException
+        class AccessForbiddenException
+
+        AutohausReadService .right[hidden].> NotFoundException
+        NotFoundException .right[hidden].> AccessForbiddenException
     }
 
 package controller #DDDDDD {
         class AutohausGetController << boundary >> << @RestController >> << @RequestMapping >> {
-            + @GetMapping get(@RequestParam queryParams: MultiValueMap<String, String>): List<Autohaus>
+            + @GetMapping get(@RequestParam queryParams: MultiValueMap<String, String>, authentication : Authentication): List<Autohaus>
             + @GetMapping getById(@PathVariable id: UUID, @RequestHeader("If-None-Match") version: String): Autohaus
         }
 
@@ -50,7 +58,8 @@ package controller #DDDDDD {
         CommonExceptionHandler .up.> ExceptionHandler
         CommonExceptionHandler .up.> ResponseStatus
         CommonExceptionHandler ..> NotFoundException
-        CommonExceptionHandler .up[hidden].> Autohaus
+        CommonExceptionHandler ..> AccessForbiddenException
+        CommonExceptionHandler .[hidden].> Autohaus
 
         AutohausGetController .right.> List
 

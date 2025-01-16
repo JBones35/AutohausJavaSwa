@@ -27,13 +27,17 @@ package com.acme.autohaus {
         Autohaus .up[hidden].> Transactional
     }
 
+    package security {
+        enum RolleType
+    }
+
     package repository {
         interface AutohausRepository << control >>
     }
 
     package service #DDDDDD {
         class AutohausReadService << control >> << @Service >> {
-            + findById(id: UUID, boolean: fetchAutos): Autohaus
+            + findById(id: UUID, username; String, rollen : List<RolleType> fetchAutos:boolean): Autohaus
             + find(suchkriterien: Map<String, List<String>>): List<Autohaus>
         }
 
@@ -43,6 +47,7 @@ package com.acme.autohaus {
         AutohausReadService .up.> List
         AutohausReadService .up.> Map
         AutohausReadService .up.> Service
+        AutohausReadService .up.> RolleType
         AutohausReadService ..> Transactional
     }
 }

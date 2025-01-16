@@ -1,5 +1,6 @@
 package com.acme.autohaus.controller;
 
+import com.acme.autohaus.security.RolleAdmin;
 import com.acme.autohaus.service.AutohausWriteService;
 import com.acme.autohaus.service.EmailExistsException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +35,7 @@ import static org.springframework.http.HttpStatus.PRECONDITION_REQUIRED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.noContent;
 
 /**
  * Controller für Schreiboperationen im Autohaus.
@@ -48,7 +50,7 @@ public class AutohausWriteController {
     /**
      * Problem path, falls der ExceptionHandler aufgerufen wird
      */
-    public static final String PROBLEM_PATH = "/problem";
+    public static final String PROBLEM_PATH = "/problem/";
 
     private static final String VERSIONSNUMMER_FEHLT = "Versionsnummer fehlt";
 
@@ -108,15 +110,17 @@ public class AutohausWriteController {
      * @param autohausDTO DTO-Objekt des Autohauses.
      * @param version     Version
      * @param request     HTTPSErvletRequest
+     * @return  Response-Entity mit Void
      */
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @RolleAdmin
     @ResponseStatus(NO_CONTENT)
     @Operation(summary = "Ein Autohaus mit neuen Werten aktualisieren", tags = "Aktualisieren")
     @ApiResponse(responseCode = "204", description = "Aktualisiert")
     @ApiResponse(responseCode = "400", description = "Syntaktische Fehler im Request-Body")
     @ApiResponse(responseCode = "404", description = "Autohaus nicht vorhanden")
     @ApiResponse(responseCode = "422", description = "Ungültige Werte oder Email vorhanden")
-    void put(
+    ResponseEntity<Void> put(
         @PathVariable final UUID id,
         @RequestBody @Validated final AutohausDTO autohausDTO,
         @RequestHeader("If-Match") final Optional<String> version,
@@ -127,6 +131,7 @@ public class AutohausWriteController {
         final var autohausInput = autohausMapper.toAutohaus(autohausDTO);
         final var autohaus = autohausWriteService.update(autohausInput, id, versionInt);
         LOGGER.debug("put: {}", autohaus);
+        return noContent().eTag("\"" + autohaus.getVersion() + '"').build();
     }
 
     @SuppressWarnings({"MagicNumber", "RedundantSuppression"})

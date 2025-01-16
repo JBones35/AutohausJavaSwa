@@ -34,8 +34,7 @@
 //        .\gradlew bootJar
 //        java -jar build/libs/....jar
 //        .\gradlew bootBuildImage
-//        .\gradlew bootBuildImage -Pbuildpack=adoptium
-//        .\gradlew bootBuildImage -P'paketoBuilder=paketobuildpacks/builder-jammy-base:latest'
+//        .\gradlew cyclonedxBom
 //
 //  3) Tests und Codeanalyse
 //        .\gradlew test jacocoTestReport [-Dtest=rest-get] [--rerun-tasks]
@@ -91,7 +90,7 @@
 //
 //  14) Initialisierung des Gradle Wrappers in der richtigen Version
 //      dazu ist ggf. eine Internetverbindung erforderlich
-//        gradle wrapper --gradle-version=8.11.1 --distribution-type=bin
+//        gradle wrapper --gradle-version=8.12 --distribution-type=bin
 
 // https://github.com/gradle/kotlin-dsl/tree/master/samples
 // https://docs.gradle.org/current/userguide/kotlin_dsl.html
@@ -132,14 +131,7 @@ val useKotlin = project.properties["kotlin"] != "false" && project.properties["k
 val mapStructVerbose =
     project.properties["mapStructVerbose"] == "true" || project.properties["mapStructVerbose"] == "TRUE"
 val useDevTools = project.properties["devTools"] != "false" && project.properties["devTools"] != "FALSE"
-val activeProfiles =
-    if (project.properties["https"] != "false" &&
-        project.properties["https"] != "FALSE"
-    ) {
-        "dev"
-    } else {
-        "dev,http"
-    }
+val activeProfiles = project.properties["activeProfiles"] ?: ""
 
 plugins {
     java
@@ -169,9 +161,9 @@ plugins {
 
     // https://cyclonedx.org
     // https://github.com/CycloneDX/cyclonedx-gradle-plugin
-    // https://github.com/spring-projects/spring-boot/pull/39799
-    // TODO unterstuetzt nicht Kotlin 2.x
-    //alias(libs.plugins.cyclonedx)
+    // https://localhost:8080/actuator/sbom
+    // gradle cyclonedxBom   -> build\reports\application.cdx.json
+    alias(libs.plugins.cyclonedx)
 
     // https://spotbugs.readthedocs.io/en/latest/gradle.html
     alias(libs.plugins.spotbugs)
@@ -213,10 +205,6 @@ plugins {
     // Aufruf: gradle dependencyUpdates
     alias(libs.plugins.ben.manes.versions)
 
-    // https://github.com/markelliot/gradle-versions
-    // Aufruf: gradle checkNewVersions
-    alias(libs.plugins.markelliot.versions)
-
     // https://github.com/jk1/Gradle-License-Report
     alias(libs.plugins.license.report)
 
@@ -227,11 +215,11 @@ plugins {
 
 defaultTasks = mutableListOf("compileTestJava")
 group = "com.acme"
-version = "2024.10.2"
+version = "2024.10.1"
 val imageTag = project.properties["imageTag"] ?: project.version.toString()
 
 sweeney {
-    enforce(mapOf("type" to "gradle", "expect" to "[8.12.0,8.12.0]"))
+    enforce(mapOf("type" to "gradle", "expect" to "[8.11.1,8.12]"))
     enforce(mapOf("type" to "jdk", "expect" to "[$javaVersion,$javaVersion]"))
     validate()
 }
@@ -313,13 +301,13 @@ val detektCfg: Configuration by configurations.creating
 
 // https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_separation
 dependencies {
-    implementation(platform(libs.slf4j.bom))
-    implementation(platform(libs.log4j.bom))
+    //implementation(platform(libs.slf4j.bom))
+    //implementation(platform(libs.log4j.bom))
     if (useObservability) {
         //implementation(platform(libs.zipkin.reporter.bom))
         implementation(platform(libs.opentelemetry.bom))
         //implementation(platform(libs.micrometer.tracing.bom))
-        implementation(platform(libs.prometheus.metrics.bom))
+        //implementation(platform(libs.prometheus.metrics.bom))
         //implementation(platform(libs.micrometer.bom))
     }
     //implementation(platform(libs.jackson.bom))
@@ -336,11 +324,12 @@ dependencies {
     //}
     if (useKotlin) {
         implementation(platform(libs.kotlin.bom))
+        implementation(platform(libs.kotlin.coroutiones.bom))
     }
-    //implementation(platform(libs.logback.parent))
+    implementation(platform(libs.logback.parent))
 
-    //testImplementation(platform(libs.assertj.bom))
-    //testImplementation(platform(libs.mockito.bom))
+    testImplementation(platform(libs.assertj.bom))
+    testImplementation(platform(libs.mockito.bom))
     //testImplementation(platform(libs.junit.bom))
     testImplementation(platform(libs.allure.bom))
 
@@ -508,23 +497,27 @@ dependencies {
         //    implementation(libs.angus-mail)
         //}
 
-        if (usePersistence) {
-            //runtimeOnly(libs.postgresql)
-            //runtimeOnly(libs.mysql)
-            //runtimeOnly(libs.h2)
-            //implementation(libs.jakarta.persistence)
-            implementation(libs.hikaricp)
-            if (!nativeImage) {
-                implementation(libs.flyway)
-                runtimeOnly(libs.bundles.flyway.database)
-            }
+        if (usePersistence && !nativeImage) {
+            implementation(libs.flyway)
+            runtimeOnly(libs.bundles.flyway.database)
         }
-
-        //if (useGraphQL) {
-        //    implementation(libs.graphql.java.dataloader)
-        //    implementation(libs.graphql.java)
-        //    implementation(libs.spring.graphql)
+        //if (usePersistence) {
+        //    runtimeOnly(libs.postgresql)
+        //    runtimeOnly(libs.mysql)
+        //    runtimeOnly(libs.h2)
+        //    implementation(libs.jakarta.persistence)
+        //    implementation(libs.hikaricp)
+        //    if (!nativeImage) {
+        //        implementation(libs.flyway)
+        //        runtimeOnly(libs.bundles.flyway.database)
+        //    }
         //}
+
+        if (useGraphQL) {
+            implementation(libs.graphql.java.dataloader)
+            //implementation(libs.graphql.java)
+            //implementation(libs.spring.graphql)
+        }
 
         //implementation(libs.snakeyaml)
 
@@ -641,6 +634,12 @@ tasks.named("bootJar", org.springframework.boot.gradle.tasks.bundling.BootJar::c
     }
 }
 
+// https://github.com/CycloneDX/cyclonedx-gradle-plugin/issues/459
+// https://github.com/CycloneDX/cyclonedx-gradle-plugin
+tasks.cyclonedxBom {
+    setSkipConfigs(listOf("dependencySources", "testDependencySources"))
+}
+
 // https://github.com/paketo-buildpacks/spring-boot
 tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.BootBuildImage::class.java) {
     // https://github.com/spring-projects/spring-boot/issues/41199#issuecomment-2183338408
@@ -747,6 +746,10 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
             // Bellsoft Liberica: JRE 8, 11, 17, 21 (default, siehe buildpack.toml: BP_JVM_VERSION), 23
             // https://github.com/paketo-buildpacks/bellsoft-liberica/releases
             imageName = "${imageName.get()}-bellsoft"
+            // https://docs.spring.io/spring-boot/gradle-plugin/packaging-oci-image.html#build-image.customization
+            // "Ubuntu Noble" statt "Ubuntu Jammy" https://github.com/paketo-buildpacks/builder-noble-java-tiny
+            // https://stackoverflow.com/questions/68023763/spring-boot-buildpack-always-downloads-latest-packeto-images-from-git#answer-68039094
+            builder = "paketobuildpacks/builder-noble-java-tiny:latest"
             println("")
             println("Buildpacks: JRE durch   B e l l s o f t   L i b e r i c a   (default)")
             println("")
@@ -1103,7 +1106,7 @@ val ktlint by tasks.register<JavaExec>("ktlint") {
                 "--reporter=html,output=${layout.buildDirectory.get()}/reports/ktlint.html",
             )
     } else {
-        println("ktlint: Kotlin ist deaktiviert")
+        println("ktlint ist deaktiviert (Kotlin)")
     }
 }
 if (useKotlin) {
@@ -1138,7 +1141,7 @@ val detekt by tasks.register<JavaExec>("detekt") {
             )
         args(params)
     } else {
-        println("detekt: Kotlin ist deaktiviert")
+        println("detekt ist deaktiviert (Kotlin)")
     }
 }
 if (useKotlin) {
@@ -1179,7 +1182,7 @@ dependencyCheck {
         }
 
     suppressionFile = "$projectDir/config/dependencycheck/suppression.xml"
-    scanConfigurations = listOf("runtimeClasspath")
+    scanConfigurations = listOf("productionRuntimeClasspath")
     analyzedTypes = listOf("jar")
 
     analyzers =

@@ -22,29 +22,28 @@
 # https://stackoverflow.com/questions/74571191/use-keycloak-spring-adapter-with-spring-boot-3#answer-74572732
 # https://github.com/ch4mpy/spring-addons/tree/master/samples/tutorials
 # com.c4_soft.springaddons.security.oidc.starter.properties.SpringAddonsOidcProperties
-#com.c4-soft.springaddons.oidc:
-#  ops:
-#    # "iss" ist Praefix fuer ".../.well-known/openid-configuration"
-#    - iss: ${app.keycloak.issuer-uri}
-#      username-claim: preferred_username
-#      authorities:
-#        # Pfad zu den Rollen innerhalb vom "JWT Claim" und zusaetzlicher Praefix "ROLE_" fuer Spring Security
-#        - path: $.realm_access.roles
-#          #prefix: ROLE_
-#        - path: $.resource_access.*.roles
-#          prefix: ROLE_
-
+com.c4-soft.springaddons.oidc:
+  ops:
+    # "iss" ist Praefix fuer ".../.well-known/openid-configuration"
+    - iss: ${app.keycloak.issuer-uri}
+      username-claim: preferred_username
+      authorities:
+        # Pfad zu den Rollen innerhalb vom "JWT Claim" und zusaetzlicher Praefix "ROLE_" fuer Spring Security
+        - path: $.realm_access.roles
+          #prefix: ROLE_
+        - path: $.resource_access.*.roles
+          prefix: ROLE_
   # com.c4_soft.springaddons.security.oidc.starter.properties.SpringAddonsOidcResourceServerProperties
   # in com.c4-soft.springaddons:spring-addons-starter-oidc
-#  resourceserver.permit-all:
-#    - /api/**
-#    - /auth/*
-#    - /graphql
-#    - /error
-#    # TODO Nur im Profile "dev" ohne Zugriffsschutz
-#    - /swagger-ui.html
-#    - /h2-console
-#    - /graphiql
+  resourceserver.permit-all:
+    - /api/**
+    - /auth/*
+    - /graphql
+    - /error
+    # TODO Nur im Profile "dev" ohne Zugriffsschutz
+    - /swagger-ui.html
+    - /h2-console
+    - /graphiql
   # com.c4_soft.springaddons.security.oidc.starter.properties.CorsProperties
   # in com.c4-soft.springaddons:spring-addons-starter-oidc
   #cors:
@@ -64,7 +63,6 @@ server:
   http2.enabled: true
   ssl.bundle: microservice
   shutdown: graceful
-
 spring:
   application.name: autohaus
   aop.proxy-target-class: false
@@ -140,14 +138,14 @@ spring:
   main.lazy-initialization: true
   mvc.problemdetails.enabled: true
 
-    # ==============================================================================
-    # S e c u r i t y
-    # ==============================================================================
-    # https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
-    #  security.oauth2.resourceserver.jwt:
-    #    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
-    #    issuer-uri: ${app.keycloak.issuer-uri}
-  #jws-algorithms: RS256
+  # ==============================================================================
+  # S e c u r i t y
+  # ==============================================================================
+  # https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
+  security.oauth2.resourceserver.jwt:
+    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
+    issuer-uri: ${app.keycloak.issuer-uri}
+    #jws-algorithms: RS256
 
   # ==============================================================================
   # T L S
@@ -170,13 +168,13 @@ spring:
 # ==============================================================================
 management:
   endpoints.web.exposure.include: "*"
-  #endpoint.shutdown.access: unrestricted
+  #endpoint.shutdown.access : unrestricted
   # Trace every action
-#  metrics.distribution.percentiles-histogram.http.server.requests: true
-#  observations:
-#    #enable.spring.security: false
-#    # siehe /actuator/metrics/get-by-id
-#    key-values.application: kunde
+  metrics.distribution.percentiles-histogram.http.server.requests: true
+  observations:
+    #enable.spring.security: false
+    # siehe /actuator/metrics/get-by-id
+    key-values.application: autohaus
 
 # ==============================================================================
 # L o g g i n g
@@ -197,22 +195,23 @@ logging:
     console: info
     file: info
   level:
+    org.hibernate.orm.connections.pooling: warn
     org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener: warn
     org.springframework.security.core.userdetails.User: error
     io.micrometer.observation.contextpropagation.ObservationThreadLocalAccessor: error
 
-  # ==============================================================================
-  # E i g e n e   P r o p e r t i e s
-  # ==============================================================================
-  #app:
+# ==============================================================================
+# E i g e n e   P r o p e r t i e s
+# ==============================================================================
+app:
   # siehe Klasse KeycloakProps
-  #  keycloak:
-  #    client-id: spring-client
-  #    client-secret: Change Me! # als System-Property oder Umgebungsvariable
-  #    host: keycloak
-  #    port: 8080
-  #    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
-  #    issuer-uri: http://keycloak:8080/realms/spring
+  keycloak:
+    client-id: spring-client
+    client-secret: ct6olMO5Z6bOKIeHZ9zNa1w0onMg1Lio # als System-Property oder Umgebungsvariable
+    host: keycloak
+    port: 8880
+    # "issuer-uri" ist Praefix fuer ".../.well-known/openid-configuration"
+    issuer-uri: http://keycloak:8880/realms/spring
 
   #mail:
   #  from: Theo Test <theo@test.de>
@@ -265,12 +264,12 @@ spring:
   # G r a p h Q L
   # ==============================================================================
   #graphql:
-  #  # Pfad fuer GraphiQL: /graphiql
-  #  graphiql.enabled: true
-  #  # Pfad für Schema: /graphql/schema
-  #  schema.printer.enabled: true
+    # Pfad fuer GraphiQL: /graphiql
+    #graphiql.enabled: true
+    # Pfad für Schema: /graphql/schema
+   # schema.printer.enabled: true
 
-  jackson.serialization.indent-output: true
+  #jackson.serialization.indent-output: true
 
   # ==============================================================================
   # D a t e n b a n k
@@ -370,6 +369,75 @@ logging:
     org.springframework.test.context.support.AbstractContextLoader: warn
     org.springframework.test.context.support.AnnotationConfigContextLoaderUtils: warn
     org.springframework.test.context.support.DefaultTestContextBootstrapper: warn
+
+---
+# ==============================================================================
+# P r o f i l e   " l o c u s t "
+# ==============================================================================
+spring:
+  config.activate.on-profile: locust
+
+  # ==============================================================================
+  # D a t e n b a n k
+  # ==============================================================================
+  datasource.hikari:
+    connection-timeout: 10000
+    idle-timeout: 120000
+    maximum-pool-size: 10 # Default: 10
+
+  # ==============================================================================
+  # G r a p h Q L
+  # ==============================================================================
+ # graphql:
+  #  graphiql.enabled: false
+   # schema.printer.enabled: true
+
+  # ==============================================================================
+  # D a t e n b a n k
+  # ==============================================================================
+  jpa.properties.hibernate:
+    connection.pool_size: 10
+    session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 30
+
+  # ==============================================================================
+  # M a i l
+  # ==============================================================================
+  mail:
+    host: localhost
+    port: 8025
+
+#management:
+  # ==============================================================================
+  # A c t u a t o r
+  # ==============================================================================
+ # endpoint:
+  #  health:
+   #   access: read_only
+    #  probes.enabled: true
+    #shutdown.access: unrestricted
+
+# ==============================================================================
+# L o g g i n g
+# ==============================================================================
+logging:
+  file.name: /tmp/application.log
+  logback.rollingpolicy:
+    file-name-pattern: ${logging.file.name}.%d{yyyy-MM-dd}.%i.gz
+    max-file-size: 10MB
+    max-history: 3
+  pattern:
+    console: "%clr(%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5level) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %msg%n%wEx"
+    file: "%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5level ${PID:- } --- [%thread] %-40.40logger{39} : %m%n%wEx"
+  threshold:
+    console: info
+    file: info
+  level:
+    com.acme: info
+    org.apache.catalina: info
+    org.springframework: info
+    io.micrometer.observation.contextpropagation.ObservationThreadLocalAccessor: error
+    org.hibernate: info
+    org.flywaydb: info
 
 ---
 # ==============================================================================

@@ -34,7 +34,7 @@ entity "Auto" {
     baujahr : integer
     besitzer : text
   * preis : decimal
-  * **kunde_id**: UUID <<FK>>
+  * **autohaus_id**: UUID <<FK>>
 }
 
 Autohaus ||.left.|| Adresse

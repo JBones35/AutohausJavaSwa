@@ -18,7 +18,7 @@
 services:
   trivy:
     image: aquasec/trivy:0.56.2
-    command: [image, juergenzimmermann/kunde:2024.10.2-buildpacks-bellsoft]
+    command: [image, juergenzimmermann/autohaus:2024.10.2-buildpacks-bellsoft]
     #command: [image, juergenzimmermann/kunde:2024.10.1-buildpacks-eclipse]
     #command: [image, juergenzimmermann/kunde:2024.10.1-buildpacks-azul]
     #command: [image, juergenzimmermann/kunde:2024.10.1-eclipse]

@@ -20,14 +20,18 @@ package com.acme.autohaus.service;
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.repository.AutohausRepository;
 import com.acme.autohaus.repository.SpecificationBuilder;
+import com.acme.autohaus.security.RolleType;
+import io.micrometer.observation.annotation.Observed;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static com.acme.autohaus.security.RolleType.ADMIN;
 
 /// Anwendungslogik für Autohäuser
 /// ![Klassendiagramm](../../../../../asciidoc/AutohausReadService.svg)
@@ -53,10 +57,15 @@ public class AutohausReadService {
     ///
     /// @param id Die Id des gesuchten Autohauses
     /// @param fetchAutos boolean für fetch-autos
+    /// @param username Username
+    /// @param rollen Die Rollen des Users
     /// @return das gefundene Autohaus
     /// @throws NotFoundException Falls kein Autohaus gefunden wurde
+    @Observed(name = "find-by-id")
     public @NonNull Autohaus findById(
         final UUID id,
+        final String username,
+        final List<RolleType> rollen,
         final boolean fetchAutos
     ) {
         LOGGER.debug("findById: id={}", id);
@@ -64,6 +73,14 @@ public class AutohausReadService {
         final var autohausOptional = fetchAutos ? repo.findByIdFetchAutos(id) : repo.findById(id);
         final var autohaus = autohausOptional.orElse(null);
         LOGGER.trace("findById: Autohaus={}", autohaus);
+
+        if (autohaus != null && autohaus.getUsername().contentEquals(username)) {
+            return autohaus;
+        }
+
+        if (!rollen.contains(ADMIN)) {
+            throw new AuthorizationDeniedException(rollen.toString());
+        }
 
         if (autohaus == null) {
             throw new NotFoundException(id);
