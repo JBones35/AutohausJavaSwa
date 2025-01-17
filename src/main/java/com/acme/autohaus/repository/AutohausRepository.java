@@ -71,9 +71,6 @@ public class AutohausRepository {
                 case "name" -> {
                     return getByName(entry.getValue().getFirst());
                 }
-                case "standort" -> {
-                    return getByStandort(entry.getValue().getFirst());
-                }
                 default -> {
                     LOGGER.debug("find: ungueltiges Suchkriterium={}", entry.getKey());
                     return emptyList();
@@ -95,21 +92,6 @@ public class AutohausRepository {
             .filter(autohaus -> autohaus.getName().contains(name))
             .toList();
         LOGGER.debug("getByName: autohaeuser={}", autohaeuser);
-        return autohaeuser;
-    }
-
-    /**
-     * Sucht Autohaeuser anhand des Standorts.
-     *
-     * @param standort der Standort des gesuchten Autohauses.
-     * @return Liste von Autohaeusern, deren Standort den angegebenen String enthält.
-     */
-    public @NonNull List<Autohaus> getByStandort(final String standort) {
-        LOGGER.debug("getByStandort: standort={}", standort);
-        final var autohaeuser = AUTOHAEUSER.stream()
-            .filter(autohaus -> autohaus.getStandort().contains(standort))
-            .toList();
-        LOGGER.debug("getByStandort: autohaeuser={}", autohaeuser);
         return autohaeuser;
     }
 

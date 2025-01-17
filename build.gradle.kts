@@ -115,7 +115,7 @@ val enablePreview =
         null
     }
 
-val imagePath = project.properties["imagePath"] ?: "juergenzimmermann"
+val imagePath = project.properties["imagePath"] ?: "jonaskirschner"
 val paketoBuilder = project.properties["paketoBuilder"] as? String
 val alternativeBuildpack = project.properties["buildpack"]
 val nativeImage = project.properties["nativeImage"] == "true"
@@ -230,7 +230,7 @@ version = "2024.10.1"
 val imageTag = project.properties["imageTag"] ?: project.version.toString()
 
 sweeney {
-    enforce(mapOf("type" to "gradle", "expect" to "[8.11.0,8.11.0]"))
+    enforce(mapOf("type" to "gradle", "expect" to "[8.12.0,8.12.0]"))
     enforce(mapOf("type" to "jdk", "expect" to "[$javaVersion,$javaVersion]"))
     validate()
 }

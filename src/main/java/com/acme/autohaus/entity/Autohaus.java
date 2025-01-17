@@ -25,12 +25,11 @@ import java.util.UUID;
 ///
 public class Autohaus {
     private String name;
-    private String standort;
     private String telefonnummer;
     private String email;
     private UUID autohausId;
     private final List<Auto> autos;
-    private final List<Mitarbeiter> mitarbeiter;
+    private final Adresse adresse;
 
     /**
      * Konstruktor zur Initialisierung eines Autohauses mit spezifischen Eigenschaften und leeren Listen.
@@ -43,15 +42,14 @@ public class Autohaus {
      * @param autos         Die Liste der Autos (kann null sein, in diesem Fall wird eine leere Liste erstellt).
      * @param mitarbeiter   Die Liste der Mitarbeiter (kann null sein, in diesem Fall wird eine leere Liste erstellt).
      */
-    public Autohaus(final String name, final String standort, final String telefonnummer, final UUID autohausId,
-                    final String email, final List<Auto> autos, final List<Mitarbeiter> mitarbeiter) {
+    public Autohaus(final String name, final String telefonnummer, final UUID autohausId,
+                    final String email, final List<Auto> autos, final Adresse adresse) {
         this.name = name;
-        this.standort = standort;
         this.telefonnummer = telefonnummer;
         this.autohausId = autohausId != null ? autohausId : UUID.randomUUID();
         this.email = email;
         this.autos = autos != null ? autos : new ArrayList<>();
-        this.mitarbeiter = mitarbeiter != null ? mitarbeiter : new ArrayList<>();
+        this.adresse = adresse;
     }
 
     @Override
@@ -80,24 +78,6 @@ public class Autohaus {
      */
     public void setName(final String name) {
         this.name = name;
-    }
-
-    /**
-     * Gibt den Standort des Autohauses zurück.
-     *
-     * @return Der Standort des Autohauses.
-     */
-    public String getStandort() {
-        return standort;
-    }
-
-    /**
-     * Setzt den Standort des Autohauses.
-     *
-     * @param standort Der Standort des Autohauses.
-     */
-    public void setStandort(final String standort) {
-        this.standort = standort;
     }
 
     /**
@@ -168,20 +148,19 @@ public class Autohaus {
      *
      * @return Die Liste der Mitarbeiter. Die Liste ist nicht veränderbar durch den Aufruf dieser Methode.
      */
-    public List<Mitarbeiter> getMitarbeiter() {
-        return mitarbeiter;
+    public Adresse getAdresse() {
+        return adresse;
     }
 
     @Override
     public String toString() {
         return "Autohaus{" +
             "name='" + name + '\'' +
-            ", standort='" + standort + '\'' +
             ", telefonnummer='" + telefonnummer + '\'' +
             ", UUID='" + autohausId + '\'' +
             ", email='" + email + '\'' +
             ", autos=" + autos +
-            ", mitarbeiter=" + mitarbeiter +
+            ", mitarbeiter=" + adresse +
             '}';
     }
 }

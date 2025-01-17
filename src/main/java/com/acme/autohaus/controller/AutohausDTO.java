@@ -16,8 +16,8 @@
  */
 package com.acme.autohaus.controller;
 
+import com.acme.autohaus.entity.Adresse;
 import com.acme.autohaus.entity.Auto;
-import com.acme.autohaus.entity.Mitarbeiter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -39,15 +39,9 @@ import java.util.List;
  */
 public record AutohausDTO(
     @NotNull
-    @Pattern(regexp = NAME_PATTERN)
     String name,
 
     @NotNull
-    @NotBlank
-    String standort,
-
-    @NotNull
-    @Pattern(regexp = TELEFONNUMER_PATTERN)
     String telefonnummer,
 
     @NotNull
@@ -60,7 +54,7 @@ public record AutohausDTO(
 
     @Valid
     @NotNull(groups = OnCreate.class)
-    List<Mitarbeiter> mitarbeiter
+    Adresse adresse
 
 ) {
     /**

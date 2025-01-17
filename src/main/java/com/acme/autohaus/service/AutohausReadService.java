@@ -68,17 +68,6 @@ public class AutohausReadService {
                 LOGGER.debug("suche (name): {}", name);
                 return autohaeuser;
             }
-
-            final var standort = suchkriterien.get("standort");
-            if (standort != null && standort.size() == 1) {
-                final var autohaeuser = autohausRepository.getByStandort(standort.getFirst());
-                if (autohaeuser.isEmpty()) {
-                    throw new NotFoundException(suchkriterien);
-                }
-                LOGGER.debug("suche (standort): {}", standort);
-                return autohaeuser;
-            }
-
             final var autohaeuser = autohausRepository.get(suchkriterien);
             if (autohaeuser.isEmpty()) {
                 throw new NotFoundException(suchkriterien);
