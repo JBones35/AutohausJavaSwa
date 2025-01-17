@@ -24,7 +24,6 @@
 include:
   - path:
     - ../postgres/compose.yml
-    #- ../mysql/compose.yml
     #- ../oracle/compose.yml
     - ../keycloak/compose.yml
     - ../zipkin/compose.yml

@@ -22,11 +22,6 @@ CREATE INDEX IF NOT EXISTS autohaus_email_idx ON autohaus(email) TABLESPACE auto
 
 CREATE TABLE IF NOT EXISTS auto (
                                     id          uuid PRIMARY KEY USING INDEX TABLESPACE autohausspace,
-                                    modell      text NOT NULL,
-                                    baujahr     integer,
-                                    marke       text NOT NULL,
-                                    besitzer    text,
-                                    preis       decimal NOT NULL,
                                     autohaus_id uuid REFERENCES autohaus,
                                     idx       integer NOT NULL DEFAULT 0
 )TABLESPACE autohausspace;

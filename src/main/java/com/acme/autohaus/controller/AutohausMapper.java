@@ -51,14 +51,4 @@ public interface AutohausMapper {
      */
     @Mapping(target = "id", ignore = true)
     Adresse toAdresse(AdresseDTO dto);
-
-    /**
-     * Konvertiert ein {@link AutoDTO} in eine {@link Auto}-Entität.
-     * Falls das DTO null ist, wird ein leeres Auto-Objekt zurückgegeben.
-     *
-     * @param dto Das {@code AutoDTO}, das konvertiert werden soll.
-     * @return Eine neue {@code Auto}-Instanz basierend auf dem übergebenen DTO.
-     */
-    @Mapping(target = "id", ignore = true)
-    Auto toAuto(AutoDTO dto);
 }

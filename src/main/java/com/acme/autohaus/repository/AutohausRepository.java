@@ -34,60 +34,14 @@ import static com.acme.autohaus.entity.Autohaus.ADRESSE_GRAPH;
 /// Repository Interface für den Mikroservice Autohaus
 @Repository
 public interface AutohausRepository extends JpaRepository<Autohaus, UUID>, JpaSpecificationExecutor<Autohaus> {
-    @EntityGraph(ADRESSE_GRAPH)
+    @EntityGraph(ADRESSE_AUTOS_GRAPH)
     @Override
     List<Autohaus> findAll();
 
-    @EntityGraph(ADRESSE_GRAPH)
-    @Override
-    List<Autohaus> findAll(@Nullable Specification<Autohaus> spec);
-
-    @EntityGraph(ADRESSE_GRAPH)
+    @EntityGraph(ADRESSE_AUTOS_GRAPH)
     @Override
     Optional<Autohaus> findById(UUID id);
 
-    /// Kunde einschließlich Umsätze anhand der ID suchen.
-    ///
-    /// @param id Kunde ID
-    /// @return Gefundener Kunde
-    @Query("""
-        SELECT DISTINCT a
-        FROM     #{#entityName} a
-        WHERE    a.id = :id
-        """)
     @EntityGraph(ADRESSE_AUTOS_GRAPH)
-    @NonNull
-    Optional<Autohaus> findByIdFetchAutos(UUID id);
-
-    /// Autohaus zu gegebener Emailadresse aus der DB ermitteln.
-    ///
-    /// @param email Emailadresse für die Suche
-    /// @return Optional mit dem gefundenen Autohaus oder leeres Optional
-    @Query("""
-        SELECT a
-        FROM   #{#entityName} a
-        WHERE  lower(a.email) LIKE concat(lower(:email), '%')
-        """)
-    @EntityGraph(ADRESSE_GRAPH)
-    Optional<Autohaus> findByEmail(String email);
-
-    /// Abfrage, ob es ein Autohaus mit gegebener Emailadresse gibt.
-    ///
-    /// @param email Emailadresse für die Suche
-    /// @return true, falls es ein solches Autohaus gibt, sonst false
-    @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
-    boolean existsByEmail(String email);
-
-    /// Autohäuser anhand des Names suchen.
-    ///
-    /// @param name Der (Teil-) Name des gesuchten Autohauses
-    /// @return Die gefundenen Autohäuser oder eine leere Collection
-    @Query("""
-        SELECT   a
-        FROM     #{#entityName} a
-        WHERE    lower(a.name) LIKE concat('%', lower(:name), '%')
-        ORDER BY a.name
-        """)
-    @EntityGraph(ADRESSE_GRAPH)
-    List<Autohaus> findByName(CharSequence name);
+    List<Autohaus> findByAutoId(UUID autoId);
 }

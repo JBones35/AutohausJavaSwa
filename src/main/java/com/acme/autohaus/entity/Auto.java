@@ -35,34 +35,6 @@ public class Auto {
     @GeneratedValue
     private UUID id;
 
-    /**
-     * Die Marke des Fahrzeugs (z. B. BMW, Audi).
-     */
-    private String marke;
-
-    /**
-     * Das spezifische Modell des Fahrzeugs (z. B. A4, 3er).
-     */
-    private String modell;
-
-    /**
-     * Das Baujahr des Fahrzeugs.
-     * Gibt an, wann das Fahrzeug produziert wurde.
-     */
-    private int baujahr;
-
-    /**
-     * Der Besitzer des Fahrzeugs.
-     * Entweder ein Name oder ein Identifier, der den Besitzer repräsentiert.
-     */
-    private String besitzer;
-
-    /**
-     * Der Preis des Fahrzeugs in einer präzisen Währungseinheit.
-     * Verwendet BigDecimal für exakte Berechnungen.
-     */
-    private BigDecimal preis;
-
     /// Konstruktor mit `package private`
     public Auto() {
         //StandardKonstruktor
@@ -72,20 +44,9 @@ public class Auto {
      * Konstruktor zur Initialisierung eines Autos mit spezifischen Eigenschaften.
      *
      * @param id    Die eindeutige Fahrzeug-ID (darf nicht null sein).
-     * @param marke     Die Marke des Autos (darf nicht null sein).
-     * @param modell    Das Modell des Autos (darf nicht null sein).
-     * @param baujahr   Das Baujahr des Autos (sollte positiv sein).
-     * @param besitzer  Der Besitzer des Autos (darf nicht null sein).
-     * @param preis     Der Preis des Autos (darf nicht negativ sein).
      */
-    public Auto(final UUID id, final String marke, final String modell,
-                final int baujahr, final String besitzer, final BigDecimal preis) {
+    public Auto(final UUID id) {
         this.id = id;
-        this.marke = marke;
-        this.modell = modell;
-        this.baujahr = baujahr;
-        this.besitzer = besitzer;
-        this.preis = preis;
     }
 
     /**
@@ -105,96 +66,6 @@ public class Auto {
     @SuppressWarnings("checkstyle:hiddenfield")
     public void setId(final UUID id) {
         this.id = id;
-    }
-
-    /**
-     * Gibt die Marke des Autos zurück.
-     *
-     * @return Die Marke des Autos.
-     */
-    public String getMarke() {
-        return marke;
-    }
-
-    /**
-     * Setzt die Marke des Autos.
-     *
-     * @param marke Die Marke des Autos (darf nicht null sein).
-     */
-    public void setMarke(final String marke) {
-        this.marke = marke;
-    }
-
-    /**
-     * Gibt das Modell des Autos zurück.
-     *
-     * @return Das Modell des Autos.
-     */
-    public String getModell() {
-        return modell;
-    }
-
-    /**
-     * Setzt das Modell des Autos.
-     *
-     * @param modell Das Modell des Autos (darf nicht null sein).
-     */
-    public void setModell(final String modell) {
-        this.modell = modell;
-    }
-
-    /**
-     * Gibt das Baujahr des Autos zurück.
-     *
-     * @return Das Baujahr des Autos.
-     */
-    public int getBaujahr() {
-        return baujahr;
-    }
-
-    /**
-     * Setzt das Baujahr des Autos.
-     *
-     * @param baujahr Das Baujahr des Autos (sollte positiv sein).
-     */
-    public void setBaujahr(final int baujahr) {
-        this.baujahr = baujahr;
-    }
-
-    /**
-     * Gibt den Besitzer des Autos zurück.
-     *
-     * @return Der Besitzer des Autos.
-     */
-    public String getBesitzer() {
-        return besitzer;
-    }
-
-    /**
-     * Setzt den Besitzer des Autos.
-     *
-     * @param besitzer Der Besitzer des Autos (darf nicht null sein).
-     */
-    public void setBesitzer(final String besitzer) {
-        this.besitzer = besitzer;
-    }
-
-    /**
-     * Gibt den Preis des Autos zurück.
-     *
-     * @return Der Preis des Autos (darf nicht negativ sein).
-     */
-    public BigDecimal getPreis() {
-        return preis;
-    }
-
-    /**
-     * Setzt den Preis des Autos.
-     *
-     * @param preis Der Preis des Autos (darf nicht negativ sein).
-     */
-    public void setPreis(final BigDecimal preis) {
-        this.preis = preis;
     }
 
     /**
@@ -234,11 +105,6 @@ public class Auto {
     public String toString() {
         return "Auto{" +
             "id='" + id + '\'' +
-            ", marke='" + marke + '\'' +
-            ", modell='" + modell + '\'' +
-            ", baujahr=" + baujahr +
-            ", besitzer=" + besitzer +
-            ", preis=" + preis +
             '}';
     }
 }

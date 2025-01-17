@@ -57,8 +57,6 @@ public record AutohausDTO(
     @NotNull(groups = OnCreate.class)
     Adresse adresse,
 
-    List<Auto> autos,
-
     String username,
 
     String password

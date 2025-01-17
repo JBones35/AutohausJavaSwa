@@ -18,6 +18,7 @@ package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.security.JwtService;
+import com.acme.autohaus.security.RolleAdmin;
 import com.acme.autohaus.security.RolleAdminOrUser;
 import com.acme.autohaus.service.AutohausReadService;
 import com.c4_soft.springaddons.security.oidc.starter.properties.SpringAddonsOidcProperties;
@@ -27,11 +28,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.annotation.PostConstruct;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
+
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkRelation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
@@ -46,8 +51,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.HttpStatus.NOT_MODIFIED;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.http.ResponseEntity.*;
 
 /// Controller für die Verwaltung von Autohaus-Anfragen.
 /// Dieser Controller bietet Endpunkte zum Abrufen von Autohäusern aus der Datenbank.
@@ -62,11 +66,12 @@ public class AutohausGetController {
      */
     public static final String API_PATH = "/autohaus";
 
+    /// Muster bzw. regulärer Ausdruck für eine UUID.
+    static final String ID_PATTERN = "[\\da-f]{8}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{4}-[\\da-f]{12}";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausGetController.class);
 
     private final AutohausReadService autohausReadService;
-
-    private final JwtService jwtService;
 
     private final SpringAddonsOidcProperties oidcProps;
 
@@ -74,13 +79,11 @@ public class AutohausGetController {
      * Konstruktor für den AutohausGetController.
      *
      * @param autohausReadService Der Service zum Lesen von Autohaus-Daten.
-     * @param jwtService Der JwtService
      * @param oidcProps Die SpringAddOnsOidc-Properties
      */
-    public AutohausGetController(final AutohausReadService autohausReadService, final JwtService jwtService,
+    public AutohausGetController(final AutohausReadService autohausReadService,
                                  final SpringAddonsOidcProperties oidcProps) {
         this.autohausReadService = autohausReadService;
-        this.jwtService = jwtService;
         this.oidcProps = oidcProps;
     }
 
@@ -90,71 +93,69 @@ public class AutohausGetController {
         LOGGER.info("SpringAddonsOidcProperties: Issuer-URI = {}", oidcProps.getOps().getFirst().getIss());
     }
 
-    /**
-     * Suche mit diversen Suchkriterien als Query-Parameter.
-     *
-     * @param suchkriterien Query-Parameter als Map.
-     * @return Gefundene Autohäuser als [List].
-     */
+    /// Suche mit diversen Suchkriterien als Query-Parameter. Es wird eine Collection zurückgeliefert, damit auch der
+    /// Statuscode `204` möglich ist.
+    ///
+    /// @param queryParams Query-Parameter als Map.
+    /// @param request Das Request-Objekt, um Links für _HATEOAS_ zu erstellen.
+    /// @return Ein Response mit dem Statuscode `200` und einer Collection mit den gefundenen Bestellungen
+    ///     einschließlich _Atom-Links_, oder aber Statuscode `204`.
     @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @RolleAdmin
     @Operation(summary = "Suche mit Suchkriterien", tags = "Suchen")
-    @ApiResponse(responseCode = "200", description = "Liste mit Autohäuser")
-    @ApiResponse(responseCode = "404", description = "Keine Autohäuser gefunden")
-    public List<Autohaus> get(
-        @RequestParam @NonNull final MultiValueMap<String, String> suchkriterien
+    @ApiResponse(responseCode = "200", description = "CollectionModel mid den Bestellungen")
+    @ApiResponse(responseCode = "404", description = "Keine Bestellungen gefunden")
+    @SuppressWarnings("ReturnCount")
+    ResponseEntity<List<Autohaus>> get(
+        @RequestParam final Map<String, String> queryParams,
+        final HttpServletRequest request
     ) {
-        LOGGER.debug("get:Suchkriterien= {}", suchkriterien);
-        final List<Autohaus> autohauser = autohausReadService.find(suchkriterien);
-        LOGGER.debug("get:Autohaeuser= {}", autohauser);
-        return autohauser;
+        LOGGER.debug("get: queryParams={}", queryParams);
+        if (queryParams.size() > 1) {
+            return notFound().build();
+        }
+
+        final List<Autohaus> autohaeuser;
+        if (queryParams.isEmpty()) {
+            autohaeuser = autohausReadService.findAll();
+        } else {
+            final var autoIdStr = queryParams.get("autoId");
+            if (autoIdStr == null) {
+                return notFound().build();
+            }
+            final var kundeId = UUID.fromString(autoIdStr);
+            autohaeuser = autohausReadService.findByAutoId(kundeId);
+        }
+
+        return ok(autohaeuser);
     }
 
-    /// Suche anhand der Autohaus-ID als Pfad-Parameter.
+    /// Suche anhand der Autohaus-ID.
     ///
-    /// @param id ID des zu suchenden Kunden
-    /// @param version Versionsnummer aus dem Header If-None-Match
-    /// @param authentication Injiziertes Objekt für Authentication von Spring Security
-    /// @return Ein Response mit dem Statuscode 200 und dem gefundenen Kunden oder Statuscode 404.
-    @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
-    @RolleAdminOrUser
+    /// @param id ID der zu suchenden Bestellung
+    /// @param version Versionsnummer beim Request-Header `If-None-Match`.
+    /// @param request Das Request-Objekt, um Links für _HATEOAS_ zu erstellen.
+    /// @return Ein Response mit dem Statuscode `200` und der gefundenen Bestellung einschließlich _Atom-Links_,
+    ///      oder aber Statuscode `204`.
+    @GetMapping(path = "/{id:" + ID_PATTERN + '}', produces = APPLICATION_JSON_VALUE)
+    @RolleAdmin
     @Observed(name = "get-by-id")
-    @Operation(summary = "Suche mit der Autohaus-ID", tags = "Suchen")
-    @ApiResponse(responseCode = "200", description = "Autohaus gefunden")
-    @ApiResponse(responseCode = "404", description = "Autohaus nicht gefunden")
-    public ResponseEntity<Autohaus> getByID(
+    @Operation(summary = "Suche mit der Bestellung-ID", tags = "Suchen")
+    @ApiResponse(responseCode = "200", description = "Bestellung gefunden")
+    @ApiResponse(responseCode = "404", description = "Bestellung nicht gefunden")
+    ResponseEntity<Autohaus> getById(
         @PathVariable final UUID id,
         @RequestHeader("If-None-Match") final Optional<String> version,
-        final Authentication authentication) {
-        if (LOGGER.isTraceEnabled() && authentication instanceof JwtAuthenticationToken authenticationToken) {
-            LOGGER.trace("getById: name={}", authenticationToken.getName());
-
-            final var jwt = authenticationToken.getToken();
-            LOGGER.trace("getById: tokenValue={}", jwt.getTokenValue());
-            LOGGER.trace("getById: headers={}", jwt.getHeaders());
-            LOGGER.trace("getById: issuedAt={}", jwt.getIssuedAt());
-            LOGGER.trace("getById: expiresAt={}", jwt.getExpiresAt());
-            LOGGER.trace("getById: claims={}", jwt.getClaims());
-        }
-
-        final var username = jwtService.getUsername(authentication);
+        final HttpServletRequest request
+    ) {
         LOGGER.debug("getById: id={}, version={}", id, version);
 
-        if (username == null) {
-            LOGGER.error("Trotz Spring Security wurde getById() ohne Benutzername im JWT aufgerufen");
-            return status(UNAUTHORIZED).build();
-        }
-        final var rollen = jwtService.getRollen(authentication);
-        LOGGER.trace("getById: rollen={}", rollen);
-
-        final var autohaus = autohausReadService.findById(id, username, rollen, false);
-        LOGGER.trace("getById: {}", autohaus);
-
-        final var versionStr = "\"" + autohaus.getVersion() + '"';
-        if (versionStr.equals(version.orElse(null))) {
+        final var autohaus = autohausReadService.findById(id);
+        final var currentVersion = "\"" + autohaus.getVersion() + '"';
+        if (Objects.equals(version.orElse(null), currentVersion)) {
             return status(NOT_MODIFIED).build();
         }
 
-        LOGGER.debug("getById: autohaus={}", autohaus);
-        return ok().eTag(versionStr).body(autohaus);
+        return ok(autohaus);
     }
 }
