@@ -20,28 +20,45 @@ import com.acme.autohaus.entity.Autohaus;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import static com.acme.autohaus.entity.Autohaus.ADRESSE_AUTOS_GRAPH;
-import static com.acme.autohaus.entity.Autohaus.ADRESSE_GRAPH;
 
-/// Repository Interface für den Mikroservice Autohaus
+/**
+ * Repository-Interface für den Zugriff auf {@link Autohaus}-Entitäten.
+ * Bietet Methoden für die CRUD-Operationen und zusätzliche Suchanfragen.
+ */
 @Repository
 public interface AutohausRepository extends JpaRepository<Autohaus, UUID>, JpaSpecificationExecutor<Autohaus> {
+
+    /**
+     * Findet alle Autohaus-Entitäten mit einem definierten EntityGraph, um Adressen und Autos zu laden.
+     *
+     * @return Eine Liste aller {@link Autohaus}-Entitäten.
+     */
     @EntityGraph(ADRESSE_AUTOS_GRAPH)
     @Override
     List<Autohaus> findAll();
 
+    /**
+     * Findet ein Autohaus anhand der ID mit einem definierten EntityGraph.
+     *
+     * @param id Die eindeutige UUID des Autohauses.
+     * @return Ein {@link Optional}, das das gefundene Autohaus oder {@code Optional.empty()} enthält.
+     */
     @EntityGraph(ADRESSE_AUTOS_GRAPH)
     @Override
     Optional<Autohaus> findById(UUID id);
 
+    /**
+     * Findet alle Autohäuser, die mit einer bestimmten Auto-ID verknüpft sind, unter Verwendung eines EntityGraphs.
+     *
+     * @param autohausId Die eindeutige UUID des Autos.
+     * @return Eine Liste der gefundenen {@link Autohaus}-Entitäten.
+     */
     @EntityGraph(ADRESSE_AUTOS_GRAPH)
-    List<Autohaus> findByAutoId(UUID autoId);
+    @SuppressWarnings("checkstyle:MethodName")
+    List<Autohaus> findByAutoForeignKeys_Id(UUID autohausId);
 }

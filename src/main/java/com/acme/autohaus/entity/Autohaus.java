@@ -15,10 +15,21 @@
  */
 package com.acme.autohaus.entity;
 
-import com.acme.autohaus.repository.AutoRecord;
+import com.acme.autohaus.repository.Auto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderColumn;
+import jakarta.persistence.Transient;
+import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -26,14 +37,13 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-
 /// Daten eines Autohauses. In DDD ist Autohaus ein Aggregate Root.
 /// ![Klassendiagramm](../../../../../asciidoc/Autohaus.svg)
 ///
 @Entity
 @NamedEntityGraph(name = Autohaus.ADRESSE_GRAPH, attributeNodes = @NamedAttributeNode("adresse"))
 @NamedEntityGraph(name = Autohaus.ADRESSE_AUTOS_GRAPH, attributeNodes = {
-    @NamedAttributeNode("adresse"), @NamedAttributeNode("autos")
+    @NamedAttributeNode("adresse"), @NamedAttributeNode("autoForeignKeys")
 })
 @SuppressWarnings({
     "ClassFanOutComplexity",
@@ -77,7 +87,7 @@ public class Autohaus {
     @JoinColumn(name = "autohaus_id")
     @OrderColumn(name = "idx", nullable = false)
     @JsonIgnore
-    private List<Auto> autos;
+    private List<AutoForeignKey> autoForeignKeys;
 
     /** Benutzername des Autohauses (z. B. für ein Login-System). */
     private String username;
@@ -91,7 +101,7 @@ public class Autohaus {
     private LocalDateTime aktualisiert;
 
     @Transient
-    private List<AutoRecord> autoRecords;
+    private List<Auto> autos;
 
     /**
      * Standardkonstruktor für Jakarta Persistence.
@@ -213,17 +223,17 @@ public class Autohaus {
      *
      * @return Die Liste der Autos. Die Liste ist nicht veränderbar durch den Aufruf dieser Methode.
      */
-    public List<Auto> getAutos() {
-        return autos;
+    public List<AutoForeignKey> getAutoForeignKeys() {
+        return autoForeignKeys;
     }
 
     /**
      * Setzt die Liste der Autos im Autohaus.
      *
-     * @param autos Die Liste der Autos.
+     * @param autoForeignKeys Die Liste der Autos.
      */
-    public void setAutos(final List<Auto> autos) {
-        this.autos = autos;
+    public void setAutoForeignKeys(final List<AutoForeignKey> autoForeignKeys) {
+        this.autoForeignKeys = autoForeignKeys;
     }
 
     /**
@@ -285,8 +295,8 @@ public class Autohaus {
      *
      * @return Die Liste der Autos. Die Liste ist nicht veränderbar durch den Aufruf dieser Methode.
      */
-    public List<AutoRecord> getAutoRecords() {
-        return this.autoRecords;
+    public List<Auto> getAutos() {
+        return this.autos;
     }
 
     /**
@@ -294,8 +304,8 @@ public class Autohaus {
      *
      * @param autos Die Liste der Autos.
      */
-    public void setAutoRecords(final List<AutoRecord> autoRecords) {
-        this.autoRecords = autoRecords;
+    public void setAutos(final List<Auto> autos) {
+        this.autos = autos;
     }
 
     @Override
@@ -315,7 +325,7 @@ public class Autohaus {
             ", telefonnummer='" + telefonnummer + '\'' +
             ", UUID='" + id + '\'' +
             ", email='" + email + '\'' +
-            ", autoRecords=" + autoRecords +
+            ", autos=" + autos +
             '}';
     }
 }

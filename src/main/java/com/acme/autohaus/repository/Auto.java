@@ -18,5 +18,14 @@ import java.time.LocalDate;
  * You should have received a copy of the GNU General Public License
  * along with Autohaus.  If not, see <http://www.gnu.org/licenses/>.
  */
-public record AutoRecord(String kennzeichen, String modell, LocalDate zulassungsdatum) {
+
+/**
+ * Repräsentiert ein Auto mit Kennzeichen, Modell und Zulassungsdatum.
+ * Diese Klasse ist ein {@code record}, der Datenfelder für ein Auto enthält.
+ *
+ * @param kennzeichen Das Kennzeichen des Autos.
+ * @param modell Das Modell des Autos.
+ * @param zulassungsdatum Das Datum der Zulassung des Autos.
+ */
+public record Auto(String kennzeichen, String modell, LocalDate zulassungsdatum) {
 }

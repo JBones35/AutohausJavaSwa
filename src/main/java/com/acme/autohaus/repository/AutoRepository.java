@@ -16,7 +16,6 @@
  */
 package com.acme.autohaus.repository;
 
-import com.acme.autohaus.entity.Auto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,14 +27,14 @@ import static org.springframework.http.HttpHeaders.IF_NONE_MATCH;
 /// _HTTP Interface_ für den REST-Client für Autodaten.
 ///
 /// @author [Jürgen Zimmermann](mailto:Juergen.Zimmermann@h-ka.de)
-@HttpExchange("/api")
+@HttpExchange("/api/auto")
 public interface AutoRepository {
     /// Einen Autodatensatz vom Microservice _auto_ mit einem Token anfordern.
     ///
     /// @param id ID des angeforderten Auto
     /// @return Gefundenes Auto oder null
     @GetExchange("/{id}")
-    AutoRecord getById(@PathVariable String id);
+    Auto getById(@PathVariable String id);
 
     /// Einen Autondatensatz vom Microservice _auto_ mit einem Token anfordern.
     ///
@@ -45,7 +44,7 @@ public interface AutoRepository {
     /// @return Gefundener Auto im Response-Body oder Statuscode `304` oder Statuscode `404`.
     @GetExchange("/{id}")
     @SuppressWarnings("unused")
-    ResponseEntity<AutoRecord> getById(
+    ResponseEntity<Auto> getById(
         @PathVariable String id,
         @RequestHeader(IF_NONE_MATCH) String version,
         @RequestHeader(AUTHORIZATION) String authorization

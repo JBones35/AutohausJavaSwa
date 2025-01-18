@@ -17,13 +17,14 @@
 package com.acme.autohaus.service;
 
 import com.acme.autohaus.entity.Autohaus;
-import com.acme.autohaus.repository.AutohausRepository;
-import com.acme.autohaus.repository.AutoRecord;
+import com.acme.autohaus.repository.Auto;
 import com.acme.autohaus.repository.AutoRepository;
+import com.acme.autohaus.repository.AutohausRepository;
 import io.micrometer.observation.annotation.Observed;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -58,12 +59,12 @@ public class AutohausReadService {
     public List<Autohaus> findAll() {
         final var autohaeuser = repo.findAll();
         autohaeuser.forEach(autohaus -> {
-            final var autos = autohaus.getAutos();
-            final List<AutoRecord> autoRecords = autos.stream()
+            final var autoForeignKeys = autohaus.getAutoForeignKeys();
+            final List<Auto> autoRecords = autoForeignKeys.stream()
                 .map(auto -> findAutoById(auto.getId()))
                 .toList();
-            autohaus.setAutoRecords(autoRecords);
-            });
+            autohaus.setAutos(autoRecords);
+        });
         return autohaeuser;
     }
 
@@ -77,10 +78,10 @@ public class AutohausReadService {
         LOGGER.debug("findById: id={}", id);
         final var autohaus = repo.findById(id).orElseThrow(NotFoundException::new);
         LOGGER.trace("findById: {}", autohaus);
-        final var autos = autohaus.getAutos().stream().map(auto -> findAutoById(auto.getId()))
+        final var autos = autohaus.getAutoForeignKeys().stream().map(auto -> findAutoById(auto.getId()))
             .toList();
 
-        autohaus.setAutoRecords(autos);
+        autohaus.setAutos(autos);
         return autohaus;
     }
 
@@ -92,7 +93,7 @@ public class AutohausReadService {
     public List<Autohaus> findByAutoId(final UUID autoId) {
         LOGGER.debug("findByAutoId: autoId={}", autoId);
 
-        final var autohaeuser = repo.findByAutoId(autoId);
+        final var autohaeuser = repo.findByAutoForeignKeys_Id(autoId);
         if (autohaeuser.isEmpty()) {
             throw new NotFoundException();
         }
@@ -100,35 +101,33 @@ public class AutohausReadService {
         final var auto = findAutoById(autoId);
         LOGGER.trace("findByAutoId: auto: {}", auto);
 
-        autohaeuser.forEach(autohaus -> {
-            autohaus.setAutoRecords(new ArrayList<>(Collections.singletonList(auto)));
-        });
+        autohaeuser.forEach(autohaus -> autohaus.setAutos(new ArrayList<>(Collections.singletonList(auto))));
 
         LOGGER.debug("findByAutoId: autohaeuser ={}", autohaeuser);
         return autohaeuser;
     }
 
     @SuppressWarnings("ReturnCount")
-    private AutoRecord findAutoById(final UUID autoId) {
+    private Auto findAutoById(final UUID autoId) {
         LOGGER.debug("findAutoById: autoId={}", autoId);
 
-        final AutoRecord autoRecord;
+        final Auto auto;
         try {
-            autoRecord = autoRepo.getById(autoId.toString());
+            auto = autoRepo.getById(autoId.toString());
         } catch (final HttpClientErrorException.NotFound ex) {
             // Statuscode 404
             LOGGER.debug("findAutoById: HttpClientErrorException.NotFound");
-            return new AutoRecord("N/A", "not.found@acme.com", null);
+            return new Auto("N/A", "not.found@acme.com", null);
         } catch (final HttpStatusCodeException ex) {
             // sonstiger Statuscode 4xx oder 5xx
             // HttpStatusCodeException oder RestClientResponseException (z.B. ServiceUnavailable)
             LOGGER.warn("findAutoById", ex);
-            return new AutoRecord("HttpStatusCodeException", "httpStatusCodeException@acme.com", null);
+            return new Auto("HttpStatusCodeException", "httpStatusCodeException@acme.com", null);
         } catch (final ResourceAccessException ex) {
             LOGGER.warn("findAutoById", ex);
-            return new AutoRecord("ResourceAccessException", "resourceAccessException@acme.com", null);
+            return new Auto("ResourceAccessException", "resourceAccessException@acme.com", null);
         }
-        LOGGER.debug("findAutoById: {}", autoRecord);
-        return autoRecord;
+        LOGGER.debug("findAutoById: {}", auto);
+        return auto;
     }
 }

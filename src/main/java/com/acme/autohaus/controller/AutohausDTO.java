@@ -17,13 +17,11 @@
 package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Adresse;
-import com.acme.autohaus.entity.Auto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java.util.List;
 
 /**
  * DTO (Data Transfer Object) für die Darstellung eines Autohauses.
@@ -36,7 +34,6 @@ import java.util.List;
  * @param adresse       Adresse des Autohauses
  * @param username      Benutzername
  * @param password      Password
- * @param autos         die Liste der Autos, die in diesem Autohaus verfügbar sind; darf nicht null sein.
  */
 public record AutohausDTO(
     @NotNull

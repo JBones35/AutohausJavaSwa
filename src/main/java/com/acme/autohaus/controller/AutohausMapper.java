@@ -17,7 +17,6 @@
 package com.acme.autohaus.controller;
 
 import com.acme.autohaus.entity.Adresse;
-import com.acme.autohaus.entity.Auto;
 import com.acme.autohaus.entity.Autohaus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -41,6 +40,8 @@ public interface AutohausMapper {
     @Mapping(target = "version", ignore = true)
     @Mapping(target = "erzeugt", ignore = true)
     @Mapping(target = "aktualisiert", ignore = true)
+    @Mapping(target = "autos", ignore = true)
+    @Mapping(target = "autoForeignKeys", ignore = true)
     Autohaus toAutohaus(AutohausDTO dto);
 
     /**

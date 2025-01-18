@@ -20,9 +20,9 @@ CREATE TABLE IF NOT EXISTS autohaus (
 ) TABLESPACE autohausspace;
 CREATE INDEX IF NOT EXISTS autohaus_email_idx ON autohaus(email) TABLESPACE autohausspace;
 
-CREATE TABLE IF NOT EXISTS auto (
+CREATE TABLE IF NOT EXISTS auto_foreign_key (
                                     id          uuid PRIMARY KEY USING INDEX TABLESPACE autohausspace,
                                     autohaus_id uuid REFERENCES autohaus,
                                     idx       integer NOT NULL DEFAULT 0
 )TABLESPACE autohausspace;
-CREATE INDEX IF NOT EXISTS auto_autohaus_id_idx ON auto(autohaus_id) TABLESPACE autohausspace;
+CREATE INDEX IF NOT EXISTS auto_autohaus_id_idx ON auto_foreign_key(autohaus_id) TABLESPACE autohausspace;

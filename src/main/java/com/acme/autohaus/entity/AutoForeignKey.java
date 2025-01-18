@@ -18,7 +18,6 @@ package com.acme.autohaus.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,7 +26,7 @@ import java.util.UUID;
  * die Fahrzeug-ID, Marke, Modell, Baujahr, Besitzer und Preis.
  */
 @Entity
-public class Auto {
+public class AutoForeignKey {
     /**
      * Eindeutige ID des Fahrzeugs (automatisch generiert als UUID).
      */
@@ -36,7 +35,7 @@ public class Auto {
     private UUID id;
 
     /// Konstruktor mit `package private`
-    public Auto() {
+    public AutoForeignKey() {
         //StandardKonstruktor
     }
 
@@ -45,7 +44,7 @@ public class Auto {
      *
      * @param id    Die eindeutige Fahrzeug-ID (darf nicht null sein).
      */
-    public Auto(final UUID id) {
+    public AutoForeignKey(final UUID id) {
         this.id = id;
     }
 
@@ -79,7 +78,7 @@ public class Auto {
      */
     @Override
     public final boolean equals(final Object other) {
-        return other instanceof Auto auto && Objects.equals(id, auto.getId());
+        return other instanceof AutoForeignKey autoForeignKey && Objects.equals(id, autoForeignKey.getId());
     }
 
     /**

@@ -66,7 +66,6 @@ public class AutoClientConfig {
         final var autoHostEnv = System.getenv("KUNDE_SERVICE_HOST");
         final var autoPortEnv = System.getenv("KUNDE_SERVICE_PORT");
 
-        // TODO URI bei Docker Compose
         final var schema = autoSchemaEnv == null ? "https" : autoSchemaEnv;
         final var host = autoHostEnv == null ? "localhost" : autoHostEnv;
         final int port = autoPortEnv == null ? autoDefaultPort : Integer.parseInt(autoPortEnv);
