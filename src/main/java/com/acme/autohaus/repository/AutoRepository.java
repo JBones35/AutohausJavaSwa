@@ -32,9 +32,10 @@ public interface AutoRepository {
     /// Einen Autodatensatz vom Microservice _auto_ mit einem Token anfordern.
     ///
     /// @param id ID des angeforderten Auto
+    /// @param authorization String für den HTTP-Header `Authorization``
     /// @return Gefundenes Auto oder null
     @GetExchange("/{id}")
-    Auto getById(@PathVariable String id);
+    Auto getById(@PathVariable String id,@RequestHeader(AUTHORIZATION) String authorization);
 
     /// Einen Autondatensatz vom Microservice _auto_ mit einem Token anfordern.
     ///

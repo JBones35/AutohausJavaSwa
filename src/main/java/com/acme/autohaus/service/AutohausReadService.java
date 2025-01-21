@@ -20,6 +20,8 @@ import com.acme.autohaus.entity.Autohaus;
 import com.acme.autohaus.repository.Auto;
 import com.acme.autohaus.repository.AutoRepository;
 import com.acme.autohaus.repository.AutohausRepository;
+import com.acme.autohaus.security.KeycloakProps;
+import com.acme.autohaus.security.KeycloakRepository;
 import io.micrometer.observation.annotation.Observed;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 /// Anwendungslogik für Autohausen.
 ///
@@ -41,16 +44,23 @@ import org.springframework.web.client.ResourceAccessException;
 public class AutohausReadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutohausReadService.class);
 
+    private static final String ADMIN = "admin";
+    private static final String PASSWORD = "p";
     private final AutohausRepository repo;
     private final AutoRepository autoRepo;
+    private final KeycloakRepository keycloakRepository;
+    private final KeycloakProps keycloakProps;
 
     /// Konstruktor mit `package private` für _Constructor Injection_ bei _Spring_.
     ///
     /// @param repo Repository-Objekt für _Spring Data_.
     /// @param autoRepo Repository-Objekt für den HTTP-Client von _Spring_.
-    AutohausReadService(final AutohausRepository repo, final AutoRepository autoRepo) {
+    AutohausReadService(final AutohausRepository repo, final AutoRepository autoRepo,
+                        final KeycloakRepository keycloakRepository, final KeycloakProps keycloakProps) {
         this.repo = repo;
         this.autoRepo = autoRepo;
+        this.keycloakRepository = keycloakRepository;
+        this.keycloakProps = keycloakProps;
     }
 
     /// Alle Autohausen ermitteln.
@@ -58,10 +68,11 @@ public class AutohausReadService {
     /// @return Alle Autohausen.
     public List<Autohaus> findAll() {
         final var autohaeuser = repo.findAll();
+        final var authorization = getAuthorization();
         autohaeuser.forEach(autohaus -> {
             final var autoForeignKeys = autohaus.getAutoForeignKeys();
             final List<Auto> autoRecords = autoForeignKeys.stream()
-                .map(auto -> findAutoById(auto.getId()))
+                .map(auto -> findAutoById(auto.getId(),authorization))
                 .toList();
             autohaus.setAutos(autoRecords);
         });
@@ -78,7 +89,8 @@ public class AutohausReadService {
         LOGGER.debug("findById: id={}", id);
         final var autohaus = repo.findById(id).orElseThrow(NotFoundException::new);
         LOGGER.trace("findById: {}", autohaus);
-        final var autos = autohaus.getAutoForeignKeys().stream().map(auto -> findAutoById(auto.getId()))
+        final var authorization = getAuthorization();
+        final var autos = autohaus.getAutoForeignKeys().stream().map(auto -> findAutoById(auto.getId(),authorization))
             .toList();
 
         autohaus.setAutos(autos);
@@ -98,7 +110,8 @@ public class AutohausReadService {
             throw new NotFoundException();
         }
 
-        final var auto = findAutoById(autoId);
+        final var authorization = getAuthorization();
+        final var auto = findAutoById(autoId, authorization);
         LOGGER.trace("findByAutoId: auto: {}", auto);
 
         autohaeuser.forEach(autohaus -> autohaus.setAutos(new ArrayList<>(Collections.singletonList(auto))));
@@ -108,12 +121,12 @@ public class AutohausReadService {
     }
 
     @SuppressWarnings("ReturnCount")
-    private Auto findAutoById(final UUID autoId) {
+    private Auto findAutoById(final UUID autoId, final String authorization) {
         LOGGER.debug("findAutoById: autoId={}", autoId);
 
         final Auto auto;
         try {
-            auto = autoRepo.getById(autoId.toString());
+            auto = autoRepo.getById(autoId.toString(),authorization);
         } catch (final HttpClientErrorException.NotFound ex) {
             // Statuscode 404
             LOGGER.debug("findAutoById: HttpClientErrorException.NotFound");
@@ -129,5 +142,14 @@ public class AutohausReadService {
         }
         LOGGER.debug("findAutoById: {}", auto);
         return auto;
+    }
+
+    private String getAuthorization() {
+        final var tokenDTO = keycloakRepository.token(
+            "username=" + ADMIN + "&password=" + PASSWORD + "&grant_type=password" +
+                "&client_id=" + keycloakProps.clientId() + "&client_secret=" + keycloakProps.clientSecret(),
+            APPLICATION_FORM_URLENCODED_VALUE
+        );
+        return "Bearer " + tokenDTO.accessToken();
     }
 }
